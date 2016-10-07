@@ -1,3 +1,9 @@
+#### 1.11.2 (2016-10-6)
+
+##### Bug Fixes
+
+* **hapi:** enable getLog() ([6d5335d7](https://github.com/robinjoseph08/api.pokedextracker.com/commit/6d5335d7b0351c6375bd8812ec2978b12fd666a6))
+
 #### 1.11.1 (2016-9-5)
 
 ##### Bug Fixes
