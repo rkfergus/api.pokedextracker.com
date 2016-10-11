@@ -1,3 +1,9 @@
+### 1.12.0 (2016-10-10)
+
+##### New Features
+
+* **users:** add pagination to the list endpoint ([ac875ac2](https://github.com/robinjoseph08/api.pokedextracker.com/commit/ac875ac24f849dd393a40ee74e36ecc0760cadc3))
+
 #### 1.11.2 (2016-10-6)
 
 ##### Bug Fixes
