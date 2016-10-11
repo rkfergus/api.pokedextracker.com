@@ -2,6 +2,7 @@
 
 const Controller          = require('./controller');
 const UserCreateValidator = require('../../../validators/user/create');
+const UserListValidator   = require('../../../validators/user/list');
 const UserUpdateValidator = require('../../../validators/user/update');
 
 exports.register = (server, options, next) => {
@@ -10,7 +11,8 @@ exports.register = (server, options, next) => {
     method: 'GET',
     path: '/users',
     config: {
-      handler: (request, reply) => reply(Controller.list())
+      handler: (request, reply) => reply(Controller.list(request.query)),
+      validate: { query: UserListValidator }
     }
   }, {
     method: 'GET',

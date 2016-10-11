@@ -8,8 +8,13 @@ const Errors = require('../../../libraries/errors');
 const JWT    = require('../../../libraries/jwt');
 const User   = require('../../../models/user');
 
-exports.list = function () {
-  return new User().query((qb) => qb.orderBy('id', 'DESC')).fetchAll();
+exports.list = function (query) {
+  return new User().query((qb) => {
+    qb.orderBy('id', 'DESC');
+    qb.limit(query.limit);
+    qb.offset(query.offset);
+  })
+  .fetchAll();
 };
 
 exports.retrieve = function (username) {
