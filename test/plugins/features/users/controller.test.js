@@ -20,13 +20,33 @@ describe('user controller', () => {
     });
 
     it('returns a collection of users ordered by id descending', () => {
-      return Controller.list()
+      return Controller.list({ limit: 10, offset: 0 })
       .get('models')
       .map((user) => user.id)
       .then((users) => {
         expect(users).to.have.length(2);
         expect(users[0]).to.eql(secondUser.id);
         expect(users[1]).to.eql(firstUser.id);
+      });
+    });
+
+    it('utilized a limit that is passed in', () => {
+      return Controller.list({ limit: 1, offset: 0 })
+      .get('models')
+      .map((user) => user.id)
+      .then((users) => {
+        expect(users).to.have.length(1);
+        expect(users[0]).to.eql(secondUser.id);
+      });
+    });
+
+    it('utilized an offset that is passed in', () => {
+      return Controller.list({ limit: 10, offset: 1 })
+      .get('models')
+      .map((user) => user.id)
+      .then((users) => {
+        expect(users).to.have.length(1);
+        expect(users[0]).to.eql(firstUser.id);
       });
     });
 
