@@ -1,3 +1,13 @@
+### 1.13.0 (2016-10-19)
+
+##### New Features
+
+* **dexes:** add dexes table and create default dex on user create ([427253d2](https://github.com/robinjoseph08/api.pokedextracker.com/commit/427253d208f9faca1df5457e193a23df06323a4f))
+
+##### Bug Fixes
+
+* **users:** return user session on user create ([e552d12f](https://github.com/robinjoseph08/api.pokedextracker.com/commit/e552d12fd45942d2eb88462d99a659c2fee69a73))
+
 ### 1.12.0 (2016-10-10)
 
 ##### New Features
