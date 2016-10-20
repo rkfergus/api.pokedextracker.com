@@ -2,10 +2,13 @@
 
 const Bluebird = require('bluebird');
 const Bcrypt   = Bluebird.promisifyAll(require('bcrypt'));
+const Slug     = require('slug');
 
 const Config = require('../../../../config');
+const Dex    = require('../../../models/dex');
 const Errors = require('../../../libraries/errors');
 const JWT    = require('../../../libraries/jwt');
+const Knex   = require('../../../libraries/knex');
 const User   = require('../../../models/user');
 
 exports.list = function (query) {
@@ -35,12 +38,23 @@ exports.create = function (payload, request) {
 
     return new User().where('username', payload.username).fetch();
   })
-  .then((user) => {
-    if (user) {
+  .then((existing) => {
+    if (existing) {
       throw new Errors.ExistingUsername();
     }
 
-    return new User(payload).save();
+    const title = 'Living Dex';
+
+    return Knex.transaction((transacting) => {
+      return new User().save(payload, { transacting })
+      .then((user) => {
+        return new Dex().save({
+          user_id: user.id,
+          title,
+          slug: Slug(title, { lower: true })
+        }, { transacting });
+      });
+    });
   })
   .then((user) => user.refresh())
   .then((user) => JWT.sign(user))

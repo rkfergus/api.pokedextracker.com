@@ -14,7 +14,8 @@
       "dependencies": {
         "hoek": {
           "version": "4.0.2",
-          "from": "hoek@>=4.0.0 <5.0.0"
+          "from": "hoek@4.0.2",
+          "resolved": "https://registry.npmjs.org/hoek/-/hoek-4.0.2.tgz"
         }
       }
     },
@@ -35,7 +36,8 @@
       "dependencies": {
         "hoek": {
           "version": "4.0.2",
-          "from": "hoek@>=4.0.0 <5.0.0"
+          "from": "hoek@4.0.2",
+          "resolved": "https://registry.npmjs.org/hoek/-/hoek-4.0.2.tgz"
         }
       }
     },
@@ -240,6 +242,21 @@
       "from": "buffer-writer@1.0.1",
       "resolved": "https://registry.npmjs.org/buffer-writer/-/buffer-writer-1.0.1.tgz"
     },
+    "bufferjs": {
+      "version": "3.0.1",
+      "from": "bufferjs@>=2.0.0",
+      "resolved": "https://registry.npmjs.org/bufferjs/-/bufferjs-3.0.1.tgz"
+    },
+    "bufferstream": {
+      "version": "0.6.2",
+      "from": "bufferstream@>=0.6.2",
+      "resolved": "https://registry.npmjs.org/bufferstream/-/bufferstream-0.6.2.tgz"
+    },
+    "buffertools": {
+      "version": "2.1.4",
+      "from": "buffertools@>=1.0.3",
+      "resolved": "https://registry.npmjs.org/buffertools/-/buffertools-2.1.4.tgz"
+    },
     "call": {
       "version": "3.0.3",
       "from": "call@>=3.0.0 <4.0.0",
@@ -247,7 +264,8 @@
       "dependencies": {
         "hoek": {
           "version": "4.0.2",
-          "from": "hoek@>=4.0.0 <5.0.0"
+          "from": "hoek@4.0.2",
+          "resolved": "https://registry.npmjs.org/hoek/-/hoek-4.0.2.tgz"
         }
       }
     },
@@ -273,7 +291,8 @@
       "dependencies": {
         "hoek": {
           "version": "4.0.2",
-          "from": "hoek@>=4.0.0 <5.0.0"
+          "from": "hoek@4.0.2",
+          "resolved": "https://registry.npmjs.org/hoek/-/hoek-4.0.2.tgz"
         }
       }
     },
@@ -284,7 +303,8 @@
       "dependencies": {
         "hoek": {
           "version": "4.0.2",
-          "from": "hoek@>=4.0.0 <5.0.0"
+          "from": "hoek@4.0.2",
+          "resolved": "https://registry.npmjs.org/hoek/-/hoek-4.0.2.tgz"
         }
       }
     },
@@ -1500,7 +1520,8 @@
       "dependencies": {
         "hoek": {
           "version": "4.0.2",
-          "from": "hoek@>=4.0.0 <5.0.0"
+          "from": "hoek@4.0.2",
+          "resolved": "https://registry.npmjs.org/hoek/-/hoek-4.0.2.tgz"
         }
       }
     },
@@ -1648,7 +1669,8 @@
       "dependencies": {
         "hoek": {
           "version": "4.0.2",
-          "from": "hoek@>=4.0.0 <5.0.0"
+          "from": "hoek@4.0.2",
+          "resolved": "https://registry.npmjs.org/hoek/-/hoek-4.0.2.tgz"
         }
       }
     },
@@ -1726,11 +1748,13 @@
       "dependencies": {
         "cryptiles": {
           "version": "3.0.2",
-          "from": "cryptiles@>=3.0.0 <4.0.0"
+          "from": "cryptiles@3.0.2",
+          "resolved": "https://registry.npmjs.org/cryptiles/-/cryptiles-3.0.2.tgz"
         },
         "hoek": {
           "version": "4.0.2",
-          "from": "hoek@>=4.0.0 <5.0.0"
+          "from": "hoek@4.0.2",
+          "resolved": "https://registry.npmjs.org/hoek/-/hoek-4.0.2.tgz"
         }
       }
     },
@@ -2535,7 +2559,8 @@
       "dependencies": {
         "hoek": {
           "version": "4.0.2",
-          "from": "hoek@>=4.0.0 <5.0.0"
+          "from": "hoek@4.0.2",
+          "resolved": "https://registry.npmjs.org/hoek/-/hoek-4.0.2.tgz"
         }
       }
     },
@@ -2663,7 +2688,8 @@
       "dependencies": {
         "hoek": {
           "version": "4.0.2",
-          "from": "hoek@>=4.0.0 <5.0.0"
+          "from": "hoek@4.0.2",
+          "resolved": "https://registry.npmjs.org/hoek/-/hoek-4.0.2.tgz"
         }
       }
     },
@@ -2735,7 +2761,8 @@
       "dependencies": {
         "hoek": {
           "version": "4.0.2",
-          "from": "hoek@>=4.0.0 <5.0.0"
+          "from": "hoek@4.0.2",
+          "resolved": "https://registry.npmjs.org/hoek/-/hoek-4.0.2.tgz"
         }
       }
     },
@@ -3000,6 +3027,11 @@
       "from": "slide@>=1.1.5 <2.0.0",
       "resolved": "https://registry.npmjs.org/slide/-/slide-1.1.6.tgz"
     },
+    "slug": {
+      "version": "0.9.1",
+      "from": "slug@*",
+      "resolved": "https://registry.npmjs.org/slug/-/slug-0.9.1.tgz"
+    },
     "sntp": {
       "version": "1.0.9",
       "from": "sntp@>=1.0.0 <2.0.0",
@@ -3089,7 +3121,8 @@
       "dependencies": {
         "hoek": {
           "version": "4.0.2",
-          "from": "hoek@>=4.0.0 <5.0.0"
+          "from": "hoek@4.0.2",
+          "resolved": "https://registry.npmjs.org/hoek/-/hoek-4.0.2.tgz"
         },
         "wreck": {
           "version": "8.0.1",
@@ -3137,7 +3170,8 @@
       "dependencies": {
         "hoek": {
           "version": "4.0.1",
-          "from": "hoek@>=4.0.0 <5.0.0"
+          "from": "hoek@4.0.1",
+          "resolved": "https://registry.npmjs.org/hoek/-/hoek-4.0.1.tgz"
         }
       }
     },
@@ -3217,6 +3251,11 @@
       "version": "2.4.0",
       "from": "underscore.string@>=2.4.0 <2.5.0",
       "resolved": "https://registry.npmjs.org/underscore.string/-/underscore.string-2.4.0.tgz"
+    },
+    "unicode": {
+      "version": "0.6.1",
+      "from": "unicode@>=0.3.1",
+      "resolved": "https://registry.npmjs.org/unicode/-/unicode-0.6.1.tgz"
     },
     "update-notifier": {
       "version": "0.5.0",
