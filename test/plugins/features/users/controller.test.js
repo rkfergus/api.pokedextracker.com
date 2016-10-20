@@ -3,6 +3,7 @@
 const Sinon = require('sinon');
 
 const Controller = require('../../../../src/plugins/features/users/controller');
+const Dex        = require('../../../../src/models/dex');
 const Errors     = require('../../../../src/libraries/errors');
 const Knex       = require('../../../../src/libraries/knex');
 const User       = require('../../../../src/models/user');
@@ -112,6 +113,18 @@ describe('user controller', () => {
       .then(() => new User().where('username', username).fetch())
       .then((user) => {
         expect(user.get('referrer')).to.eql(referrer);
+      });
+    });
+
+    it('saves a default dex', () => {
+      const username = 'test';
+
+      return Controller.create({ username, password: 'test' }, request)
+      .then(() => new User().where('username', username).fetch())
+      .then((user) => new Dex().where('user_id', user.id).fetch())
+      .then((dex) => {
+        expect(dex.get('title')).to.eql('Living Dex');
+        expect(dex.get('slug')).to.eql('living-dex');
       });
     });
 
