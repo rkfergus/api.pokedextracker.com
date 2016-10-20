@@ -47,7 +47,7 @@ exports.create = function (payload, request) {
 
     return Knex.transaction((transacting) => {
       return new User().save(payload, { transacting })
-      .then((user) => {
+      .tap((user) => {
         return new Dex().save({
           user_id: user.id,
           title,
