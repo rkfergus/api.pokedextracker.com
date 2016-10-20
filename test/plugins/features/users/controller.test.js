@@ -1,5 +1,6 @@
 'use strict';
 
+const JWT   = require('jsonwebtoken');
 const Sinon = require('sinon');
 
 const Controller = require('../../../../src/plugins/features/users/controller');
@@ -85,13 +86,23 @@ describe('user controller', () => {
       const password = 'test';
 
       return Controller.create({ username, password }, request)
-      .then((session) => {
-        expect(session.token).to.be.a('string');
-      })
       .then(() => new User().where('username', username).fetch())
       .then((user) => {
         expect(user.get('password')).to.not.eql(password);
         expect(user.get('password')).to.have.length(60);
+      });
+    });
+
+    it('returns a session with a user token', () => {
+      const username = 'test';
+
+      return Controller.create({ username, password: 'test' }, request)
+      .then((session) => {
+        expect(session.token).to.be.a('string');
+
+        const user = JWT.decode(session.token);
+
+        expect(user.username).to.eql(username);
       });
     });
 
