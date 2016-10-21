@@ -1,3 +1,13 @@
+#### 1.13.1 (2016-10-20)
+
+##### Chores
+
+* **dexes:** create dexes for existing users ([0b53f271](https://github.com/robinjoseph08/api.pokedextracker.com/commit/0b53f27178c6ed2d94b93e9e0787a12a6f2ee3bb))
+
+##### Bug Fixes
+
+* **migration:** do the backfill migration in batches ([84b4e93c](https://github.com/robinjoseph08/api.pokedextracker.com/commit/84b4e93c4a766b2b73f6e3d9a2cad389013e2bb9))
+
 ### 1.13.0 (2016-10-19)
 
 ##### New Features
