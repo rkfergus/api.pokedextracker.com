@@ -11,6 +11,7 @@ module.exports = Bookshelf.model('Capture', Bookshelf.Model.extend({
   },
   serialize () {
     return {
+      dex_id: this.get('dex_id'),
       user_id: this.get('user_id'),
       pokemon: this.related('pokemon').get('capture_summary'),
       captured: this.get('captured')
