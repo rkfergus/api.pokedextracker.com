@@ -3,6 +3,7 @@
 const Bluebird = require('bluebird');
 
 const Capture = require('../../../models/capture');
+const Dex     = require('../../../models/dex');
 const Errors  = require('../../../libraries/errors');
 const Knex    = require('../../../libraries/knex');
 const Pokemon = require('../../../models/pokemon');
@@ -35,15 +36,23 @@ exports.list = function (query, pokemon) {
 };
 
 exports.create = function (payload, auth) {
-  return new Pokemon().query((qb) => qb.whereIn('national_id', payload.pokemon)).fetchAll()
-  .then((pokemon) => {
+  let dexId;
+
+  return Bluebird.all([
+    new Pokemon().query((qb) => qb.whereIn('national_id', payload.pokemon)).fetchAll(),
+    new Dex().where('user_id', auth.id).fetch({ require: true })
+  ])
+  .spread((pokemon, dex) => {
     if (pokemon.length !== payload.pokemon.length) {
       throw new Errors.NotFound('pokemon');
     }
+
+    dexId = dex.id;
+
     return payload.pokemon;
   })
   .map((pokemonId) => {
-    return Knex('captures').insert({ pokemon_id: pokemonId, user_id: auth.id, captured: true })
+    return Knex('captures').insert({ pokemon_id: pokemonId, user_id: auth.id, dex_id: dexId, captured: true })
     .catch(Errors.DuplicateKey, () => {});
   })
   .then(() => new Capture().query((qb) => qb.whereIn('pokemon_id', payload.pokemon).where('user_id', auth.id)).fetchAll({ withRelated: Capture.RELATED }));

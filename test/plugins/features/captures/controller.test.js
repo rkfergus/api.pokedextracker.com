@@ -13,7 +13,9 @@ const secondPokemon = Factory.build('pokemon', { national_id: 2 });
 
 const user = Factory.build('user');
 
-const firstCapture = Factory.build('capture', { pokemon_id: firstPokemon.national_id, user_id: user.id });
+const dex = Factory.build('dex', { user_id: user.id });
+
+const firstCapture = Factory.build('capture', { pokemon_id: firstPokemon.national_id, user_id: user.id, dex_id: dex.id });
 
 describe('capture controller', () => {
 
@@ -22,9 +24,8 @@ describe('capture controller', () => {
       Knex('pokemon').insert([firstPokemon, secondPokemon]),
       Knex('users').insert(user)
     ])
-    .then(() => {
-      return Knex('captures').insert(firstCapture);
-    });
+    .then(() => Knex('dexes').insert(dex))
+    .then(() => Knex('captures').insert(firstCapture));
   });
 
   describe('list', () => {
@@ -62,6 +63,7 @@ describe('capture controller', () => {
         expect(captures).to.have.length(1);
         expect(captures.at(0).get('pokemon_id')).to.eql(secondPokemon.national_id);
         expect(captures.at(0).get('user_id')).to.eql(user.id);
+        expect(captures.at(0).get('dex_id')).to.eql(dex.id);
         expect(captures.at(0).get('captured')).to.be.true;
       });
     });
