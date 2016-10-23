@@ -12,6 +12,8 @@ const secondPokemon = Factory.build('pokemon', { national_id: 2 });
 
 const user = Factory.build('user');
 
+const dex = Factory.build('dex', { user_id: user.id });
+
 const firstCapture = Factory.build('capture', { pokemon_id: firstPokemon.national_id, user_id: user.id });
 
 const auth = `Bearer ${JWT.sign(user, Config.JWT_SECRET)}`;
@@ -23,9 +25,8 @@ describe('capture integration', () => {
       Knex('pokemon').insert([firstPokemon, secondPokemon]),
       Knex('users').insert(user)
     ])
-    .then(() => {
-      return Knex('captures').insert(firstCapture);
-    });
+    .then(() => Knex('dexes').insert(dex))
+    .then(() => Knex('captures').insert(firstCapture));
   });
 
   describe('list', () => {
