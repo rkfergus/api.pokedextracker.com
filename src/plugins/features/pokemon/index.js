@@ -1,8 +1,7 @@
 'use strict';
 
-const Joi = require('joi');
-
-const Controller = require('./controller');
+const Controller      = require('./controller');
+const ParamsValidator = require('../../../validators/params');
 
 exports.register = (server, options, next) => {
 
@@ -17,7 +16,7 @@ exports.register = (server, options, next) => {
     path: '/pokemon/{id}',
     config: {
       handler: (request, reply) => reply(Controller.retrieve(request.params.id)),
-      validate: { params: Joi.object({ id: Joi.number().integer() }) }
+      validate: { params: ParamsValidator }
     }
   }]);
 

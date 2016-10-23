@@ -1,7 +1,7 @@
 'use strict';
 
-const Controller       = require('./controller');
-const SessionValidator = require('../../../validators/session');
+const Controller              = require('./controller');
+const SessionsCreateValidator = require('../../../validators/sessions/create');
 
 exports.register = (server, options, next) => {
 
@@ -10,7 +10,7 @@ exports.register = (server, options, next) => {
     path: '/sessions',
     config: {
       handler: (request, reply) => reply(Controller.create(request.payload, request)),
-      validate: { payload: SessionValidator }
+      validate: { payload: SessionsCreateValidator }
     }
   }]);
 

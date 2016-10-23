@@ -2,15 +2,15 @@
 
 const Joi = require('joi');
 
-const UserListValidator = require('../../../src/validators/user/list');
+const UsersListValidator = require('../../../src/validators/users/list');
 
-describe('user list validator', () => {
+describe('users list validator', () => {
 
   describe('limit', () => {
 
     it('requires integers', () => {
       const data = { limit: 1.1 };
-      const result = Joi.validate(data, UserListValidator);
+      const result = Joi.validate(data, UsersListValidator);
 
       expect(result.error.details[0].path).to.eql('limit');
       expect(result.error.details[0].type).to.eql('number.integer');
@@ -18,7 +18,7 @@ describe('user list validator', () => {
 
     it('has a minimum of 0', () => {
       const data = { limit: -1 };
-      const result = Joi.validate(data, UserListValidator);
+      const result = Joi.validate(data, UsersListValidator);
 
       expect(result.error.details[0].path).to.eql('limit');
       expect(result.error.details[0].type).to.eql('number.min');
@@ -26,7 +26,7 @@ describe('user list validator', () => {
 
     it('has a maximum of 100', () => {
       const data = { limit: 101 };
-      const result = Joi.validate(data, UserListValidator);
+      const result = Joi.validate(data, UsersListValidator);
 
       expect(result.error.details[0].path).to.eql('limit');
       expect(result.error.details[0].type).to.eql('number.max');
@@ -34,9 +34,8 @@ describe('user list validator', () => {
 
     it('has a default of 10', () => {
       const data = {};
-      const result = Joi.validate(data, UserListValidator);
+      const result = Joi.validate(data, UsersListValidator);
 
-      expect(result.error).to.not.exist;
       expect(result.value.limit).to.eql(10);
     });
 
@@ -46,7 +45,7 @@ describe('user list validator', () => {
 
     it('requires integers', () => {
       const data = { offset: 1.1 };
-      const result = Joi.validate(data, UserListValidator);
+      const result = Joi.validate(data, UsersListValidator);
 
       expect(result.error.details[0].path).to.eql('offset');
       expect(result.error.details[0].type).to.eql('number.integer');
@@ -54,7 +53,7 @@ describe('user list validator', () => {
 
     it('has a minimum of 0', () => {
       const data = { offset: -1 };
-      const result = Joi.validate(data, UserListValidator);
+      const result = Joi.validate(data, UsersListValidator);
 
       expect(result.error.details[0].path).to.eql('offset');
       expect(result.error.details[0].type).to.eql('number.min');
@@ -62,9 +61,8 @@ describe('user list validator', () => {
 
     it('has a default of 0', () => {
       const data = {};
-      const result = Joi.validate(data, UserListValidator);
+      const result = Joi.validate(data, UsersListValidator);
 
-      expect(result.error).to.not.exist;
       expect(result.value.offset).to.eql(0);
     });
 

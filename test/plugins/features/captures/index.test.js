@@ -42,17 +42,6 @@ describe('capture integration', () => {
       });
     });
 
-    it('requires a user query param', () => {
-      return Server.inject({
-        method: 'GET',
-        url: '/captures'
-      })
-      .then((res) => {
-        expect(res.statusCode).to.eql(422);
-        expect(res.result.error.message).to.eql('user is required');
-      });
-    });
-
   });
 
   describe('create', () => {
