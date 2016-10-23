@@ -3,7 +3,11 @@
 const LIMIT = 1000;
 
 function batch (knex) {
-  return knex('users').select('users.id').leftOuterJoin('dexes', 'users.id', 'dexes.user_id').whereNull('dexes.id').limit(LIMIT)
+  return knex('users')
+    .select('users.id')
+    .leftOuterJoin('dexes', 'users.id', 'dexes.user_id')
+    .whereNull('dexes.id')
+    .limit(LIMIT)
   .map((user) => {
     return {
       user_id: user.id,
@@ -27,4 +31,8 @@ exports.up = function (knex, Promise) {
 
 exports.down = function (knex, Promise) {
   return knex('dexes').where('title', 'Living Dex').delete();
+};
+
+exports.config = {
+  transaction: false
 };

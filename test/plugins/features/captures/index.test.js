@@ -14,7 +14,7 @@ const user = Factory.build('user');
 
 const dex = Factory.build('dex', { user_id: user.id });
 
-const firstCapture = Factory.build('capture', { pokemon_id: firstPokemon.national_id, user_id: user.id });
+const firstCapture = Factory.build('capture', { pokemon_id: firstPokemon.national_id, user_id: user.id, dex_id: dex.id });
 
 const auth = `Bearer ${JWT.sign(user, Config.JWT_SECRET)}`;
 
