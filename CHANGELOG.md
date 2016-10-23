@@ -1,3 +1,13 @@
+### 1.14.0 (2016-10-22)
+
+##### New Features
+
+* **captures:** add dex_id to captures ([028b022c](https://github.com/robinjoseph08/api.pokedextracker.com/commit/028b022ccfbdf21f628b51562a57434cf47cb32c))
+
+##### Refactors
+
+* **validators:** break them into their own files and add tests ([64728d23](https://github.com/robinjoseph08/api.pokedextracker.com/commit/64728d2384bb3630232f262f657d7a71cfe70df0))
+
 #### 1.13.1 (2016-10-20)
 
 ##### Chores
