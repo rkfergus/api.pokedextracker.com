@@ -1,3 +1,9 @@
+#### 1.14.1 (2016-10-23)
+
+##### Chores
+
+* **captures:** backfill dex_id for existing captures ([6d449c96](https://github.com/robinjoseph08/api.pokedextracker.com/commit/6d449c962d901507b4f12196f4f9e50a22cd4478))
+
 ### 1.14.0 (2016-10-22)
 
 ##### New Features
