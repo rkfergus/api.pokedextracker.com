@@ -7,6 +7,6 @@ const Config = require('../../config');
 
 exports.sign = function (user) {
   return new Bluebird((resolve) => {
-    JWT.sign(user.serialize(), Config.JWT_SECRET, {}, (err, token) => resolve({ token }));
+    JWT.sign(user.get('jwt_summary'), Config.JWT_SECRET, {}, (err, token) => resolve({ token }));
   });
 };
