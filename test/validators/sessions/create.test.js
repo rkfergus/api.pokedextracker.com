@@ -2,30 +2,31 @@
 
 const Joi = require('joi');
 
-const SessionValidator = require('../../src/validators/session');
+const SessionsCreateValidator = require('../../../src/validators/sessions/create');
 
-describe('session validator', () => {
+describe('sessions create validator', () => {
 
   describe('username', () => {
 
     it('allows alpha-numeric and underscore characters', () => {
       const data = { username: 'test_TEST', password: 'testtest' };
-      const result = Joi.validate(data, SessionValidator);
+      const result = Joi.validate(data, SessionsCreateValidator);
 
-      expect(result.error).to.be.null;
+      expect(result.error).to.not.exist;
     });
 
     it('disallows anything besides alpha-numeric and underscore characters', () => {
       const data = { username: 'test-TEST', password: 'testtest' };
-      const result = Joi.validate(data, SessionValidator);
+      const result = Joi.validate(data, SessionsCreateValidator);
 
-      expect(result.error).to.match(/"username" must only contain alpha-numeric and underscore characters/);
+      expect(result.error.details[0].path).to.eql('username');
+      expect(result.error.details[0].type).to.eql('string.token');
     });
 
     it('trims whitespace', () => {
       const username = '  testing ';
       const data = { username, password: 'testtest' };
-      const result = Joi.validate(data, SessionValidator);
+      const result = Joi.validate(data, SessionsCreateValidator);
 
       expect(result.value.username).to.eql(username.trim());
     });
@@ -36,9 +37,10 @@ describe('session validator', () => {
 
     it('requires a string', () => {
       const data = { username: 'testing' };
-      const result = Joi.validate(data, SessionValidator);
+      const result = Joi.validate(data, SessionsCreateValidator);
 
-      expect(result.error).to.match(/"password" is required/);
+      expect(result.error.details[0].path).to.eql('password');
+      expect(result.error.details[0].type).to.eql('any.required');
     });
 
   });

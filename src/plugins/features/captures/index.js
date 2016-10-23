@@ -1,9 +1,10 @@
 'use strict';
 
-const Joi = require('joi');
-
-const Controller = require('./controller');
-const Pokemon    = require('../../../models/pokemon');
+const CapturesCreateValidator = require('../../../validators/captures/create');
+const CapturesDeleteValidator = require('../../../validators/captures/delete');
+const CapturesListValidator   = require('../../../validators/captures/list');
+const Controller             = require('./controller');
+const Pokemon                = require('../../../models/pokemon');
 
 exports.register = (server, options, next) => {
 
@@ -14,7 +15,7 @@ exports.register = (server, options, next) => {
     path: '/captures',
     config: {
       handler: (request, reply) => reply(Controller.list(request.query, pokemon)),
-      validate: { query: Joi.object({ user: Joi.number().integer().required() }) }
+      validate: { query: CapturesListValidator }
     }
   }, {
     method: 'POST',
@@ -22,7 +23,7 @@ exports.register = (server, options, next) => {
     config: {
       auth: 'token',
       handler: (request, reply) => reply(Controller.create(request.payload, request.auth.credentials)),
-      validate: { payload: Joi.object({ pokemon: Joi.array().items(Joi.number().integer()).single().required() }) }
+      validate: { payload: CapturesCreateValidator }
     }
   }, {
     method: 'DELETE',
@@ -30,7 +31,7 @@ exports.register = (server, options, next) => {
     config: {
       auth: 'token',
       handler: (request, reply) => reply(Controller.delete(request.payload, request.auth.credentials)),
-      validate: { payload: Joi.object({ pokemon: Joi.array().items(Joi.number().integer()).single().required() }) }
+      validate: { payload: CapturesDeleteValidator }
     }
   }]);
 

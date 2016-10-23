@@ -42,16 +42,6 @@ describe('pokemon integration', () => {
       });
     });
 
-    it('only allows numeric IDs', () => {
-      return Server.inject({
-        method: 'GET',
-        url: '/pokemon/string'
-      })
-      .then((res) => {
-        expect(res.statusCode).to.eql(422);
-      });
-    });
-
   });
 
 });
