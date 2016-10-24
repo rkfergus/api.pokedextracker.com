@@ -9,7 +9,7 @@ module.exports = Bookshelf.model('User', Bookshelf.Model.extend({
     return this.hasMany('Dex');
   },
   virtuals: {
-    jwt_summary () {
+    summary () {
       return {
         id: this.get('id'),
         username: this.get('username'),
