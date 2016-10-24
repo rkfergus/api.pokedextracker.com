@@ -1,3 +1,18 @@
+### 1.15.0 (2016-10-23)
+
+##### Chores
+
+* **pokemon:** stop returning icon_url ([0753d373](https://github.com/robinjoseph08/api.pokedextracker.com/commit/0753d3731b2baeef9e3c3a878f81b440eb3d8882))
+* **users:** rename jwt_summary to summary ([849c3046](https://github.com/robinjoseph08/api.pokedextracker.com/commit/849c30460bf3a96fe1396d5165fe39f38550a885))
+
+##### New Features
+
+* **pokemon:** add generation, sun_location, and moon_location to pokemon ([c44dc9da](https://github.com/robinjoseph08/api.pokedextracker.com/commit/c44dc9dadfef0954bedb815ae6ab54d02754190d))
+* **users:**
+  * allow passing in first dex params in user creation ([69830d8d](https://github.com/robinjoseph08/api.pokedextracker.com/commit/69830d8d5fd2350bd19e5ce1296193eccf74d0d4))
+  * return dexes in user response ([0c1db389](https://github.com/robinjoseph08/api.pokedextracker.com/commit/0c1db389465cc13cf569132499efc25923f65d0a))
+* **captures:** allow filtering captures by dex ([4b071bd6](https://github.com/robinjoseph08/api.pokedextracker.com/commit/4b071bd6ac26c2b66c9fc94ca5f8714cf495d4ce))
+
 #### 1.14.1 (2016-10-23)
 
 ##### Chores
