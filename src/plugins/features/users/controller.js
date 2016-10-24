@@ -17,11 +17,11 @@ exports.list = function (query) {
     qb.limit(query.limit);
     qb.offset(query.offset);
   })
-  .fetchAll();
+  .fetchAll({ withRelated: User.RELATED });
 };
 
 exports.retrieve = function (username) {
-  return new User().where('username', username).fetch({ require: true })
+  return new User().where('username', username).fetch({ require: true, withRelated: User.RELATED })
   .catch(User.NotFoundError, () => {
     throw new Errors.NotFound('user');
   });
@@ -56,7 +56,7 @@ exports.create = function (payload, request) {
       });
     });
   })
-  .then((user) => user.refresh())
+  .then((user) => user.refresh({ withRelated: User.RELATED }))
   .then((user) => JWT.sign(user))
   .catch(Errors.DuplicateKey, () => {
     throw new Errors.ExistingUsername();
@@ -72,7 +72,7 @@ exports.update = function (username, payload, auth) {
     }
   })
   .then(() => new User({ id: auth.id }).where('username', username).save(payload))
-  .then((user) => user.refresh())
+  .then((user) => user.refresh({ withRelated: User.RELATED }))
   .then((user) => JWT.sign(user))
   .catch(User.NoRowsUpdatedError, () => {
     throw new Errors.ForbiddenAction('updating this user');

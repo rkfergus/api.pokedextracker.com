@@ -3,5 +3,7 @@
 const Joi = require('joi');
 
 module.exports = Joi.object({
-  user: Joi.number().integer().required()
-});
+  dex: Joi.number().integer(),
+  user: Joi.number().integer()
+})
+.xor(['dex', 'user']);
