@@ -30,11 +30,7 @@ exports.retrieve = function (username) {
 exports.create = function (payload, request) {
   return Bcrypt.hashAsync(payload.password, Config.SALT_ROUNDS)
   .then((hash) => {
-    const xff = request.headers['x-forwarded-for'];
-    const ip = xff ? xff.split(',')[0].trim() : request.info.remoteAddress;
-
     payload.password = hash;
-    payload.last_ip = ip;
 
     return new User().where('username', payload.username).fetch();
   })
@@ -43,15 +39,24 @@ exports.create = function (payload, request) {
       throw new Errors.ExistingUsername();
     }
 
-    const title = 'Living Dex';
+    const xff = request.headers['x-forwarded-for'];
+    const ip = xff ? xff.split(',')[0].trim() : request.info.remoteAddress;
 
     return Knex.transaction((transacting) => {
-      return new User().save(payload, { transacting })
+      return new User().save({
+        username: payload.username,
+        password: payload.password,
+        friend_code: payload.friend_code,
+        referrer: payload.referrer,
+        last_ip: ip
+      }, { transacting })
       .tap((user) => {
         return new Dex().save({
           user_id: user.id,
-          title,
-          slug: Slug(title, { lower: true })
+          title: payload.title,
+          slug: Slug(payload.title, { lower: true }),
+          shiny: payload.shiny,
+          generation: payload.generation
         }, { transacting });
       });
     });

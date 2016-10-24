@@ -8,6 +8,14 @@ describe('users create validator', () => {
 
   describe('username', () => {
 
+    it('is required', () => {
+      const data = { password: 'testtest' };
+      const result = Joi.validate(data, UsersCreateValidator);
+
+      expect(result.error.details[0].path).to.eql('username');
+      expect(result.error.details[0].type).to.eql('any.required');
+    });
+
     it('allows alpha-numeric and underscore characters', () => {
       const data = { username: 'test_TEST', password: 'testtest' };
       const result = Joi.validate(data, UsersCreateValidator);
@@ -43,6 +51,14 @@ describe('users create validator', () => {
 
   describe('password', () => {
 
+    it('is required', () => {
+      const data = { username: 'testing' };
+      const result = Joi.validate(data, UsersCreateValidator);
+
+      expect(result.error.details[0].path).to.eql('password');
+      expect(result.error.details[0].type).to.eql('any.required');
+    });
+
     it('requires at least 8 characters', () => {
       const data = { username: 'testing', password: 'a'.repeat(7) };
       const result = Joi.validate(data, UsersCreateValidator);
@@ -62,6 +78,13 @@ describe('users create validator', () => {
   });
 
   describe('friend_code', () => {
+
+    it('is optional', () => {
+      const data = { username: 'testing', password: 'testtest' };
+      const result = Joi.validate(data, UsersCreateValidator);
+
+      expect(result.error).to.not.exist;
+    });
 
     it('converts null to undefined', () => {
       const data = { username: 'testing', password: 'testtest', friend_code: null };
@@ -124,6 +147,77 @@ describe('users create validator', () => {
       const result = Joi.validate(data, UsersCreateValidator);
 
       expect(result.value.referrer).to.be.undefined;
+    });
+
+  });
+
+  describe('title', () => {
+
+    it('defaults to "Living Dex"', () => {
+      const data = { username: 'testing', password: 'testtest' };
+      const result = Joi.validate(data, UsersCreateValidator);
+
+      expect(result.value.title).to.eql('Living Dex');
+    });
+
+    it('limits to 300 characters', () => {
+      const data = { username: 'testing', password: 'testtest', title: 'a'.repeat(301) };
+      const result = Joi.validate(data, UsersCreateValidator);
+
+      expect(result.error.details[0].path).to.eql('title');
+      expect(result.error.details[0].type).to.eql('string.max');
+    });
+
+  });
+
+  describe('shiny', () => {
+
+    it('defaults to false', () => {
+      const data = { username: 'testing', password: 'testtest' };
+      const result = Joi.validate(data, UsersCreateValidator);
+
+      expect(result.value.shiny).to.be.false;
+    });
+
+  });
+
+  describe('generation', () => {
+
+    it('defaults to 6', () => {
+      const data = { username: 'testing', password: 'testtest' };
+      const result = Joi.validate(data, UsersCreateValidator);
+
+      expect(result.value.generation).to.eql(6);
+    });
+
+    it('allows at least 1', () => {
+      const data = { username: 'testing', password: 'testtest', generation: 1 };
+      const result = Joi.validate(data, UsersCreateValidator);
+
+      expect(result.error).to.not.exist;
+    });
+
+    it('allows at most 6', () => {
+      const data = { username: 'testing', password: 'testtest', generation: 6 };
+      const result = Joi.validate(data, UsersCreateValidator);
+
+      expect(result.error).to.not.exist;
+    });
+
+    it('disallows less than 1', () => {
+      const data = { username: 'testing', password: 'testtest', generation: 0 };
+      const result = Joi.validate(data, UsersCreateValidator);
+
+      expect(result.error.details[0].path).to.eql('generation');
+      expect(result.error.details[0].type).to.eql('number.min');
+    });
+
+    it('disallows more than 6', () => {
+      const data = { username: 'testing', password: 'testtest', generation: 7 };
+      const result = Joi.validate(data, UsersCreateValidator);
+
+      expect(result.error.details[0].path).to.eql('generation');
+      expect(result.error.details[0].type).to.eql('number.max');
     });
 
   });

@@ -6,7 +6,10 @@ module.exports = Joi.object().keys({
   username: Joi.string().token().max(20).trim().required(),
   password: Joi.string().min(8).max(72).required(),
   friend_code: Joi.string().regex(/^\d{4}-\d{4}-\d{4}$/).empty(['', null]),
-  referrer: Joi.string().empty(['', null])
+  referrer: Joi.string().empty(['', null]),
+  title: Joi.string().max(300).trim().default('Living Dex'),
+  shiny: Joi.boolean().default(false),
+  generation: Joi.number().integer().min(1).max(6).default(6)
 })
 .options({
   language: {

@@ -5,10 +5,6 @@ const Bookshelf = require('../libraries/bookshelf');
 module.exports = Bookshelf.model('Dex', Bookshelf.Model.extend({
   tableName: 'dexes',
   hasTimestamps: ['date_created', 'date_modified'],
-  defaults: {
-    shiny: false,
-    generation: 6
-  },
   serialize () {
     return {
       id: this.get('id'),
