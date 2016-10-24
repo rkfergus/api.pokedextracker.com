@@ -33,8 +33,7 @@ describe('capture model', () => {
         'central_kalos_id',
         'coastal_kalos_id',
         'mountain_kalos_id',
-        'regionless',
-        'icon_url'
+        'regionless'
       ]);
     });
 
