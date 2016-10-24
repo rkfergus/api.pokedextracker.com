@@ -8,14 +8,15 @@ const Errors     = require('../../../../src/libraries/errors');
 const Knex       = require('../../../../src/libraries/knex');
 const Pokemon    = require('../../../../src/models/pokemon');
 
-const firstPokemon  = Factory.build('pokemon', { national_id: 1 });
-const secondPokemon = Factory.build('pokemon', { national_id: 2 });
+const firstPokemon      = Factory.build('pokemon', { national_id: 1, generation: 1 });
+const secondPokemon     = Factory.build('pokemon', { national_id: 2, generation: 1 });
+const generationPokemon = Factory.build('pokemon', { national_id: 3, generation: 2 });
 
 const user      = Factory.build('user');
 const otherUser = Factory.build('user');
 
-const dex      = Factory.build('dex', { user_id: user.id });
-const otherDex = Factory.build('dex', { user_id: otherUser.id });
+const dex      = Factory.build('dex', { user_id: user.id, generation: 1 });
+const otherDex = Factory.build('dex', { user_id: otherUser.id, generation: 1 });
 
 const firstCapture = Factory.build('capture', { pokemon_id: firstPokemon.national_id, user_id: user.id, dex_id: dex.id });
 const otherCapture = Factory.build('capture', { pokemon_id: firstPokemon.national_id, user_id: otherUser.id, dex_id: otherDex.id });
@@ -62,6 +63,19 @@ describe('capture controller', () => {
         expect(captures[1].pokemon.national_id).to.eql(secondPokemon.national_id);
         expect(captures[1].dex_id).to.eql(dex.id);
         expect(captures[1].captured).to.be.false;
+      });
+    });
+
+    it('filters out pokemon that are not included in the dex\'s generation', () => {
+      return Knex('pokemon').insert(generationPokemon)
+      .then(() => new Pokemon().query((qb) => qb.orderBy('national_id')).fetchAll())
+      .get('models')
+      .then((pokemon) => Controller.list({ dex: dex.id }, pokemon))
+      .map((capture) => capture.serialize())
+      .map((capture) => capture.pokemon.national_id)
+      .then((captures) => {
+        expect(captures).to.have.length(2);
+        expect(captures).to.not.contain(generationPokemon.national_id);
       });
     });
 
