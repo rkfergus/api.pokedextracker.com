@@ -80,12 +80,14 @@ describe('user controller', () => {
   describe('create', () => {
 
     const request = { headers: {}, info: {} };
+    const username = 'test';
+    const password = 'test';
+    const title = 'Living Dex';
+    const shiny = false;
+    const generation = 6;
 
     it('saves a user with a hashed password', () => {
-      const username = 'test';
-      const password = 'test';
-
-      return Controller.create({ username, password }, request)
+      return Controller.create({ username, password, title, shiny, generation }, request)
       .then(() => new User().where('username', username).fetch())
       .then((user) => {
         expect(user.get('password')).to.not.eql(password);
@@ -94,9 +96,7 @@ describe('user controller', () => {
     });
 
     it('returns a session with a user token', () => {
-      const username = 'test';
-
-      return Controller.create({ username, password: 'test' }, request)
+      return Controller.create({ username, password, title, shiny, generation }, request)
       .then((session) => {
         expect(session.token).to.be.a('string');
 
@@ -107,9 +107,7 @@ describe('user controller', () => {
     });
 
     it('saves last login date', () => {
-      const username = 'test';
-
-      return Controller.create({ username, password: 'test' }, request)
+      return Controller.create({ username, password, title, shiny, generation }, request)
       .then(() => new User().where('username', username).fetch())
       .then((user) => {
         expect(user.get('last_login')).to.be.an.instanceof(Date);
@@ -117,10 +115,9 @@ describe('user controller', () => {
     });
 
     it('saves referrer', () => {
-      const username = 'test';
       const referrer = 'http://test.com';
 
-      return Controller.create({ username, password: 'test', referrer }, request)
+      return Controller.create({ username, password, referrer, title, shiny, generation }, request)
       .then(() => new User().where('username', username).fetch())
       .then((user) => {
         expect(user.get('referrer')).to.eql(referrer);
@@ -128,9 +125,7 @@ describe('user controller', () => {
     });
 
     it('saves a default dex', () => {
-      const username = 'test';
-
-      return Controller.create({ username, password: 'test' }, request)
+      return Controller.create({ username, password, title, shiny, generation }, request)
       .then(() => new User().where('username', username).fetch())
       .then((user) => new Dex().where('user_id', user.id).fetch())
       .then((dex) => {
@@ -141,9 +136,7 @@ describe('user controller', () => {
 
     it('rejects if the username is already taken', () => {
       return Knex('users').insert(firstUser)
-      .then(() => {
-        return Controller.create({ username: firstUser.username, password: 'test' }, request);
-      })
+      .then(() => Controller.create({ username: firstUser.username, password, title, shiny, generation }, request))
       .catch((err) => err)
       .then((err) => {
         expect(err).to.be.an.instanceof(Errors.ExistingUsername);
@@ -153,7 +146,7 @@ describe('user controller', () => {
     it('rejects if the username is taken after the fetch', () => {
       Sinon.stub(User.prototype, 'save').throws(new Error('duplicate key value'));
 
-      return Controller.create({ username: firstUser.username, password: 'test' }, request)
+      return Controller.create({ username: firstUser.username, password, title, shiny, generation }, request)
       .catch((err) => err)
       .then((err) => {
         expect(err).to.be.an.instanceof(Errors.ExistingUsername);
