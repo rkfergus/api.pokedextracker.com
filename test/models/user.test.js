@@ -11,10 +11,10 @@ describe('user model', () => {
 
   describe('virtuals', () => {
 
-    describe('jwt_summary', () => {
+    describe('summary', () => {
 
       it('only includes the fields needed for the JWT', () => {
-        expect(User.forge(user).get('jwt_summary')).to.have.all.keys([
+        expect(User.forge(user).get('summary')).to.have.all.keys([
           'id',
           'username',
           'friend_code',

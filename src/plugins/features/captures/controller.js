@@ -10,6 +10,8 @@ const Pokemon = require('../../../models/pokemon');
 const User    = require('../../../models/user');
 
 exports.list = function (query, pokemon) {
+  let dex;
+
   return Bluebird.resolve()
   .then(() => {
     if (query.user) {
@@ -20,6 +22,7 @@ exports.list = function (query, pokemon) {
     }
 
     return new Dex({ id: query.dex }).fetch({ require: true })
+    .then((d) => dex = d)
     .catch(Dex.NotFoundError, () => {
       throw new Errors.NotFound('dex');
     });
@@ -34,6 +37,10 @@ exports.list = function (query, pokemon) {
     return Bluebird.resolve(pokemon)
     .then((p) => new Array(p.length))
     .map((_, i) => {
+      if (dex && pokemon[i].get('generation') > dex.get('generation')) {
+        return null;
+      }
+
       if (captures[i + 1]) {
         return captures[i + 1];
       }
@@ -42,7 +49,8 @@ exports.list = function (query, pokemon) {
       capture.relations.pokemon = pokemon[i];
       return capture;
     });
-  });
+  })
+  .filter((capture) => capture);
 };
 
 exports.create = function (payload, auth) {

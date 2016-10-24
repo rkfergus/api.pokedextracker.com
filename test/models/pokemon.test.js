@@ -57,8 +57,7 @@ describe('pokemon model', () => {
           'central_kalos_id',
           'coastal_kalos_id',
           'mountain_kalos_id',
-          'regionless',
-          'icon_url'
+          'regionless'
         ]);
       });
 
@@ -82,11 +81,10 @@ describe('pokemon model', () => {
 
     describe('summary', () => {
 
-      it('only includes the national_id, name, and icon_url of the pokemon', () => {
+      it('only includes the national_id and name of the pokemon', () => {
         expect(Pokemon.forge().get('summary')).to.have.all.keys([
           'national_id',
-          'name',
-          'icon_url'
+          'name'
         ]);
       });
 
@@ -155,7 +153,6 @@ describe('pokemon model', () => {
           'coastal_kalos_id',
           'mountain_kalos_id',
           'regionless',
-          'icon_url',
           'bulbapedia_url',
           'serebii_url',
           'x_locations',
@@ -173,8 +170,7 @@ describe('pokemon model', () => {
         expect(json.evolution_family.pokemon[1]).to.have.length(1);
         expect(json.evolution_family.pokemon[0][0]).to.have.all.keys([
           'national_id',
-          'name',
-          'icon_url'
+          'name'
         ]);
         expect(json.evolution_family.evolutions).to.have.length(1);
         expect(json.evolution_family.evolutions[0]).to.have.length(1);

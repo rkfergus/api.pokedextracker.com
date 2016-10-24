@@ -34,8 +34,7 @@ module.exports = Bookshelf.model('Pokemon', Bookshelf.Model.extend({
         central_kalos_id: this.get('central_kalos_id') || undefined,
         coastal_kalos_id: this.get('coastal_kalos_id') || undefined,
         mountain_kalos_id: this.get('mountain_kalos_id') || undefined,
-        regionless: this.get('regionless') || undefined,
-        icon_url: this.get('icon_url')
+        regionless: this.get('regionless') || undefined
       };
     },
     serebii_url () {
@@ -44,8 +43,7 @@ module.exports = Bookshelf.model('Pokemon', Bookshelf.Model.extend({
     summary () {
       return {
         national_id: this.get('national_id'),
-        name: this.get('name'),
-        icon_url: this.get('icon_url')
+        name: this.get('name')
       };
     },
     types () {
@@ -113,7 +111,6 @@ module.exports = Bookshelf.model('Pokemon', Bookshelf.Model.extend({
         coastal_kalos_id: this.get('coastal_kalos_id') || undefined,
         mountain_kalos_id: this.get('mountain_kalos_id') || undefined,
         regionless: this.get('regionless') || undefined,
-        icon_url: this.get('icon_url'),
         bulbapedia_url: this.get('bulbapedia_url'),
         serebii_url: this.get('serebii_url'),
         x_locations: this.get('x_locations'),

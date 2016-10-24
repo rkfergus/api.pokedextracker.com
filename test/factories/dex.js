@@ -5,4 +5,4 @@ module.exports = Factory.define('dex')
   .attr('title', 'Test Living Dex')
   .attr('slug', 'test-living-dex')
   .attr('shiny', false)
-  .attr('generation', 6);
+  .attr('generation', 1);
