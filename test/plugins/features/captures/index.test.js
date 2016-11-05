@@ -18,7 +18,7 @@ const firstCapture = Factory.build('capture', { pokemon_id: firstPokemon.nationa
 
 const auth = `Bearer ${JWT.sign(user, Config.JWT_SECRET)}`;
 
-describe('capture integration', () => {
+describe('captures integration', () => {
 
   beforeEach(() => {
     return Bluebird.all([

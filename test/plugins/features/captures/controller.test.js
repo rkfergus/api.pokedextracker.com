@@ -21,7 +21,7 @@ const otherDex = Factory.build('dex', { user_id: otherUser.id, generation: 1 });
 const firstCapture = Factory.build('capture', { pokemon_id: firstPokemon.national_id, user_id: user.id, dex_id: dex.id });
 const otherCapture = Factory.build('capture', { pokemon_id: firstPokemon.national_id, user_id: otherUser.id, dex_id: otherDex.id });
 
-describe('capture controller', () => {
+describe('captures controller', () => {
 
   beforeEach(() => {
     return Bluebird.all([
