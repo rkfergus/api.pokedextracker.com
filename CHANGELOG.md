@@ -1,3 +1,11 @@
+### 1.16.0 (2016-11-5)
+
+##### New Features
+
+* **dexes:**
+  * add retrieve endpoint ([0bb48891](https://github.com/robinjoseph08/api.pokedextracker.com/commit/0bb48891ab557a9780dcba50b8700d266bae983d))
+  * add caught and total counts to dexes ([5e59a8da](https://github.com/robinjoseph08/api.pokedextracker.com/commit/5e59a8daa7dc9a634d3288ee39b3ccbde85089d0))
+
 ### 1.15.0 (2016-10-23)
 
 ##### Chores
