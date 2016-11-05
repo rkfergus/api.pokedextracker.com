@@ -10,7 +10,7 @@ const User   = require('../../../../src/models/user');
 const firstUser  = Factory.build('user');
 const secondUser = Factory.build('user');
 
-describe('user integration', () => {
+describe('users integration', () => {
 
   describe('list', () => {
 

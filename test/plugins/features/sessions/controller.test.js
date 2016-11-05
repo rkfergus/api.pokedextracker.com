@@ -8,7 +8,7 @@ const User       = require('../../../../src/models/user');
 
 const user = Factory.build('user', { password: Config.PASSWORD_HASH });
 
-describe('session controller', () => {
+describe('sessions controller', () => {
 
   describe('create', () => {
 

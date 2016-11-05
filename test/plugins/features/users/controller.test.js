@@ -13,7 +13,7 @@ const firstUser      = Factory.build('user');
 const secondUser     = Factory.build('user');
 const friendCodeUser = Factory.build('user', { friend_code: '0000-0000-0000' });
 
-describe('user controller', () => {
+describe('users controller', () => {
 
   describe('list', () => {
 
