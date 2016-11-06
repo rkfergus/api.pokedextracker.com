@@ -32,17 +32,21 @@ describe('user model', () => {
     it('returns the correct fields', () => {
       const model = User.forge(user);
       model.relations.dexes = [Dex.forge(dex), Dex.forge(dex)];
-      const json = model.serialize();
 
-      expect(json).to.have.all.keys([
-        'id',
-        'username',
-        'friend_code',
-        'dexes',
-        'date_created',
-        'date_modified'
-      ]);
-      expect(json.dexes).to.have.length(2);
+      return model.serialize()
+      .then((json) => {
+        expect(json).to.have.all.keys([
+          'id',
+          'username',
+          'friend_code',
+          'dexes',
+          'date_created',
+          'date_modified'
+        ]);
+        expect(json.dexes).to.have.length(2);
+        expect(json.dexes[0].id).to.eql(dex.id);
+        expect(json.dexes[1].id).to.eql(dex.id);
+      });
     });
 
   });
