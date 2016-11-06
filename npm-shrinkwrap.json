@@ -1,6 +1,6 @@
 {
   "name": "api.pokedextracker.com",
-  "version": "1.16.0",
+  "version": "1.16.1",
   "dependencies": {
     "abbrev": {
       "version": "1.0.7",
