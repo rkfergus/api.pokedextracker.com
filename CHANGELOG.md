@@ -1,3 +1,9 @@
+#### 1.16.1 (2016-11-5)
+
+##### Bug Fixes
+
+* **user:** wait for dexes to be serialized ([21bebb8f](https://github.com/robinjoseph08/api.pokedextracker.com/commit/21bebb8ff9d3a129a0bc0714b0c33461a73799ce))
+
 ### 1.16.0 (2016-11-5)
 
 ##### New Features
