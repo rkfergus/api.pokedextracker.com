@@ -1,14 +1,11 @@
 'use strict';
 
-const Bluebird = require('bluebird');
-
 const Knex = require('../src/libraries/knex');
 
 beforeEach(() => {
-  return Bluebird.all([
-    Knex.raw('TRUNCATE captures CASCADE'),
-    Knex.raw('TRUNCATE evolutions CASCADE'),
-    Knex.raw('TRUNCATE pokemon CASCADE'),
-    Knex.raw('TRUNCATE users CASCADE')
-  ]);
+  return Knex.raw('TRUNCATE users CASCADE')
+  .then(() => Knex.raw('TRUNCATE captures CASCADE'))
+  .then(() => Knex.raw('TRUNCATE dexes CASCADE'))
+  .then(() => Knex.raw('TRUNCATE evolutions CASCADE'))
+  .then(() => Knex.raw('TRUNCATE pokemon CASCADE'));
 });

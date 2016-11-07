@@ -168,6 +168,13 @@ describe('users create validator', () => {
       expect(result.error.details[0].type).to.eql('string.max');
     });
 
+    it('trims excess whitespace', () => {
+      const data = { username: 'testing', password: 'testtest', title: '   a   ' };
+      const result = Joi.validate(data, UsersCreateValidator);
+
+      expect(result.value.title).to.eql('a');
+    });
+
   });
 
   describe('shiny', () => {
