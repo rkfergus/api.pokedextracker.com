@@ -6,10 +6,28 @@ const CapturesCreateValidator = require('../../../src/validators/captures/create
 
 describe('captures create validator', () => {
 
+  describe('dex', () => {
+
+    it('is optional', () => {
+      const data = { pokemon: [1] };
+      const result = Joi.validate(data, CapturesCreateValidator);
+
+      expect(result.error).to.not.exist;
+    });
+
+    it('allows integers', () => {
+      const data = { dex: 1, pokemon: [1] };
+      const result = Joi.validate(data, CapturesCreateValidator);
+
+      expect(result.error).to.not.exist;
+    });
+
+  });
+
   describe('pokemon', () => {
 
     it('is required', () => {
-      const data = {};
+      const data = { dex: 1 };
       const result = Joi.validate(data, CapturesCreateValidator);
 
       expect(result.error.details[0].path).to.eql('pokemon');
@@ -17,7 +35,7 @@ describe('captures create validator', () => {
     });
 
     it('allows an array of integers', () => {
-      const data = { pokemon: [1] };
+      const data = { dex: 1, pokemon: [1] };
       const result = Joi.validate(data, CapturesCreateValidator);
 
       expect(result.error).to.not.exist;
@@ -25,7 +43,7 @@ describe('captures create validator', () => {
     });
 
     it('allows a single integer', () => {
-      const data = { pokemon: 1 };
+      const data = { dex: 1, pokemon: 1 };
       const result = Joi.validate(data, CapturesCreateValidator);
 
       expect(result.error).to.not.exist;
@@ -33,7 +51,7 @@ describe('captures create validator', () => {
     });
 
     it('disallows an array of strings', () => {
-      const data = { pokemon: ['test'] };
+      const data = { dex: 1, pokemon: ['test'] };
       const result = Joi.validate(data, CapturesCreateValidator);
 
       expect(result.error.details[0].path).to.eql('pokemon.0');

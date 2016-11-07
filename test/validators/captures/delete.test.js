@@ -6,6 +6,24 @@ const CapturesDeleteValidator = require('../../../src/validators/captures/delete
 
 describe('captures delete validator', () => {
 
+  describe('dex', () => {
+
+    it('is optional', () => {
+      const data = { pokemon: [1] };
+      const result = Joi.validate(data, CapturesDeleteValidator);
+
+      expect(result.error).to.not.exist;
+    });
+
+    it('allows integers', () => {
+      const data = { dex: 1, pokemon: [1] };
+      const result = Joi.validate(data, CapturesDeleteValidator);
+
+      expect(result.error).to.not.exist;
+    });
+
+  });
+
   describe('pokemon', () => {
 
     it('is required', () => {
