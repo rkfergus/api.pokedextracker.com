@@ -1,3 +1,13 @@
+### 1.17.0 (2016-11-6)
+
+##### Chores
+
+* **captures:** allow dex param for create and delete ([89dc0a96](https://github.com/robinjoseph08/api.pokedextracker.com/commit/89dc0a96fc4a114418d473de1a91197676de520d))
+
+##### New Features
+
+* **dexes:** add create, update, delete endpoints ([dc8a8c5f](https://github.com/robinjoseph08/api.pokedextracker.com/commit/dc8a8c5f418c69fcbbb93be8fa3d3e6102836131))
+
 #### 1.16.1 (2016-11-5)
 
 ##### Bug Fixes
