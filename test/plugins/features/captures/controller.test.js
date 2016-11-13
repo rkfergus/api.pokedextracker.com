@@ -99,8 +99,8 @@ describe('captures controller', () => {
 
   describe('create', () => {
 
-    it('creates a capture', () => {
-      return Controller.create({ pokemon: [secondPokemon.national_id] }, { id: user.id })
+    it('creates a capture with the specified dex', () => {
+      return Controller.create({ pokemon: [secondPokemon.national_id], dex: dex.id }, { id: user.id })
       .then((captures) => {
         expect(captures).to.have.length(1);
         expect(captures.at(0).get('pokemon_id')).to.eql(secondPokemon.national_id);
@@ -111,7 +111,23 @@ describe('captures controller', () => {
     });
 
     it('rejects with a bad pokemon id', () => {
-      return Controller.create({ pokemon: [-1] }, { id: user.id })
+      return Controller.create({ pokemon: [-1], dex: dex.id }, { id: user.id })
+      .catch((err) => err)
+      .then((err) => {
+        expect(err).to.be.an.instanceof(Errors.NotFound);
+      });
+    });
+
+    it('rejects when the user does not own the dex', () => {
+      return Controller.create({ pokemon: [secondPokemon.national_id], dex: otherDex.id }, { id: user.id })
+      .catch((err) => err)
+      .then((err) => {
+        expect(err).to.be.an.instanceof(Errors.ForbiddenAction);
+      });
+    });
+
+    it('rejects with a bad dex id', () => {
+      return Controller.create({ pokemon: [secondPokemon.national_id], dex: -1 }, { id: user.id })
       .catch((err) => err)
       .then((err) => {
         expect(err).to.be.an.instanceof(Errors.NotFound);
@@ -119,7 +135,7 @@ describe('captures controller', () => {
     });
 
     it('does not err for duplicate captures', () => {
-      return Controller.create({ pokemon: [firstPokemon.national_id] }, { id: user.id })
+      return Controller.create({ pokemon: [firstPokemon.national_id], dex: dex.id }, { id: user.id })
       .then((captures) => {
         expect(captures).to.have.length(1);
         expect(captures.at(0).get('pokemon_id')).to.eql(firstPokemon.national_id);
@@ -133,14 +149,30 @@ describe('captures controller', () => {
   describe('delete', () => {
 
     it('deletes a capture', () => {
-      return Controller.delete({ pokemon: [firstPokemon.national_id] }, { id: user.id })
+      return Controller.delete({ pokemon: [firstPokemon.national_id], dex: dex.id }, { id: user.id })
       .then((res) => {
         expect(res.deleted).to.be.true;
 
-        return new Capture().where({ pokemon_id: firstPokemon.national_id, user_id: user.id }).fetch();
+        return new Capture().where({ pokemon_id: firstPokemon.national_id, dex_id: dex.id }).fetch();
       })
       .then((capture) => {
         expect(capture).to.be.null;
+      });
+    });
+
+    it('rejects with a bad dex id', () => {
+      return Controller.delete({ pokemon: [firstPokemon.national_id], dex: -1 }, { id: user.id })
+      .catch((err) => err)
+      .then((err) => {
+        expect(err).to.be.an.instanceof(Errors.NotFound);
+      });
+    });
+
+    it('rejects when the user does not own the dex', () => {
+      return Controller.delete({ pokemon: [firstPokemon.national_id], dex: otherDex.id }, { id: user.id })
+      .catch((err) => err)
+      .then((err) => {
+        expect(err).to.be.an.instanceof(Errors.ForbiddenAction);
       });
     });
 

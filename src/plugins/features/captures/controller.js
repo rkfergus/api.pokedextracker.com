@@ -54,31 +54,55 @@ exports.list = function (query, pokemon) {
 };
 
 exports.create = function (payload, auth) {
-  let dexId;
-
   return Bluebird.all([
     new Pokemon().query((qb) => qb.whereIn('national_id', payload.pokemon)).fetchAll(),
-    new Dex().where('user_id', auth.id).fetch({ require: true })
+    new Dex({ id: payload.dex }).fetch({ require: true })
   ])
   .spread((pokemon, dex) => {
     if (pokemon.length !== payload.pokemon.length) {
       throw new Errors.NotFound('pokemon');
     }
 
-    dexId = dex.id;
+    if (dex.get('user_id') !== auth.id) {
+      throw new Errors.ForbiddenAction('marking captures for this dex');
+    }
 
     return payload.pokemon;
   })
   .map((pokemonId) => {
-    return Knex('captures').insert({ pokemon_id: pokemonId, user_id: auth.id, dex_id: dexId, captured: true })
+    return Knex('captures').insert({
+      pokemon_id: pokemonId,
+      user_id: auth.id,
+      dex_id: payload.dex,
+      captured: true
+    })
     .catch(Errors.DuplicateKey, () => {});
   })
-  .then(() => new Capture().query((qb) => qb.whereIn('pokemon_id', payload.pokemon).where('user_id', auth.id)).fetchAll({ withRelated: Capture.RELATED }));
+  .then(() => {
+    return new Capture().query((qb) => {
+      qb.whereIn('pokemon_id', payload.pokemon);
+      qb.where('dex_id', payload.dex);
+    }).fetchAll({ withRelated: Capture.RELATED });
+  })
+  .catch(Dex.NotFoundError, () => {
+    throw new Errors.NotFound('dex');
+  });
 };
 
 exports.delete = function (payload, auth) {
-  return new Capture().query((qb) => qb.whereIn('pokemon_id', payload.pokemon).where('user_id', auth.id)).destroy()
-  .then(() => {
-    return { deleted: true };
+  return new Dex({ id: payload.dex }).fetch({ require: true })
+  .then((dex) => {
+    if (dex.get('user_id') !== auth.id) {
+      throw new Errors.ForbiddenAction('deleting captures for this dex');
+    }
+
+    return new Capture().query((qb) => {
+      qb.whereIn('pokemon_id', payload.pokemon);
+      qb.where('user_id', payload.dex);
+    }).destroy();
+  })
+  .then(() => ({ deleted: true }))
+  .catch(Dex.NotFoundError, () => {
+    throw new Errors.NotFound('dex');
   });
 };
