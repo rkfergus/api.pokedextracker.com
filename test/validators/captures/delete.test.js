@@ -8,11 +8,12 @@ describe('captures delete validator', () => {
 
   describe('dex', () => {
 
-    it('is optional', () => {
+    it('is required', () => {
       const data = { pokemon: [1] };
       const result = Joi.validate(data, CapturesDeleteValidator);
 
-      expect(result.error).to.not.exist;
+      expect(result.error.details[0].path).to.eql('dex');
+      expect(result.error.details[0].type).to.eql('any.required');
     });
 
     it('allows integers', () => {
@@ -27,7 +28,7 @@ describe('captures delete validator', () => {
   describe('pokemon', () => {
 
     it('is required', () => {
-      const data = {};
+      const data = { dex: 1 };
       const result = Joi.validate(data, CapturesDeleteValidator);
 
       expect(result.error.details[0].path).to.eql('pokemon');
@@ -35,7 +36,7 @@ describe('captures delete validator', () => {
     });
 
     it('allows an array of integers', () => {
-      const data = { pokemon: [1] };
+      const data = { dex: 1, pokemon: [1] };
       const result = Joi.validate(data, CapturesDeleteValidator);
 
       expect(result.error).to.not.exist;
@@ -43,7 +44,7 @@ describe('captures delete validator', () => {
     });
 
     it('allows a single integer', () => {
-      const data = { pokemon: 1 };
+      const data = { dex: 1, pokemon: 1 };
       const result = Joi.validate(data, CapturesDeleteValidator);
 
       expect(result.error).to.not.exist;
@@ -51,7 +52,7 @@ describe('captures delete validator', () => {
     });
 
     it('disallows an array of strings', () => {
-      const data = { pokemon: ['test'] };
+      const data = { dex: 1, pokemon: ['test'] };
       const result = Joi.validate(data, CapturesDeleteValidator);
 
       expect(result.error.details[0].path).to.eql('pokemon.0');

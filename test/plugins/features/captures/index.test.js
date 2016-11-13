@@ -51,7 +51,7 @@ describe('captures integration', () => {
         method: 'POST',
         url: '/captures',
         headers: { authorization: auth },
-        payload: { pokemon: secondPokemon.national_id }
+        payload: { pokemon: secondPokemon.national_id, dex: dex.id }
       })
       .then((res) => {
         expect(res.statusCode).to.eql(200);
@@ -63,7 +63,7 @@ describe('captures integration', () => {
       return Server.inject({
         method: 'POST',
         url: '/captures',
-        payload: { pokemon: secondPokemon.national_id }
+        payload: { pokemon: secondPokemon.national_id, dex: dex.id }
       })
       .then((res) => {
         expect(res.statusCode).to.eql(401);
@@ -79,7 +79,7 @@ describe('captures integration', () => {
         method: 'DELETE',
         url: '/captures',
         headers: { authorization: auth },
-        payload: { pokemon: firstPokemon.national_id }
+        payload: { pokemon: firstPokemon.national_id, dex: dex.id }
       })
       .then((res) => {
         expect(res.statusCode).to.eql(200);
@@ -91,7 +91,7 @@ describe('captures integration', () => {
       return Server.inject({
         method: 'DELETE',
         url: '/captures',
-        payload: { pokemon: firstPokemon.national_id }
+        payload: { pokemon: firstPokemon.national_id, dex: dex.id }
       })
       .then((res) => {
         expect(res.statusCode).to.eql(401);

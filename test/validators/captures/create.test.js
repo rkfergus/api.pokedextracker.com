@@ -8,11 +8,12 @@ describe('captures create validator', () => {
 
   describe('dex', () => {
 
-    it('is optional', () => {
+    it('is required', () => {
       const data = { pokemon: [1] };
       const result = Joi.validate(data, CapturesCreateValidator);
 
-      expect(result.error).to.not.exist;
+      expect(result.error.details[0].path).to.eql('dex');
+      expect(result.error.details[0].type).to.eql('any.required');
     });
 
     it('allows integers', () => {
