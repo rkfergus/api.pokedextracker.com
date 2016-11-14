@@ -1,3 +1,13 @@
+### 1.18.0 (2016-11-13)
+
+##### New Features
+
+* **captures:** use the dex id that's passed in ([ca49aba1](https://github.com/robinjoseph08/api.pokedextracker.com/commit/ca49aba1f03e5bdb7308352a1b0030bc2037e6e7))
+
+##### Bug Fixes
+
+* **captures:** delete by dex_id instead of user_id ([b1ea7037](https://github.com/robinjoseph08/api.pokedextracker.com/commit/b1ea7037b2593aeca837dab4c999af678b2f27ab))
+
 ### 1.17.0 (2016-11-6)
 
 ##### Chores
