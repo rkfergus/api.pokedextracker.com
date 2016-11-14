@@ -98,7 +98,7 @@ exports.delete = function (payload, auth) {
 
     return new Capture().query((qb) => {
       qb.whereIn('pokemon_id', payload.pokemon);
-      qb.where('user_id', payload.dex);
+      qb.where('dex_id', payload.dex);
     }).destroy();
   })
   .then(() => ({ deleted: true }))
