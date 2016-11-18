@@ -2,7 +2,7 @@
 
 const CreateBoomError = require('create-boom-error').bind(exports);
 
-CreateBoomError('ExistingDex', 422, 'a dex with that URL already exists');
+CreateBoomError('ExistingDex', 422, 'a dex with that URL already exists, please try a different title');
 CreateBoomError('ExistingUsername', 422, 'username is already taken');
 CreateBoomError('ForbiddenAction', 403, (action) => `${action} is not allowed`);
 CreateBoomError('InvalidPassword', 422, 'password is invalid');

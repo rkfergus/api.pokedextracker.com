@@ -35,5 +35,5 @@ module.exports = Bookshelf.model('User', Bookshelf.Model.extend({
     });
   }
 }, {
-  RELATED: [{ dexes: (qb) => qb.orderBy('date_created', 'DESC') }]
+  RELATED: [{ dexes: (qb) => qb.orderBy('date_created', 'ASC') }]
 }));
