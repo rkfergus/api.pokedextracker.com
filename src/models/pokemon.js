@@ -33,8 +33,7 @@ module.exports = Bookshelf.model('Pokemon', Bookshelf.Model.extend({
         unova_id: this.get('unova_id') || undefined,
         central_kalos_id: this.get('central_kalos_id') || undefined,
         coastal_kalos_id: this.get('coastal_kalos_id') || undefined,
-        mountain_kalos_id: this.get('mountain_kalos_id') || undefined,
-        regionless: this.get('regionless') || undefined
+        mountain_kalos_id: this.get('mountain_kalos_id') || undefined
       };
     },
     serebii_url () {
@@ -46,20 +45,17 @@ module.exports = Bookshelf.model('Pokemon', Bookshelf.Model.extend({
         name: this.get('name')
       };
     },
-    types () {
-      return [this.get('type1'), this.get('type2')].filter((type) => type);
-    },
     x_locations () {
-      return this.get('x_location').split(', ');
+      return this.get('x_location') ? this.get('x_location').split(', ') : [];
     },
     y_locations () {
-      return this.get('y_location').split(', ');
+      return this.get('y_location') ? this.get('y_location').split(', ') : [];
     },
     or_locations () {
-      return this.get('or_location').split(', ');
+      return this.get('or_location') ? this.get('or_location').split(', ') : [];
     },
     as_locations () {
-      return this.get('as_location').split(', ');
+      return this.get('as_location') ? this.get('as_location').split(', ') : [];
     }
   },
   serialize () {
@@ -110,7 +106,6 @@ module.exports = Bookshelf.model('Pokemon', Bookshelf.Model.extend({
         central_kalos_id: this.get('central_kalos_id') || undefined,
         coastal_kalos_id: this.get('coastal_kalos_id') || undefined,
         mountain_kalos_id: this.get('mountain_kalos_id') || undefined,
-        regionless: this.get('regionless') || undefined,
         bulbapedia_url: this.get('bulbapedia_url'),
         serebii_url: this.get('serebii_url'),
         x_locations: this.get('x_locations'),
