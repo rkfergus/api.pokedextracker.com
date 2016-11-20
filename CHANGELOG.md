@@ -1,3 +1,13 @@
+#### 1.18.1 (2016-11-19)
+
+##### Chores
+
+* **pokemon:** remove unused columns ([d2d2c9ce](https://github.com/robinjoseph08/api.pokedextracker.com/commit/d2d2c9ce301fe16b8b53bfd11147da4326f5cea7))
+
+##### Bug Fixes
+
+* **dex:** small changes for dexes ([3f137ba9](https://github.com/robinjoseph08/api.pokedextracker.com/commit/3f137ba9e419a03920388dc92f3c5a58497c172f))
+
 ### 1.18.0 (2016-11-13)
 
 ##### New Features
