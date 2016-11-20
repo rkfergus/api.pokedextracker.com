@@ -2095,11 +2095,6 @@
       "from": "lcov-parse@0.0.6",
       "resolved": "https://registry.npmjs.org/lcov-parse/-/lcov-parse-0.0.6.tgz"
     },
-    "left-pad": {
-      "version": "1.1.1",
-      "from": "left-pad@latest",
-      "resolved": "https://registry.npmjs.org/left-pad/-/left-pad-1.1.1.tgz"
-    },
     "levn": {
       "version": "0.2.5",
       "from": "levn@>=0.2.5 <0.3.0",

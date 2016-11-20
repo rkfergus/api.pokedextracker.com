@@ -1,7 +1,5 @@
 'use strict';
 
-const Leftpad = require('left-pad');
-
 const Bookshelf = require('../libraries/bookshelf');
 const Evolution = require('./evolution');
 
@@ -19,13 +17,11 @@ module.exports = Bookshelf.model('Pokemon', Bookshelf.Model.extend({
     .get('models');
   },
   virtuals: {
-    bulbapedia_url () {
-      return `http://bulbapedia.bulbagarden.net/wiki/${encodeURIComponent(this.get('name'))}_(Pok%C3%A9mon)`;
-    },
     capture_summary () {
       return {
         national_id: this.get('national_id'),
         name: this.get('name'),
+        generation: this.get('generation'),
         kanto_id: this.get('kanto_id') || undefined,
         johto_id: this.get('johto_id') || undefined,
         hoenn_id: this.get('hoenn_id') || undefined,
@@ -35,9 +31,6 @@ module.exports = Bookshelf.model('Pokemon', Bookshelf.Model.extend({
         coastal_kalos_id: this.get('coastal_kalos_id') || undefined,
         mountain_kalos_id: this.get('mountain_kalos_id') || undefined
       };
-    },
-    serebii_url () {
-      return `http://www.serebii.net/pokedex-xy/${Leftpad(this.get('national_id'), 3, 0)}.shtml`;
     },
     summary () {
       return {
@@ -56,6 +49,12 @@ module.exports = Bookshelf.model('Pokemon', Bookshelf.Model.extend({
     },
     as_locations () {
       return this.get('as_location') ? this.get('as_location').split(', ') : [];
+    },
+    sun_locations () {
+      return this.get('sun_location') ? this.get('sun_location').split(', ') : [];
+    },
+    moon_locations () {
+      return this.get('moon_location') ? this.get('moon_location').split(', ') : [];
     }
   },
   serialize () {
@@ -98,6 +97,7 @@ module.exports = Bookshelf.model('Pokemon', Bookshelf.Model.extend({
       return {
         national_id: this.get('national_id'),
         name: this.get('name'),
+        generation: this.get('generation'),
         kanto_id: this.get('kanto_id') || undefined,
         johto_id: this.get('johto_id') || undefined,
         hoenn_id: this.get('hoenn_id') || undefined,
@@ -106,12 +106,12 @@ module.exports = Bookshelf.model('Pokemon', Bookshelf.Model.extend({
         central_kalos_id: this.get('central_kalos_id') || undefined,
         coastal_kalos_id: this.get('coastal_kalos_id') || undefined,
         mountain_kalos_id: this.get('mountain_kalos_id') || undefined,
-        bulbapedia_url: this.get('bulbapedia_url'),
-        serebii_url: this.get('serebii_url'),
         x_locations: this.get('x_locations'),
         y_locations: this.get('y_locations'),
         or_locations: this.get('or_locations'),
         as_locations: this.get('as_locations'),
+        sun_locations: this.get('sun_locations'),
+        moon_locations: this.get('moon_locations'),
         evolution_family: family
       };
     });

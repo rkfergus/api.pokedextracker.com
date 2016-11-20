@@ -25,6 +25,7 @@ describe('capture model', () => {
       expect(json.pokemon).to.have.all.keys([
         'national_id',
         'name',
+        'generation',
         'kanto_id',
         'johto_id',
         'hoenn_id',

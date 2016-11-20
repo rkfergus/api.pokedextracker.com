@@ -35,20 +35,13 @@ describe('pokemon model', () => {
 
   describe('virtuals', () => {
 
-    describe('bulbapedia_url', () => {
-
-      it('URL-encodes the name in the Bulbapedia link', () => {
-        expect(Pokemon.forge({ name: 'Pokémon' }).get('bulbapedia_url')).to.eql('http://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_(Pok%C3%A9mon)');
-      });
-
-    });
-
     describe('capture_summary', () => {
 
       it('only includes the fields needed for the tracker view', () => {
         expect(Pokemon.forge().get('capture_summary')).to.have.all.keys([
           'national_id',
           'name',
+          'generation',
           'kanto_id',
           'johto_id',
           'hoenn_id',
@@ -58,22 +51,6 @@ describe('pokemon model', () => {
           'coastal_kalos_id',
           'mountain_kalos_id'
         ]);
-      });
-
-    });
-
-    describe('serebii_url', () => {
-
-      it('gets the Serebii link of a Pokemon with a single digit National Id', () => {
-        expect(Pokemon.forge({ national_id: '6' }).get('serebii_url')).to.eql('http://www.serebii.net/pokedex-xy/006.shtml');
-      });
-
-      it('gets the Serebii link of a Pokemon with a two digit National Id', () => {
-        expect(Pokemon.forge({ national_id: '25' }).get('serebii_url')).to.eql('http://www.serebii.net/pokedex-xy/025.shtml');
-      });
-
-      it('gets the Serebii link of a Pokemon with a three digit National Id', () => {
-        expect(Pokemon.forge({ national_id: '254' }).get('serebii_url')).to.eql('http://www.serebii.net/pokedex-xy/254.shtml');
       });
 
     });
@@ -137,6 +114,30 @@ describe('pokemon model', () => {
 
     });
 
+    describe('sun_locations', () => {
+
+      it('splits by commas', () => {
+        expect(Pokemon.forge({ sun_location: 'Route 1, Route 2' }).get('sun_locations')).to.eql(['Route 1', 'Route 2']);
+      });
+
+      it('returns an empty array if the value does not exist', () => {
+        expect(Pokemon.forge({ sun_location: null }).get('sun_locations')).to.eql([]);
+      });
+
+    });
+
+    describe('moon_locations', () => {
+
+      it('splits by commas', () => {
+        expect(Pokemon.forge({ moon_location: 'Route 1, Route 2' }).get('moon_locations')).to.eql(['Route 1', 'Route 2']);
+      });
+
+      it('returns an empty array if the value does not exist', () => {
+        expect(Pokemon.forge({ moon_location: null }).get('moon_locations')).to.eql([]);
+      });
+
+    });
+
   });
 
   describe('serialize', () => {
@@ -147,6 +148,7 @@ describe('pokemon model', () => {
         expect(json).to.have.all.keys([
           'national_id',
           'name',
+          'generation',
           'kanto_id',
           'johto_id',
           'hoenn_id',
@@ -155,12 +157,12 @@ describe('pokemon model', () => {
           'central_kalos_id',
           'coastal_kalos_id',
           'mountain_kalos_id',
-          'bulbapedia_url',
-          'serebii_url',
           'x_locations',
           'y_locations',
           'or_locations',
           'as_locations',
+          'sun_locations',
+          'moon_locations',
           'evolution_family'
         ]);
         expect(json.evolution_family).to.have.all.keys([
