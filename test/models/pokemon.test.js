@@ -56,8 +56,7 @@ describe('pokemon model', () => {
           'unova_id',
           'central_kalos_id',
           'coastal_kalos_id',
-          'mountain_kalos_id',
-          'regionless'
+          'mountain_kalos_id'
         ]);
       });
 
@@ -90,22 +89,14 @@ describe('pokemon model', () => {
 
     });
 
-    describe('types', () => {
-
-      it('returns an array of types', () => {
-        expect(Pokemon.forge({ type1: 'fire', type2: 'water' }).get('types')).to.eql(['fire', 'water']);
-      });
-
-      it('doesn\'t include the second type if it does exist', () => {
-        expect(Pokemon.forge({ type1: 'fire' }).get('types')).to.eql(['fire']);
-      });
-
-    });
-
     describe('x_locations', () => {
 
       it('splits by commas', () => {
         expect(Pokemon.forge({ x_location: 'Route 1, Route 2' }).get('x_locations')).to.eql(['Route 1', 'Route 2']);
+      });
+
+      it('returns an empty array if the value does not exist', () => {
+        expect(Pokemon.forge({ x_location: null }).get('x_locations')).to.eql([]);
       });
 
     });
@@ -116,6 +107,10 @@ describe('pokemon model', () => {
         expect(Pokemon.forge({ y_location: 'Route 1, Route 2' }).get('y_locations')).to.eql(['Route 1', 'Route 2']);
       });
 
+      it('returns an empty array if the value does not exist', () => {
+        expect(Pokemon.forge({ y_location: null }).get('y_locations')).to.eql([]);
+      });
+
     });
 
     describe('or_locations', () => {
@@ -124,12 +119,20 @@ describe('pokemon model', () => {
         expect(Pokemon.forge({ or_location: 'Route 1, Route 2' }).get('or_locations')).to.eql(['Route 1', 'Route 2']);
       });
 
+      it('returns an empty array if the value does not exist', () => {
+        expect(Pokemon.forge({ or_location: null }).get('or_locations')).to.eql([]);
+      });
+
     });
 
     describe('as_locations', () => {
 
       it('splits by commas', () => {
         expect(Pokemon.forge({ as_location: 'Route 1, Route 2' }).get('as_locations')).to.eql(['Route 1', 'Route 2']);
+      });
+
+      it('returns an empty array if the value does not exist', () => {
+        expect(Pokemon.forge({ as_location: null }).get('as_locations')).to.eql([]);
       });
 
     });
@@ -152,7 +155,6 @@ describe('pokemon model', () => {
           'central_kalos_id',
           'coastal_kalos_id',
           'mountain_kalos_id',
-          'regionless',
           'bulbapedia_url',
           'serebii_url',
           'x_locations',

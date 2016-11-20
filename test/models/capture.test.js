@@ -32,8 +32,7 @@ describe('capture model', () => {
         'unova_id',
         'central_kalos_id',
         'coastal_kalos_id',
-        'mountain_kalos_id',
-        'regionless'
+        'mountain_kalos_id'
       ]);
     });
 
