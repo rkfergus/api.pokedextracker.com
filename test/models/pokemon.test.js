@@ -49,7 +49,8 @@ describe('pokemon model', () => {
           'unova_id',
           'central_kalos_id',
           'coastal_kalos_id',
-          'mountain_kalos_id'
+          'mountain_kalos_id',
+          'alola_id'
         ]);
       });
 
@@ -157,6 +158,7 @@ describe('pokemon model', () => {
           'central_kalos_id',
           'coastal_kalos_id',
           'mountain_kalos_id',
+          'alola_id',
           'x_locations',
           'y_locations',
           'or_locations',

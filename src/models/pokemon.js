@@ -29,7 +29,8 @@ module.exports = Bookshelf.model('Pokemon', Bookshelf.Model.extend({
         unova_id: this.get('unova_id') || undefined,
         central_kalos_id: this.get('central_kalos_id') || undefined,
         coastal_kalos_id: this.get('coastal_kalos_id') || undefined,
-        mountain_kalos_id: this.get('mountain_kalos_id') || undefined
+        mountain_kalos_id: this.get('mountain_kalos_id') || undefined,
+        alola_id: this.get('alola_id') || undefined
       };
     },
     summary () {
@@ -106,6 +107,7 @@ module.exports = Bookshelf.model('Pokemon', Bookshelf.Model.extend({
         central_kalos_id: this.get('central_kalos_id') || undefined,
         coastal_kalos_id: this.get('coastal_kalos_id') || undefined,
         mountain_kalos_id: this.get('mountain_kalos_id') || undefined,
+        alola_id: this.get('alola_id') || undefined,
         x_locations: this.get('x_locations'),
         y_locations: this.get('y_locations'),
         or_locations: this.get('or_locations'),
