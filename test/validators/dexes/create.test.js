@@ -55,30 +55,30 @@ describe('dexes create validator', () => {
       expect(result.error.details[0].type).to.eql('any.required');
     });
 
-    it('allows at least 1', () => {
-      const data = { title: 'Test', shiny: false, generation: 1 };
-      const result = Joi.validate(data, DexesCreateValidator);
-
-      expect(result.error).to.not.exist;
-    });
-
-    it('allows at most 6', () => {
+    it('allows at least 6', () => {
       const data = { title: 'Test', shiny: false, generation: 6 };
       const result = Joi.validate(data, DexesCreateValidator);
 
       expect(result.error).to.not.exist;
     });
 
-    it('disallows less than 1', () => {
-      const data = { title: 'Test', shiny: false, generation: 0 };
+    it('allows at most 7', () => {
+      const data = { title: 'Test', shiny: false, generation: 7 };
+      const result = Joi.validate(data, DexesCreateValidator);
+
+      expect(result.error).to.not.exist;
+    });
+
+    it('disallows less than 6', () => {
+      const data = { title: 'Test', shiny: false, generation: 5 };
       const result = Joi.validate(data, DexesCreateValidator);
 
       expect(result.error.details[0].path).to.eql('generation');
       expect(result.error.details[0].type).to.eql('number.min');
     });
 
-    it('disallows more than 6', () => {
-      const data = { title: 'Test', shiny: false, generation: 7 };
+    it('disallows more than 7', () => {
+      const data = { title: 'Test', shiny: false, generation: 8 };
       const result = Joi.validate(data, DexesCreateValidator);
 
       expect(result.error.details[0].path).to.eql('generation');
