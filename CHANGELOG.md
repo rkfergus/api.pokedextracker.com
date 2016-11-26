@@ -1,3 +1,12 @@
+### 1.19.0 (2016-11-26)
+
+##### New Features
+
+* **dexes:** add gen 7 capabilities ([ab7b1dfc](https://github.com/robinjoseph08/api.pokedextracker.com/commit/ab7b1dfc07a636d337db7ad9982c7cd8a9d0b271))
+* **pokemon:**
+  * add alola_id to pokemon ([ebe802d4](https://github.com/robinjoseph08/api.pokedextracker.com/commit/ebe802d4f8b5a714d77393f6875bd63fdd6d4517))
+  * remove urls and add sun and moon locations ([b70c825c](https://github.com/robinjoseph08/api.pokedextracker.com/commit/b70c825ce9309983dea69156a5bad80a1121938d))
+
 #### 1.18.1 (2016-11-19)
 
 ##### Chores
