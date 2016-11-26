@@ -3,8 +3,10 @@
 const Bluebird = require('bluebird');
 const Slug     = require('slug');
 
-const Dex    = require('../../../models/dex');
-const Errors = require('../../../libraries/errors');
+const Capture = require('../../../models/capture');
+const Dex     = require('../../../models/dex');
+const Errors  = require('../../../libraries/errors');
+const Knex    = require('../../../libraries/knex');
 
 exports.retrieve = function (params) {
   return new Dex().query((qb) => {
@@ -55,9 +57,25 @@ exports.update = function (params, payload, auth) {
       payload.slug = Slug(payload.title, { lower: true });
     }
 
-    return dex.save(payload, { patch: true });
+    let captures;
+
+    if (payload.generation) {
+      captures = new Capture().query((qb) => {
+        qb.where('dex_id', dex.get('id'));
+        qb.whereIn('pokemon_id', function () {
+          this.select('national_id').from('pokemon').where('generation', '>', payload.generation);
+        });
+      });
+    }
+
+    return Knex.transaction((transacting) => {
+      return Bluebird.all([
+        dex.save(payload, { patch: true, transacting }),
+        captures && captures.destroy({ transacting })
+      ]);
+    });
   })
-  .then((dex) => dex.refresh())
+  .spread((dex) => dex.refresh())
   .catch(Dex.NotFoundError, () => {
     throw new Errors.NotFound('dex');
   })

@@ -25,6 +25,7 @@ describe('capture model', () => {
       expect(json.pokemon).to.have.all.keys([
         'national_id',
         'name',
+        'generation',
         'kanto_id',
         'johto_id',
         'hoenn_id',
@@ -32,7 +33,8 @@ describe('capture model', () => {
         'unova_id',
         'central_kalos_id',
         'coastal_kalos_id',
-        'mountain_kalos_id'
+        'mountain_kalos_id',
+        'alola_id'
       ]);
     });
 

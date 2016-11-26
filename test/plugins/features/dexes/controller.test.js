@@ -2,6 +2,7 @@
 
 const Sinon = require('sinon');
 
+const Capture    = require('../../../../src/models/capture');
 const Controller = require('../../../../src/plugins/features/dexes/controller');
 const Dex        = require('../../../../src/models/dex');
 const Errors     = require('../../../../src/libraries/errors');
@@ -10,8 +11,14 @@ const Knex       = require('../../../../src/libraries/knex');
 const firstUser  = Factory.build('user');
 const secondUser = Factory.build('user');
 
-const firstDex  = Factory.build('dex', { user_id: firstUser.id });
+const firstDex  = Factory.build('dex', { user_id: firstUser.id, generation: 7 });
 const secondDex = Factory.build('dex', { user_id: firstUser.id, title: 'Another', slug: 'another' });
+
+const oldGenPokemon = Factory.build('pokemon', { national_id: 1, generation: firstDex.generation - 1 });
+const newGenPokemon = Factory.build('pokemon', { national_id: 2, generation: firstDex.generation });
+
+const oldGenCapture = Factory.build('capture', { pokemon_id: oldGenPokemon.national_id, dex_id: firstDex.id, user_id: firstUser.id });
+const newGenCapture = Factory.build('capture', { pokemon_id: newGenPokemon.national_id, dex_id: firstDex.id, user_id: firstUser.id });
 
 describe('dexes controller', () => {
 
@@ -107,10 +114,13 @@ describe('dexes controller', () => {
     const secondParams = { username: secondUser.username, slug: 'other' };
     const title = 'Test';
     const shiny = true;
+    const generation = oldGenPokemon.generation;
 
     beforeEach(() => {
       return Knex('users').insert([firstUser, secondUser])
-      .then(() => Knex('dexes').insert([firstDex, secondDex]));
+      .then(() => Knex('pokemon').insert([oldGenPokemon, newGenPokemon]))
+      .then(() => Knex('dexes').insert([firstDex, secondDex]))
+      .then(() => Knex('captures').insert([oldGenCapture, newGenCapture]));
     });
 
     it('updates a dex', () => {
@@ -127,6 +137,15 @@ describe('dexes controller', () => {
       .then((dex) => {
         expect(dex.get('title')).to.eql(title);
         expect(dex.get('slug')).to.eql('test');
+      });
+    });
+
+    it('clears out newer generation captures if generation is being updated', () => {
+      return Controller.update(firstParams, { generation }, firstUser)
+      .then((dex) => new Capture().where('dex_id', dex.get('id')).fetchAll({ withRelated: 'pokemon' }))
+      .then((captures) => {
+        expect(captures).to.have.length(1);
+        expect(captures.at(0).related('pokemon').get('generation')).to.eql(generation);
       });
     });
 

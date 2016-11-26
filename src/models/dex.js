@@ -4,12 +4,8 @@ const Bookshelf = require('../libraries/bookshelf');
 const Knex      = require('../libraries/knex');
 
 const TOTALS = {
-  1: 151,
-  2: 251,
-  3: 386,
-  4: 493,
-  5: 649,
-  6: 721
+  6: 721,
+  7: 802
 };
 
 module.exports = Bookshelf.model('Dex', Bookshelf.Model.extend({
