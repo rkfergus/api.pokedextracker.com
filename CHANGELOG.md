@@ -1,3 +1,9 @@
+### 1.20.0 (2016-12-2)
+
+##### New Features
+
+* **dexes:** add region to dexes ([f20c1d37](https://github.com/robinjoseph08/api.pokedextracker.com/commit/f20c1d375a154c0082c808ae4110e5eb02e64f3a))
+
 ### 1.19.0 (2016-11-26)
 
 ##### New Features
