@@ -9,7 +9,7 @@ describe('dexes create validator', () => {
   describe('title', () => {
 
     it('is required', () => {
-      const data = { shiny: false, generation: 6 };
+      const data = { shiny: false, generation: 6, region: 'national' };
       const result = Joi.validate(data, DexesCreateValidator);
 
       expect(result.error.details[0].path).to.eql('title');
@@ -17,7 +17,7 @@ describe('dexes create validator', () => {
     });
 
     it('limits to 300 characters', () => {
-      const data = { title: 'a'.repeat(301), shiny: false, generation: 6 };
+      const data = { title: 'a'.repeat(301), shiny: false, generation: 6, region: 'national' };
       const result = Joi.validate(data, DexesCreateValidator);
 
       expect(result.error.details[0].path).to.eql('title');
@@ -25,7 +25,7 @@ describe('dexes create validator', () => {
     });
 
     it('trims excess whitespace', () => {
-      const data = { title: '   a   ', shiny: false, generation: 6 };
+      const data = { title: '   a   ', shiny: false, generation: 6, region: 'national' };
       const result = Joi.validate(data, DexesCreateValidator);
 
       expect(result.value.title).to.eql('a');
@@ -36,7 +36,7 @@ describe('dexes create validator', () => {
   describe('shiny', () => {
 
     it('is required', () => {
-      const data = { title: 'Test', generation: 6 };
+      const data = { title: 'Test', generation: 6, region: 'national' };
       const result = Joi.validate(data, DexesCreateValidator);
 
       expect(result.error.details[0].path).to.eql('shiny');
@@ -48,7 +48,7 @@ describe('dexes create validator', () => {
   describe('generation', () => {
 
     it('is required', () => {
-      const data = { title: 'Test', shiny: false };
+      const data = { title: 'Test', shiny: false, region: 'national' };
       const result = Joi.validate(data, DexesCreateValidator);
 
       expect(result.error.details[0].path).to.eql('generation');
@@ -56,21 +56,21 @@ describe('dexes create validator', () => {
     });
 
     it('allows at least 6', () => {
-      const data = { title: 'Test', shiny: false, generation: 6 };
+      const data = { title: 'Test', shiny: false, generation: 6, region: 'national' };
       const result = Joi.validate(data, DexesCreateValidator);
 
       expect(result.error).to.not.exist;
     });
 
     it('allows at most 7', () => {
-      const data = { title: 'Test', shiny: false, generation: 7 };
+      const data = { title: 'Test', shiny: false, generation: 7, region: 'national' };
       const result = Joi.validate(data, DexesCreateValidator);
 
       expect(result.error).to.not.exist;
     });
 
     it('disallows less than 6', () => {
-      const data = { title: 'Test', shiny: false, generation: 5 };
+      const data = { title: 'Test', shiny: false, generation: 5, region: 'national' };
       const result = Joi.validate(data, DexesCreateValidator);
 
       expect(result.error.details[0].path).to.eql('generation');
@@ -78,11 +78,45 @@ describe('dexes create validator', () => {
     });
 
     it('disallows more than 7', () => {
-      const data = { title: 'Test', shiny: false, generation: 8 };
+      const data = { title: 'Test', shiny: false, generation: 8, region: 'national' };
       const result = Joi.validate(data, DexesCreateValidator);
 
       expect(result.error.details[0].path).to.eql('generation');
       expect(result.error.details[0].type).to.eql('number.max');
+    });
+
+  });
+
+  describe('region', () => {
+
+    it('is required', () => {
+      const data = { title: 'Test', shiny: false, generation: 6 };
+      const result = Joi.validate(data, DexesCreateValidator);
+
+      expect(result.error.details[0].path).to.eql('region');
+      expect(result.error.details[0].type).to.eql('any.required');
+    });
+
+    it('allows national', () => {
+      const data = { title: 'Test', shiny: false, generation: 6, region: 'national' };
+      const result = Joi.validate(data, DexesCreateValidator);
+
+      expect(result.error).to.not.exist;
+    });
+
+    it('allows alola', () => {
+      const data = { title: 'Test', shiny: false, generation: 6, region: 'alola' };
+      const result = Joi.validate(data, DexesCreateValidator);
+
+      expect(result.error).to.not.exist;
+    });
+
+    it('disallows other regions', () => {
+      const data = { title: 'Test', shiny: false, generation: 6, region: 'kalos' };
+      const result = Joi.validate(data, DexesCreateValidator);
+
+      expect(result.error.details[0].path).to.eql('region');
+      expect(result.error.details[0].type).to.eql('any.allowOnly');
     });
 
   });

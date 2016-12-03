@@ -59,11 +59,17 @@ exports.update = function (params, payload, auth) {
 
     let captures;
 
-    if (payload.generation) {
+    if (payload.generation || payload.region) {
       captures = new Capture().query((qb) => {
         qb.where('dex_id', dex.get('id'));
         qb.whereIn('pokemon_id', function () {
-          this.select('national_id').from('pokemon').where('generation', '>', payload.generation);
+          this.select('national_id').from('pokemon');
+          if (payload.generation) {
+            this.where('generation', '>', payload.generation);
+          }
+          if (payload.region) {
+            this.orWhereNull(`${payload.region}_id`);
+          }
         });
       });
     }

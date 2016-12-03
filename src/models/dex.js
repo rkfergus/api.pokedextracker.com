@@ -4,8 +4,15 @@ const Bookshelf = require('../libraries/bookshelf');
 const Knex      = require('../libraries/knex');
 
 const TOTALS = {
-  6: 721,
-  7: 802
+  6: {
+    national: 721,
+    kalos: 457,
+    hoenn: 211
+  },
+  7: {
+    national: 802,
+    alola: 302
+  }
 };
 
 module.exports = Bookshelf.model('Dex', Bookshelf.Model.extend({
@@ -17,7 +24,7 @@ module.exports = Bookshelf.model('Dex', Bookshelf.Model.extend({
   },
   virtuals: {
     total () {
-      return TOTALS[this.get('generation')];
+      return TOTALS[this.get('generation')][this.get('region')];
     }
   },
   serialize () {
@@ -30,6 +37,7 @@ module.exports = Bookshelf.model('Dex', Bookshelf.Model.extend({
         slug: this.get('slug'),
         shiny: this.get('shiny'),
         generation: this.get('generation'),
+        region: this.get('region'),
         caught,
         total: this.get('total'),
         date_created: this.get('date_created'),

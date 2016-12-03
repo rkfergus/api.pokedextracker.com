@@ -41,8 +41,8 @@ describe('dex model', () => {
 
     describe('total', () => {
 
-      it('gets the total pokemon in a generation', () => {
-        expect(Dex.forge({ generation: 6 }).get('total')).to.eql(721);
+      it('gets the total pokemon in a generation and region', () => {
+        expect(Dex.forge({ generation: 6, region: 'national' }).get('total')).to.eql(721);
       });
 
     });
@@ -61,6 +61,7 @@ describe('dex model', () => {
           'slug',
           'shiny',
           'generation',
+          'region',
           'caught',
           'total',
           'date_created',

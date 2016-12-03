@@ -14,11 +14,13 @@ const secondUser = Factory.build('user');
 const firstDex  = Factory.build('dex', { user_id: firstUser.id, generation: 7 });
 const secondDex = Factory.build('dex', { user_id: firstUser.id, title: 'Another', slug: 'another' });
 
-const oldGenPokemon = Factory.build('pokemon', { national_id: 1, generation: firstDex.generation - 1 });
-const newGenPokemon = Factory.build('pokemon', { national_id: 2, generation: firstDex.generation });
+const oldGenPokemon      = Factory.build('pokemon', { national_id: 1, generation: firstDex.generation - 1, alola_id: 1 });
+const newGenPokemon      = Factory.build('pokemon', { national_id: 2, generation: firstDex.generation, alola_id: 2 });
+const otherRegionPokemon = Factory.build('pokemon', { national_id: 3, generation: firstDex.generation - 1, hoenn_id: 1 });
 
-const oldGenCapture = Factory.build('capture', { pokemon_id: oldGenPokemon.national_id, dex_id: firstDex.id, user_id: firstUser.id });
-const newGenCapture = Factory.build('capture', { pokemon_id: newGenPokemon.national_id, dex_id: firstDex.id, user_id: firstUser.id });
+const oldGenCapture      = Factory.build('capture', { pokemon_id: oldGenPokemon.national_id, dex_id: firstDex.id, user_id: firstUser.id });
+const newGenCapture      = Factory.build('capture', { pokemon_id: newGenPokemon.national_id, dex_id: firstDex.id, user_id: firstUser.id });
+const otherRegionCapture = Factory.build('capture', { pokemon_id: otherRegionPokemon.national_id, dex_id: firstDex.id, user_id: firstUser.id });
 
 describe('dexes controller', () => {
 
@@ -61,23 +63,25 @@ describe('dexes controller', () => {
     const title = 'Test';
     const shiny = false;
     const generation = 6;
+    const region = 'national';
 
     beforeEach(() => {
       return Knex('users').insert(firstUser);
     });
 
     it('saves a dex', () => {
-      return Controller.create(firstParams, { title, shiny, generation }, firstUser)
+      return Controller.create(firstParams, { title, shiny, generation, region }, firstUser)
       .then((dex) => new Dex({ id: dex.get('id') }).fetch())
       .then((dex) => {
         expect(dex.get('title')).to.eql(title);
         expect(dex.get('shiny')).to.eql(shiny);
         expect(dex.get('generation')).to.eql(generation);
+        expect(dex.get('region')).to.eql(region);
       });
     });
 
     it('rejects if trying to create a dex for another user', () => {
-      return Controller.create(secondParams, { title, shiny, generation }, firstUser)
+      return Controller.create(secondParams, { title, shiny, generation, region }, firstUser)
       .catch((err) => err)
       .then((err) => {
         expect(err).to.be.an.instanceof(Errors.ForbiddenAction);
@@ -86,17 +90,17 @@ describe('dexes controller', () => {
 
     it('rejects if the title is already taken by the user', () => {
       return Knex('dexes').insert(firstDex)
-      .then(() => Controller.create(firstParams, { title: firstDex.title, shiny, generation }, firstUser))
+      .then(() => Controller.create(firstParams, { title: firstDex.title, shiny, generation, region }, firstUser))
       .catch((err) => err)
       .then((err) => {
         expect(err).to.be.an.instanceof(Errors.ExistingDex);
       });
     });
 
-    it('rejects if the username is taken after the fetch', () => {
+    it('rejects if the slug is taken after the fetch', () => {
       Sinon.stub(Dex.prototype, 'save').throws(new Error('duplicate key value'));
 
-      return Controller.create(firstParams, { title, shiny, generation }, firstUser)
+      return Controller.create(firstParams, { title, shiny, generation, region }, firstUser)
       .catch((err) => err)
       .then((err) => {
         expect(err).to.be.an.instanceof(Errors.ExistingDex);
@@ -115,12 +119,13 @@ describe('dexes controller', () => {
     const title = 'Test';
     const shiny = true;
     const generation = oldGenPokemon.generation;
+    const region = 'alola';
 
     beforeEach(() => {
       return Knex('users').insert([firstUser, secondUser])
-      .then(() => Knex('pokemon').insert([oldGenPokemon, newGenPokemon]))
+      .then(() => Knex('pokemon').insert([oldGenPokemon, newGenPokemon, otherRegionPokemon]))
       .then(() => Knex('dexes').insert([firstDex, secondDex]))
-      .then(() => Knex('captures').insert([oldGenCapture, newGenCapture]));
+      .then(() => Knex('captures').insert([oldGenCapture, newGenCapture, otherRegionCapture]));
     });
 
     it('updates a dex', () => {
@@ -144,8 +149,33 @@ describe('dexes controller', () => {
       return Controller.update(firstParams, { generation }, firstUser)
       .then((dex) => new Capture().where('dex_id', dex.get('id')).fetchAll({ withRelated: 'pokemon' }))
       .then((captures) => {
+        expect(captures).to.have.length(2);
+        captures.each((capture) => {
+          expect(capture.related('pokemon').get('generation')).to.eql(generation);
+        });
+      });
+    });
+
+    it('clears out captures outside of the region if region is being updated', () => {
+      return Controller.update(firstParams, { region }, firstUser)
+      .then((dex) => new Capture().where('dex_id', dex.get('id')).fetchAll({ withRelated: 'pokemon' }))
+      .then((captures) => {
+        expect(captures).to.have.length(2);
+        captures.each((capture) => {
+          expect(capture.related('pokemon').get(`${region}_id`)).to.exist;
+        });
+      });
+    });
+
+    it('clears out captures outside of the region and are of a newer generation if region and generation is being updated', () => {
+      return Controller.update(firstParams, { generation, region }, firstUser)
+      .then((dex) => new Capture().where('dex_id', dex.get('id')).fetchAll({ withRelated: 'pokemon' }))
+      .then((captures) => {
         expect(captures).to.have.length(1);
-        expect(captures.at(0).related('pokemon').get('generation')).to.eql(generation);
+        captures.each((capture) => {
+          expect(capture.related('pokemon').get('generation')).to.eql(generation);
+          expect(capture.related('pokemon').get(`${region}_id`)).to.exist;
+        });
       });
     });
 

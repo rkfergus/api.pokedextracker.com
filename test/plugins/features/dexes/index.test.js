@@ -47,7 +47,8 @@ describe('dexes integration', () => {
         payload: {
           title: 'Testing',
           shiny: false,
-          generation: 6
+          generation: 6,
+          region: 'national'
         }
       })
       .then((res) => {
