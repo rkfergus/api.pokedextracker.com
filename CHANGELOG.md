@@ -1,3 +1,9 @@
+#### 1.20.1 (2016-12-2)
+
+##### Chores
+
+* **dexes:** backfill region for existing captures ([72ab7411](https://github.com/robinjoseph08/api.pokedextracker.com/commit/72ab7411f83e8d9425a494bc845fc16a61d3d384))
+
 ### 1.20.0 (2016-12-2)
 
 ##### New Features
