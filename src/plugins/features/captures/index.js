@@ -3,8 +3,8 @@
 const CapturesCreateValidator = require('../../../validators/captures/create');
 const CapturesDeleteValidator = require('../../../validators/captures/delete');
 const CapturesListValidator   = require('../../../validators/captures/list');
-const Controller             = require('./controller');
-const Pokemon                = require('../../../models/pokemon');
+const Controller              = require('./controller');
+const Pokemon                 = require('../../../models/pokemon');
 
 exports.register = (server, options, next) => {
 

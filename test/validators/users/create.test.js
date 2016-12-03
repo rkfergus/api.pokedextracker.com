@@ -229,4 +229,37 @@ describe('users create validator', () => {
 
   });
 
+  describe('region', () => {
+
+    it('defaults to national', () => {
+      const data = { username: 'testing', password: 'testtest' };
+      const result = Joi.validate(data, UsersCreateValidator);
+
+      expect(result.value.region).to.eql('national');
+    });
+
+    it('allows national', () => {
+      const data = { username: 'testing', password: 'testtest', region: 'national' };
+      const result = Joi.validate(data, UsersCreateValidator);
+
+      expect(result.error).to.not.exist;
+    });
+
+    it('allows alola', () => {
+      const data = { username: 'testing', password: 'testtest', region: 'alola' };
+      const result = Joi.validate(data, UsersCreateValidator);
+
+      expect(result.error).to.not.exist;
+    });
+
+    it('disallows other regions', () => {
+      const data = { username: 'testing', password: 'testtest', region: 'kalos' };
+      const result = Joi.validate(data, UsersCreateValidator);
+
+      expect(result.error.details[0].path).to.eql('region');
+      expect(result.error.details[0].type).to.eql('any.allowOnly');
+    });
+
+  });
+
 });

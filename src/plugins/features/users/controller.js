@@ -56,7 +56,8 @@ exports.create = function (payload, request) {
           title: payload.title,
           slug: Slug(payload.title, { lower: true }),
           shiny: payload.shiny,
-          generation: payload.generation
+          generation: payload.generation,
+          region: payload.region
         }, { transacting });
       });
     });

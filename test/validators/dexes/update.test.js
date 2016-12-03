@@ -84,4 +84,37 @@ describe('dexes update validator', () => {
 
   });
 
+  describe('region', () => {
+
+    it('is optional', () => {
+      const data = { title: 'Test', shiny: false, generation: 6 };
+      const result = Joi.validate(data, DexesUpdateValidator);
+
+      expect(result.error).to.not.exist;
+    });
+
+    it('allows national', () => {
+      const data = { title: 'Test', shiny: false, generation: 6, region: 'national' };
+      const result = Joi.validate(data, DexesUpdateValidator);
+
+      expect(result.error).to.not.exist;
+    });
+
+    it('allows alola', () => {
+      const data = { title: 'Test', shiny: false, generation: 6, region: 'alola' };
+      const result = Joi.validate(data, DexesUpdateValidator);
+
+      expect(result.error).to.not.exist;
+    });
+
+    it('disallows other regions', () => {
+      const data = { title: 'Test', shiny: false, generation: 6, region: 'kalos' };
+      const result = Joi.validate(data, DexesUpdateValidator);
+
+      expect(result.error.details[0].path).to.eql('region');
+      expect(result.error.details[0].type).to.eql('any.allowOnly');
+    });
+
+  });
+
 });
