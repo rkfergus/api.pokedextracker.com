@@ -1,3 +1,9 @@
+#### 1.20.2 (2016-12-3)
+
+##### New Features
+
+* **captures:** take region into account ([c4ae09c6](https://github.com/robinjoseph08/api.pokedextracker.com/commit/c4ae09c694c8cb6abc0d19cb6d031c16fb3d437b))
+
 #### 1.20.1 (2016-12-2)
 
 ##### Chores
