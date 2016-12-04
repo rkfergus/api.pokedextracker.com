@@ -37,7 +37,7 @@ exports.list = function (query, pokemon) {
     return Bluebird.resolve(pokemon)
     .then((p) => new Array(p.length))
     .map((_, i) => {
-      if (dex && pokemon[i].get('generation') > dex.get('generation')) {
+      if (dex && (pokemon[i].get('generation') > dex.get('generation') || !pokemon[i].get(`${dex.get('region')}_id`))) {
         return null;
       }
 
@@ -50,7 +50,14 @@ exports.list = function (query, pokemon) {
       return capture;
     });
   })
-  .filter((capture) => capture);
+  .filter((capture) => capture)
+  .then((captures) => {
+    if (!dex || dex.get('region') === 'national') {
+      return captures;
+    }
+
+    return captures.sort((a, b) => a.related('pokemon').get(`${dex.get('region')}_id`) - b.related('pokemon').get(`${dex.get('region')}_id`));
+  });
 };
 
 exports.create = function (payload, auth) {
