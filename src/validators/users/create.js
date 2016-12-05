@@ -9,7 +9,7 @@ module.exports = Joi.object().keys({
   referrer: Joi.string().empty(['', null]),
   title: Joi.string().max(300).trim().default('Living Dex'),
   shiny: Joi.boolean().default(false),
-  generation: Joi.number().integer().min(1).max(6).default(6),
+  generation: Joi.number().integer().min(6).max(7).default(6),
   region: Joi.string().valid(['national', 'alola']).default('national')
 })
 .options({
