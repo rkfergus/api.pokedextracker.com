@@ -1,3 +1,9 @@
+#### 1.20.3 (2016-12-4)
+
+##### Bug Fixes
+
+* **users:** allow gen 7 on user create ([ef869a41](https://github.com/robinjoseph08/api.pokedextracker.com/commit/ef869a41c373de4d57c84ba717f2b1820c4405dc))
+
 #### 1.20.2 (2016-12-3)
 
 ##### New Features
