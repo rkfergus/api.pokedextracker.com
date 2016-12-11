@@ -1,3 +1,9 @@
+#### 1.20.4 (2016-12-10)
+
+##### Bug Fixes
+
+* **dexes:** prevent deleting a user's last dex ([95b85be4](https://github.com/robinjoseph08/api.pokedextracker.com/commit/95b85be4cfb524d3a27950cc1774b32935ed2b96))
+
 #### 1.20.3 (2016-12-4)
 
 ##### Bug Fixes
