@@ -1,8 +1,8 @@
 # api.pokedextracker.com
 
-[![Build Status](https://travis-ci.org/robinjoseph08/api.pokedextracker.com.svg)](https://travis-ci.org/robinjoseph08/api.pokedextracker.com)
-[![Coverage Status](https://coveralls.io/repos/robinjoseph08/api.pokedextracker.com/badge.svg?branch=master&service=github)](https://coveralls.io/github/robinjoseph08/api.pokedextracker.com?branch=master)
-[![Dependency Status](https://david-dm.org/robinjoseph08/api.pokedextracker.com.svg)](https://david-dm.org/robinjoseph08/api.pokedextracker.com)
+[![Build Status](https://travis-ci.org/pokedextracker/api.pokedextracker.com.svg)](https://travis-ci.org/pokedextracker/api.pokedextracker.com)
+[![Coverage Status](https://coveralls.io/repos/pokedextracker/api.pokedextracker.com/badge.svg?branch=master&service=github)](https://coveralls.io/github/pokedextracker/api.pokedextracker.com?branch=master)
+[![Dependency Status](https://david-dm.org/pokedextracker/api.pokedextracker.com.svg)](https://david-dm.org/pokedextracker/api.pokedextracker.com)
 
 The API for [pokedextracker.com](http://pokedextracker.com). It's written in Node.js v5 using the following libraries/packages:
 

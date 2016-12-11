@@ -1,6 +1,6 @@
 # Contributing
 
-Any contribution, big or small, is welcome! If it's a feature, we'd recommend [creating an issue](https://github.com/robinjoseph08/pokedextracker.com/issues/new) for it first so that the implementation can be decided on before the PR goes up and to make sure no one is working on the same feature. It makes the review process a bit smoother so you don't have to keep going back adding things. If it's just a bug fix though, feel free to just put up the PR directly!
+Any contribution, big or small, is welcome! If it's a feature, we'd recommend [creating an issue](https://github.com/pokedextracker/pokedextracker.com/issues/new) for it first so that the implementation can be decided on before the PR goes up and to make sure no one is working on the same feature. It makes the review process a bit smoother so you don't have to keep going back adding things. If it's just a bug fix though, feel free to just put up the PR directly!
 
 Some guidelines you should follow when submitting a PR:
 
