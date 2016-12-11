@@ -97,11 +97,19 @@ exports.delete = function (params, auth) {
       throw new Errors.ForbiddenAction('deleting a dex for this user');
     }
 
-    return new Dex().where({ user_id: auth.id, slug: params.slug }).fetch({ require: true });
+    return Knex.transaction((transacting) => {
+      return Dex.where({ user_id: auth.id }).count({ transacting })
+      .then((count) => {
+        if (parseInt(count) === 1) {
+          throw new Errors.AtLeastOneDex();
+        }
+
+        return new Dex().where({ user_id: auth.id, slug: params.slug }).destroy({ require: true, transacting });
+      });
+    });
   })
-  .then((dex) => dex.destroy())
   .then(() => ({ deleted: true }))
-  .catch(Dex.NotFoundError, () => {
+  .catch(Dex.NoRowsDeletedError, () => {
     throw new Errors.NotFound('dex');
   });
 };

@@ -8,7 +8,8 @@ const Server = require('../../../../src/server');
 
 const user = Factory.build('user');
 
-const dex = Factory.build('dex', { user_id: user.id });
+const firstDex  = Factory.build('dex', { user_id: user.id });
+const secondDex = Factory.build('dex', { user_id: user.id, title: 'Another', slug: 'another' });
 
 const auth = `Bearer ${JWT.sign(user, Config.JWT_SECRET)}`;
 
@@ -18,13 +19,13 @@ describe('dexes integration', () => {
 
     beforeEach(() => {
       return Knex('users').insert(user)
-      .then(() => Knex('dexes').insert(dex));
+      .then(() => Knex('dexes').insert(firstDex));
     });
 
     it('returns a dex from the username and slug', () => {
       return Server.inject({
         method: 'GET',
-        url: `/users/${user.username}/dexes/${dex.slug}`
+        url: `/users/${user.username}/dexes/${firstDex.slug}`
       })
       .then((res) => {
         expect(res.statusCode).to.eql(200);
@@ -77,13 +78,13 @@ describe('dexes integration', () => {
 
     beforeEach(() => {
       return Knex('users').insert(user)
-      .then(() => Knex('dexes').insert(dex));
+      .then(() => Knex('dexes').insert(firstDex));
     });
 
     it('updates a dex', () => {
       return Server.inject({
         method: 'POST',
-        url: `/users/${user.username}/dexes/${dex.slug}`,
+        url: `/users/${user.username}/dexes/${firstDex.slug}`,
         headers: { authorization: auth },
         payload: { title: 'Testing' }
       })
@@ -95,7 +96,7 @@ describe('dexes integration', () => {
     it('requires authentication', () => {
       return Server.inject({
         method: 'POST',
-        url: `/users/${user.username}/dexes/${dex.slug}`,
+        url: `/users/${user.username}/dexes/${firstDex.slug}`,
         payload: { title: 'Testing' }
       })
       .then((res) => {
@@ -109,13 +110,13 @@ describe('dexes integration', () => {
 
     beforeEach(() => {
       return Knex('users').insert(user)
-      .then(() => Knex('dexes').insert(dex));
+      .then(() => Knex('dexes').insert([firstDex, secondDex]));
     });
 
     it('deletes a dex', () => {
       return Server.inject({
         method: 'DELETE',
-        url: `/users/${user.username}/dexes/${dex.slug}`,
+        url: `/users/${user.username}/dexes/${firstDex.slug}`,
         headers: { authorization: auth }
       })
       .then((res) => {
@@ -126,7 +127,7 @@ describe('dexes integration', () => {
     it('requires authentication', () => {
       return Server.inject({
         method: 'DELETE',
-        url: `/users/${user.username}/dexes/${dex.slug}`
+        url: `/users/${user.username}/dexes/${firstDex.slug}`
       })
       .then((res) => {
         expect(res.statusCode).to.eql(401);
