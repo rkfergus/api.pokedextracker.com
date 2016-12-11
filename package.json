@@ -49,12 +49,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/robinjoseph08/api.pokedextracker.com.git"
+    "url": "git+https://github.com/pokedextracker/api.pokedextracker.com.git"
   },
   "author": "Robin Joseph <robin.joseph@me.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/robinjoseph08/api.pokedextracker.com/issues"
+    "url": "https://github.com/pokedextracker/pokedextracker.com/issues"
   },
-  "homepage": "https://github.com/robinjoseph08/api.pokedextracker.com#readme"
+  "homepage": "https://github.com/pokedextracker/api.pokedextracker.com#readme"
 }
