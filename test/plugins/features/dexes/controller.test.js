@@ -212,14 +212,23 @@ describe('dexes controller', () => {
 
     beforeEach(() => {
       return Knex('users').insert([firstUser, secondUser])
-      .then(() => Knex('dexes').insert([firstDex, secondDex]));
+      .then(() => Knex('dexes').insert(firstDex));
     });
 
     it('deletes a dex', () => {
-      return Controller.delete(firstParams, firstUser)
+      return Knex('dexes').insert(secondDex)
+      .then(() => Controller.delete(firstParams, firstUser))
       .then(() => new Dex({ id: firstDex.id }).fetch())
       .then((dex) => {
         expect(dex).to.not.exist;
+      });
+    });
+
+    it('rejects if trying to delete your last dex', () => {
+      return Controller.delete(firstParams, firstUser)
+      .catch((err) => err)
+      .then((err) => {
+        expect(err).to.be.an.instanceof(Errors.AtLeastOneDex);
       });
     });
 
