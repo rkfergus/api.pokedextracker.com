@@ -97,15 +97,30 @@ describe('dexes create validator', () => {
       expect(result.error.details[0].type).to.eql('any.required');
     });
 
-    it('allows national', () => {
+    it('allows national for gen 6', () => {
       const data = { title: 'Test', shiny: false, generation: 6, region: 'national' };
       const result = Joi.validate(data, DexesCreateValidator);
 
       expect(result.error).to.not.exist;
     });
 
-    it('allows alola', () => {
+    it('allows national for gen 7', () => {
+      const data = { title: 'Test', shiny: false, generation: 7, region: 'national' };
+      const result = Joi.validate(data, DexesCreateValidator);
+
+      expect(result.error).to.not.exist;
+    });
+
+    it('disallows alola for gen 6', () => {
       const data = { title: 'Test', shiny: false, generation: 6, region: 'alola' };
+      const result = Joi.validate(data, DexesCreateValidator);
+
+      expect(result.error.details[0].path).to.eql('region');
+      expect(result.error.details[0].type).to.eql('any.allowOnly');
+    });
+
+    it('allows alola for gen 7', () => {
+      const data = { title: 'Test', shiny: false, generation: 7, region: 'alola' };
       const result = Joi.validate(data, DexesCreateValidator);
 
       expect(result.error).to.not.exist;
