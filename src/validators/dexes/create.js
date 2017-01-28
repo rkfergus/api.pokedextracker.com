@@ -6,5 +6,8 @@ module.exports = Joi.object().keys({
   title: Joi.string().max(300).trim().required(),
   shiny: Joi.boolean().required(),
   generation: Joi.number().integer().min(6).max(7).required(),
-  region: Joi.string().valid(['national', 'alola']).required()
+  region: Joi.string().valid('national').required().when('generation', {
+    is: 7,
+    then: Joi.valid('alola')
+  })
 });
