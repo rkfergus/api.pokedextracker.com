@@ -63,7 +63,7 @@ exports.update = function (params, payload, auth) {
       captures = new Capture().query((qb) => {
         qb.where('dex_id', dex.get('id'));
         qb.whereIn('pokemon_id', function () {
-          this.select('national_id').from('pokemon');
+          this.select('id').from('pokemon');
           if (payload.generation) {
             this.where('generation', '>', payload.generation);
           }

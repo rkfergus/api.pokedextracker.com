@@ -35,7 +35,7 @@ describe('pokemon integration', () => {
     it('returns an individual pokemon from its national ID', () => {
       return Server.inject({
         method: 'GET',
-        url: `/pokemon/${firstPokemon.national_id}`
+        url: `/pokemon/${firstPokemon.id}`
       })
       .then((res) => {
         expect(res.statusCode).to.eql(200);

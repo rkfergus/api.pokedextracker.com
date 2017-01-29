@@ -52,17 +52,15 @@ exports.list = function (query, pokemon) {
   })
   .filter((capture) => capture)
   .then((captures) => {
-    if (!dex || dex.get('region') === 'national') {
-      return captures;
-    }
+    const property = !dex || dex.get('region') === 'national' ? 'national_order' : `${dex.get('region')}_id`;
 
-    return captures.sort((a, b) => a.related('pokemon').get(`${dex.get('region')}_id`) - b.related('pokemon').get(`${dex.get('region')}_id`));
+    return captures.sort((a, b) => a.related('pokemon').get(property) - b.related('pokemon').get(property));
   });
 };
 
 exports.create = function (payload, auth) {
   return Bluebird.all([
-    new Pokemon().query((qb) => qb.whereIn('national_id', payload.pokemon)).fetchAll(),
+    new Pokemon().query((qb) => qb.whereIn('id', payload.pokemon)).fetchAll(),
     new Dex({ id: payload.dex }).fetch({ require: true })
   ])
   .spread((pokemon, dex) => {

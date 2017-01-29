@@ -5,13 +5,22 @@ const Evolution = require('./evolution');
 
 module.exports = Bookshelf.model('Pokemon', Bookshelf.Model.extend({
   tableName: 'pokemon',
-  idAttribute: 'national_id',
   hasTimestamps: ['date_created', 'date_modified'],
-  evolutions () {
+  evolutions (query) {
     return new Evolution()
-    .where('evolution_family_id', this.get('evolution_family_id'))
+    .where('evolutions.evolution_family_id', this.get('evolution_family_id'))
     .query((qb) => {
-      qb.orderByRaw('CASE WHEN trigger = \'breed\' THEN evolving_pokemon_id ELSE evolved_pokemon_id END, trigger DESC');
+      qb.joinRaw('INNER JOIN pokemon AS evolved ON evolutions.evolved_pokemon_id = evolved.id');
+      qb.joinRaw('INNER JOIN pokemon AS evolving ON evolutions.evolving_pokemon_id = evolving.id');
+
+      if (query.generation) {
+        qb.whereRaw(`evolved.generation <= ${query.generation} AND evolving.generation <= ${query.generation}`);
+      }
+      if (query.region) {
+        qb.whereRaw(`evolved.${query.region}_id IS NOT NULL AND evolving.${query.region}_id IS NOT NULL`);
+      }
+
+      qb.orderByRaw('CASE WHEN trigger = \'breed\' THEN evolving.national_id ELSE evolved.national_id END, trigger DESC, evolved.national_order ASC');
     })
     .fetchAll({ withRelated: Evolution.RELATED })
     .get('models');
@@ -19,9 +28,12 @@ module.exports = Bookshelf.model('Pokemon', Bookshelf.Model.extend({
   virtuals: {
     capture_summary () {
       return {
+        id: this.get('id'),
         national_id: this.get('national_id'),
         name: this.get('name'),
         generation: this.get('generation'),
+        form: this.get('form'),
+        box: this.get('box'),
         kanto_id: this.get('kanto_id') || undefined,
         johto_id: this.get('johto_id') || undefined,
         hoenn_id: this.get('hoenn_id') || undefined,
@@ -35,8 +47,10 @@ module.exports = Bookshelf.model('Pokemon', Bookshelf.Model.extend({
     },
     summary () {
       return {
+        id: this.get('id'),
         national_id: this.get('national_id'),
-        name: this.get('name')
+        name: this.get('name'),
+        form: this.get('form')
       };
     },
     x_locations () {
@@ -58,8 +72,10 @@ module.exports = Bookshelf.model('Pokemon', Bookshelf.Model.extend({
       return this.get('moon_location') ? this.get('moon_location').split(', ') : [];
     }
   },
-  serialize () {
-    return this.evolutions()
+  serialize (request) {
+    const query = request.query || {};
+
+    return this.evolutions(query)
     .reduce((family, evolution) => {
       const i = evolution.get('stage') - 1;
       const breed = evolution.get('trigger') === 'breed';
@@ -76,10 +92,10 @@ module.exports = Bookshelf.model('Pokemon', Bookshelf.Model.extend({
         second = evolution.related('evolved_pokemon').get('summary');
       }
 
-      if (!family.pokemon[i].find((p) => p.national_id === first.national_id)) {
+      if (!family.pokemon[i].find((p) => p.id === first.id)) {
         family.pokemon[i].push(first);
       }
-      if (!family.pokemon[i + 1].find((p) => p.national_id === second.national_id)) {
+      if (!family.pokemon[i + 1].find((p) => p.id === second.id)) {
         family.pokemon[i + 1].push(second);
       }
 
@@ -96,9 +112,12 @@ module.exports = Bookshelf.model('Pokemon', Bookshelf.Model.extend({
     })
     .then((family) => {
       return {
+        id: this.get('id'),
         national_id: this.get('national_id'),
         name: this.get('name'),
         generation: this.get('generation'),
+        form: this.get('form'),
+        box: this.get('box'),
         kanto_id: this.get('kanto_id') || undefined,
         johto_id: this.get('johto_id') || undefined,
         hoenn_id: this.get('hoenn_id') || undefined,
