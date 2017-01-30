@@ -3,31 +3,77 @@
 const Knex    = require('../../src/libraries/knex');
 const Pokemon = require('../../src/models/pokemon');
 
-const pokemon          = Factory.build('pokemon');
-const firstPokemon     = Factory.build('pokemon');
-const secondPokemon    = Factory.build('pokemon');
-const unevolvedPokemon = Factory.build('pokemon');
+const pikachu     = Factory.build('pokemon', { id: 25, national_id: 25, evolution_family_id: 25, generation: 1, alola_id: 25 });
+const raichu      = Factory.build('pokemon', { id: 26, national_id: 26, evolution_family_id: 25, generation: 1 });
+const pichu       = Factory.build('pokemon', { id: 172, national_id: 172, evolution_family_id: 25, generation: 2, alola_id: 24 });
+const alolaRaichu = Factory.build('pokemon', { id: 803, national_id: 26, evolution_family_id: 25, generation: 7, alola_id: 26 });
+const spearow     = Factory.build('pokemon', { id: 21, national_id: 21, evolution_family_id: 21, generation: 1 });
+const fearow      = Factory.build('pokemon', { id: 22, national_id: 22, evolution_family_id: 21, generation: 1 });
+const onix        = Factory.build('pokemon', { id: 95, national_id: 95, evolution_family_id: 95, generation: 1 });
 
-const evolution      = Factory.build('evolution', { evolving_pokemon_id: pokemon.national_id, evolved_pokemon_id: pokemon.national_id, evolution_family_id: pokemon.evolution_family_id });
-const otherEvolution = Factory.build('evolution', { evolving_pokemon_id: firstPokemon.national_id, evolved_pokemon_id: secondPokemon.national_id, evolution_family_id: firstPokemon.evolution_family_id });
-const breedEvolution = Factory.build('evolution', { trigger: 'breed', evolving_pokemon_id: secondPokemon.national_id, evolved_pokemon_id: firstPokemon.national_id, evolution_family_id: firstPokemon.evolution_family_id });
+const levelEvolution   = Factory.build('evolution', { evolving_pokemon_id: pichu.id, evolved_pokemon_id: pikachu.id, evolution_family_id: pikachu.id, stage: 1, trigger: 'level' });
+const breedEvolution   = Factory.build('evolution', { evolving_pokemon_id: pikachu.id, evolved_pokemon_id: pichu.id, evolution_family_id: pikachu.id, stage: 1, trigger: 'breed' });
+const stoneEvolution   = Factory.build('evolution', { evolving_pokemon_id: pikachu.id, evolved_pokemon_id: raichu.id, evolution_family_id: pikachu.id, stage: 2, trigger: 'stone', stone: 'thunder' });
+const alolaEvolution   = Factory.build('evolution', { evolving_pokemon_id: pikachu.id, evolved_pokemon_id: alolaRaichu.id, evolution_family_id: pikachu.id, stage: 2, trigger: 'stone', stone: 'thunder' });
+const spearowEvolution = Factory.build('evolution', { evolving_pokemon_id: spearow.id, evolved_pokemon_id: fearow.id, evolution_family_id: spearow.id, stage: 1, trigger: 'level' });
 
 describe('pokemon model', () => {
 
   beforeEach(() => {
-    return Knex('pokemon').insert([pokemon, firstPokemon, secondPokemon, unevolvedPokemon])
+    return Knex('pokemon').insert([pikachu, raichu, pichu, alolaRaichu, spearow, fearow, onix])
     .then(() => {
-      return Knex('evolutions').insert([evolution, otherEvolution, breedEvolution]);
+      return Knex('evolutions').insert([levelEvolution, breedEvolution, stoneEvolution, alolaEvolution, spearowEvolution]);
     });
   });
 
   describe('evolutions', () => {
 
     it('only gets the models with the associated evolution_family_id', () => {
-      return Pokemon.forge(pokemon).evolutions()
+      return Pokemon.forge(spearow).evolutions({})
       .then((evolutions) => {
         expect(evolutions).to.have.length(1);
-        expect(evolutions[0].get('evolution_family_id')).to.eql(pokemon.evolution_family_id);
+        expect(evolutions[0].get('evolution_family_id')).to.eql(spearow.evolution_family_id);
+      });
+    });
+
+    it('returns evolutions based on the generation filter', () => {
+      return Pokemon.forge(pikachu).evolutions({ generation: 6 })
+      .then((evolutions) => {
+        expect(evolutions).to.have.length(3);
+        expect(evolutions[0].get('evolving_pokemon_id')).to.eql(pichu.id);
+        expect(evolutions[0].get('evolved_pokemon_id')).to.eql(pikachu.id);
+        expect(evolutions[1].get('evolving_pokemon_id')).to.eql(pikachu.id);
+        expect(evolutions[1].get('evolved_pokemon_id')).to.eql(pichu.id);
+        expect(evolutions[2].get('evolving_pokemon_id')).to.eql(pikachu.id);
+        expect(evolutions[2].get('evolved_pokemon_id')).to.eql(raichu.id);
+      });
+    });
+
+    it('returns evolutions based on the region filter', () => {
+      return Pokemon.forge(pikachu).evolutions({ region: 'alola' })
+      .then((evolutions) => {
+        expect(evolutions).to.have.length(3);
+        expect(evolutions[0].get('evolving_pokemon_id')).to.eql(pichu.id);
+        expect(evolutions[0].get('evolved_pokemon_id')).to.eql(pikachu.id);
+        expect(evolutions[1].get('evolving_pokemon_id')).to.eql(pikachu.id);
+        expect(evolutions[1].get('evolved_pokemon_id')).to.eql(pichu.id);
+        expect(evolutions[2].get('evolving_pokemon_id')).to.eql(pikachu.id);
+        expect(evolutions[2].get('evolved_pokemon_id')).to.eql(alolaRaichu.id);
+      });
+    });
+
+    it('returns evolutions based on the generation and region filter together', () => {
+      return Pokemon.forge(pikachu).evolutions({ generation: 7, region: 'national' })
+      .then((evolutions) => {
+        expect(evolutions).to.have.length(4);
+        expect(evolutions[0].get('evolving_pokemon_id')).to.eql(pichu.id);
+        expect(evolutions[0].get('evolved_pokemon_id')).to.eql(pikachu.id);
+        expect(evolutions[1].get('evolving_pokemon_id')).to.eql(pikachu.id);
+        expect(evolutions[1].get('evolved_pokemon_id')).to.eql(pichu.id);
+        expect(evolutions[2].get('evolving_pokemon_id')).to.eql(pikachu.id);
+        expect(evolutions[2].get('evolved_pokemon_id')).to.eql(raichu.id);
+        expect(evolutions[3].get('evolving_pokemon_id')).to.eql(pikachu.id);
+        expect(evolutions[3].get('evolved_pokemon_id')).to.eql(alolaRaichu.id);
       });
     });
 
@@ -39,9 +85,12 @@ describe('pokemon model', () => {
 
       it('only includes the fields needed for the tracker view', () => {
         expect(Pokemon.forge().get('capture_summary')).to.have.all.keys([
+          'id',
           'national_id',
           'name',
           'generation',
+          'form',
+          'box',
           'kanto_id',
           'johto_id',
           'hoenn_id',
@@ -58,10 +107,12 @@ describe('pokemon model', () => {
 
     describe('summary', () => {
 
-      it('only includes the national_id and name of the pokemon', () => {
+      it('only includes information necessary for the evolution tree', () => {
         expect(Pokemon.forge().get('summary')).to.have.all.keys([
+          'id',
           'national_id',
-          'name'
+          'name',
+          'form'
         ]);
       });
 
@@ -144,12 +195,15 @@ describe('pokemon model', () => {
   describe('serialize', () => {
 
     it('returns the correct fields', () => {
-      return Pokemon.forge(pokemon).serialize()
+      return Pokemon.forge(pikachu).serialize({})
       .then((json) => {
         expect(json).to.have.all.keys([
+          'id',
           'national_id',
           'name',
           'generation',
+          'form',
+          'box',
           'kanto_id',
           'johto_id',
           'hoenn_id',
@@ -171,15 +225,18 @@ describe('pokemon model', () => {
           'pokemon',
           'evolutions'
         ]);
-        expect(json.evolution_family.pokemon).to.have.length(2);
+        expect(json.evolution_family.pokemon).to.have.length(3);
         expect(json.evolution_family.pokemon[0]).to.have.length(1);
         expect(json.evolution_family.pokemon[1]).to.have.length(1);
+        expect(json.evolution_family.pokemon[2]).to.have.length(2);
         expect(json.evolution_family.pokemon[0][0]).to.have.all.keys([
+          'id',
           'national_id',
-          'name'
+          'name',
+          'form'
         ]);
-        expect(json.evolution_family.evolutions).to.have.length(1);
-        expect(json.evolution_family.evolutions[0]).to.have.length(1);
+        expect(json.evolution_family.evolutions).to.have.length(2);
+        expect(json.evolution_family.evolutions[0]).to.have.length(2);
         expect(json.evolution_family.evolutions[0][0]).to.have.all.keys([
           'trigger',
           'level',
@@ -190,29 +247,22 @@ describe('pokemon model', () => {
       });
     });
 
-    it('flips evolution orders for "breed"s', () => {
-      return Pokemon.forge(firstPokemon).serialize()
+    it('forces order of pokemon', () => {
+      return Pokemon.forge(pikachu).serialize({})
       .then((json) => json.evolution_family.pokemon)
-      .map((poke) => poke.map((p) => p.national_id))
+      .map((poke) => poke.map((p) => p.id))
       .then((poke) => {
-        expect(poke[0]).to.include(firstPokemon.national_id);
-        expect(poke[1]).to.include(secondPokemon.national_id);
-      });
-    });
-
-    it('does not insert duplicate evolutions', () => {
-      return Pokemon.forge(firstPokemon).serialize()
-      .then((json) => {
-        expect(json.evolution_family.pokemon[0]).to.have.length(1);
-        expect(json.evolution_family.pokemon[1]).to.have.length(1);
+        expect(poke[0]).to.eql([pichu.id]);
+        expect(poke[1]).to.eql([pikachu.id]);
+        expect(poke[2]).to.eql([raichu.id, alolaRaichu.id]);
       });
     });
 
     it('inserts the pokemon into evolutions if the pokemon does not evolve', () => {
-      return Pokemon.forge(unevolvedPokemon).serialize()
+      return Pokemon.forge(onix).serialize({})
       .then((json) => {
         expect(json.evolution_family.pokemon[0]).to.have.length(1);
-        expect(json.evolution_family.pokemon[0][0].national_id).to.eql(unevolvedPokemon.national_id);
+        expect(json.evolution_family.pokemon[0][0].id).to.eql(onix.id);
       });
     });
 

@@ -5,7 +5,7 @@ const Pokemon = require('../../src/models/pokemon');
 
 const pokemon = Factory.build('pokemon');
 
-const capture = Factory.build('capture', { pokemon_id: pokemon.national_id });
+const capture = Factory.build('capture', { pokemon_id: pokemon.id });
 
 describe('capture model', () => {
 
@@ -23,9 +23,12 @@ describe('capture model', () => {
         'captured'
       ]);
       expect(json.pokemon).to.have.all.keys([
+        'id',
         'national_id',
         'name',
         'generation',
+        'form',
+        'box',
         'kanto_id',
         'johto_id',
         'hoenn_id',

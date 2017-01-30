@@ -18,11 +18,11 @@ describe('pokemon controller', () => {
     it('returns a collection of pokemon', () => {
       return Controller.list()
       .get('models')
-      .map((pokemon) => pokemon.id)
+      .map((pokemon) => pokemon.get('id'))
       .then((pokemon) => {
         expect(pokemon).to.have.length(2);
-        expect(pokemon).to.contain(firstPokemon.national_id);
-        expect(pokemon).to.contain(secondPokemon.national_id);
+        expect(pokemon).to.contain(firstPokemon.id);
+        expect(pokemon).to.contain(secondPokemon.id);
       });
     });
 
@@ -35,9 +35,9 @@ describe('pokemon controller', () => {
     });
 
     it('returns an individual pokemon from its national ID', () => {
-      return Controller.retrieve(firstPokemon.national_id)
+      return Controller.retrieve(firstPokemon.id)
       .then((pokemon) => {
-        expect(pokemon.get('national_id')).to.eql(firstPokemon.national_id);
+        expect(pokemon.get('id')).to.eql(firstPokemon.id);
       });
     });
 

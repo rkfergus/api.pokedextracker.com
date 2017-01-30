@@ -8,9 +8,9 @@ const Errors     = require('../../../../src/libraries/errors');
 const Knex       = require('../../../../src/libraries/knex');
 const Pokemon    = require('../../../../src/models/pokemon');
 
-const firstPokemon      = Factory.build('pokemon', { national_id: 1, generation: 1, alola_id: 1 });
-const secondPokemon     = Factory.build('pokemon', { national_id: 2, generation: 1, alola_id: 2 });
-const generationPokemon = Factory.build('pokemon', { national_id: 3, generation: 2, hoenn_id: 1 });
+const firstPokemon      = Factory.build('pokemon', { id: 1, national_id: 1, generation: 1, alola_id: 1 });
+const secondPokemon     = Factory.build('pokemon', { id: 2, national_id: 2, generation: 1, alola_id: 2 });
+const generationPokemon = Factory.build('pokemon', { id: 3, national_id: 3, generation: 2, hoenn_id: 1 });
 
 const user      = Factory.build('user');
 const otherUser = Factory.build('user');
@@ -19,8 +19,8 @@ const dex       = Factory.build('dex', { user_id: user.id, generation: 1 });
 const otherDex  = Factory.build('dex', { user_id: otherUser.id, generation: 1 });
 const regionDex = Factory.build('dex', { title: 'Another', slug: 'another', user_id: user.id, generation: 1, region: 'alola' });
 
-const firstCapture = Factory.build('capture', { pokemon_id: firstPokemon.national_id, user_id: user.id, dex_id: dex.id });
-const otherCapture = Factory.build('capture', { pokemon_id: firstPokemon.national_id, user_id: otherUser.id, dex_id: otherDex.id });
+const firstCapture = Factory.build('capture', { pokemon_id: firstPokemon.id, user_id: user.id, dex_id: dex.id });
+const otherCapture = Factory.build('capture', { pokemon_id: firstPokemon.id, user_id: otherUser.id, dex_id: otherDex.id });
 
 describe('captures controller', () => {
 
@@ -36,32 +36,32 @@ describe('captures controller', () => {
   describe('list', () => {
 
     it('returns a collection of captures filtered by user_id, filling in those that do not exist', () => {
-      return new Pokemon().query((qb) => qb.orderBy('national_id')).fetchAll()
+      return new Pokemon().query((qb) => qb.orderBy('id')).fetchAll()
       .get('models')
       .then((pokemon) => Controller.list({ user: user.id }, pokemon))
       .map((capture) => capture.serialize())
       .then((captures) => {
         expect(captures).to.have.length(2);
-        expect(captures[0].pokemon.national_id).to.eql(firstPokemon.national_id);
+        expect(captures[0].pokemon.id).to.eql(firstPokemon.id);
         expect(captures[0].user_id).to.eql(user.id);
         expect(captures[0].captured).to.be.true;
-        expect(captures[1].pokemon.national_id).to.eql(secondPokemon.national_id);
+        expect(captures[1].pokemon.id).to.eql(secondPokemon.id);
         expect(captures[1].user_id).to.eql(user.id);
         expect(captures[1].captured).to.be.false;
       });
     });
 
     it('returns a collection of captures filtered by dex_id, filling in those that do not exist', () => {
-      return new Pokemon().query((qb) => qb.orderBy('national_id')).fetchAll()
+      return new Pokemon().query((qb) => qb.orderBy('id')).fetchAll()
       .get('models')
       .then((pokemon) => Controller.list({ dex: dex.id }, pokemon))
       .map((capture) => capture.serialize())
       .then((captures) => {
         expect(captures).to.have.length(2);
-        expect(captures[0].pokemon.national_id).to.eql(firstPokemon.national_id);
+        expect(captures[0].pokemon.id).to.eql(firstPokemon.id);
         expect(captures[0].dex_id).to.eql(dex.id);
         expect(captures[0].captured).to.be.true;
-        expect(captures[1].pokemon.national_id).to.eql(secondPokemon.national_id);
+        expect(captures[1].pokemon.id).to.eql(secondPokemon.id);
         expect(captures[1].dex_id).to.eql(dex.id);
         expect(captures[1].captured).to.be.false;
       });
@@ -69,20 +69,20 @@ describe('captures controller', () => {
 
     it('filters out pokemon that are not included in the dex\'s generation', () => {
       return Knex('pokemon').insert(generationPokemon)
-      .then(() => new Pokemon().query((qb) => qb.orderBy('national_id')).fetchAll())
+      .then(() => new Pokemon().query((qb) => qb.orderBy('id')).fetchAll())
       .get('models')
       .then((pokemon) => Controller.list({ dex: dex.id }, pokemon))
       .map((capture) => capture.serialize())
-      .map((capture) => capture.pokemon.national_id)
+      .map((capture) => capture.pokemon.id)
       .then((captures) => {
         expect(captures).to.have.length(2);
-        expect(captures).to.not.contain(generationPokemon.national_id);
+        expect(captures).to.not.contain(generationPokemon.id);
       });
     });
 
     it('filters out pokemon that are not included in the dex\'s region', () => {
       return Knex('pokemon').insert(generationPokemon)
-      .then(() => new Pokemon().query((qb) => qb.orderBy('national_id')).fetchAll())
+      .then(() => new Pokemon().query((qb) => qb.orderBy('id')).fetchAll())
       .get('models')
       .then((pokemon) => Controller.list({ dex: regionDex.id }, pokemon))
       .map((capture) => capture.serialize())
@@ -115,10 +115,10 @@ describe('captures controller', () => {
   describe('create', () => {
 
     it('creates a capture with the specified dex', () => {
-      return Controller.create({ pokemon: [secondPokemon.national_id], dex: dex.id }, { id: user.id })
+      return Controller.create({ pokemon: [secondPokemon.id], dex: dex.id }, { id: user.id })
       .then((captures) => {
         expect(captures).to.have.length(1);
-        expect(captures.at(0).get('pokemon_id')).to.eql(secondPokemon.national_id);
+        expect(captures.at(0).get('pokemon_id')).to.eql(secondPokemon.id);
         expect(captures.at(0).get('user_id')).to.eql(user.id);
         expect(captures.at(0).get('dex_id')).to.eql(dex.id);
         expect(captures.at(0).get('captured')).to.be.true;
@@ -134,7 +134,7 @@ describe('captures controller', () => {
     });
 
     it('rejects when the user does not own the dex', () => {
-      return Controller.create({ pokemon: [secondPokemon.national_id], dex: otherDex.id }, { id: user.id })
+      return Controller.create({ pokemon: [secondPokemon.id], dex: otherDex.id }, { id: user.id })
       .catch((err) => err)
       .then((err) => {
         expect(err).to.be.an.instanceof(Errors.ForbiddenAction);
@@ -142,7 +142,7 @@ describe('captures controller', () => {
     });
 
     it('rejects with a bad dex id', () => {
-      return Controller.create({ pokemon: [secondPokemon.national_id], dex: -1 }, { id: user.id })
+      return Controller.create({ pokemon: [secondPokemon.id], dex: -1 }, { id: user.id })
       .catch((err) => err)
       .then((err) => {
         expect(err).to.be.an.instanceof(Errors.NotFound);
@@ -150,10 +150,10 @@ describe('captures controller', () => {
     });
 
     it('does not err for duplicate captures', () => {
-      return Controller.create({ pokemon: [firstPokemon.national_id], dex: dex.id }, { id: user.id })
+      return Controller.create({ pokemon: [firstPokemon.id], dex: dex.id }, { id: user.id })
       .then((captures) => {
         expect(captures).to.have.length(1);
-        expect(captures.at(0).get('pokemon_id')).to.eql(firstPokemon.national_id);
+        expect(captures.at(0).get('pokemon_id')).to.eql(firstPokemon.id);
         expect(captures.at(0).get('user_id')).to.eql(user.id);
         expect(captures.at(0).get('captured')).to.be.true;
       });
@@ -164,11 +164,11 @@ describe('captures controller', () => {
   describe('delete', () => {
 
     it('deletes a capture', () => {
-      return Controller.delete({ pokemon: [firstPokemon.national_id], dex: dex.id }, { id: user.id })
+      return Controller.delete({ pokemon: [firstPokemon.id], dex: dex.id }, { id: user.id })
       .then((res) => {
         expect(res.deleted).to.be.true;
 
-        return new Capture().where({ pokemon_id: firstPokemon.national_id, dex_id: dex.id }).fetch();
+        return new Capture().where({ pokemon_id: firstPokemon.id, dex_id: dex.id }).fetch();
       })
       .then((capture) => {
         expect(capture).to.be.null;
@@ -176,7 +176,7 @@ describe('captures controller', () => {
     });
 
     it('rejects with a bad dex id', () => {
-      return Controller.delete({ pokemon: [firstPokemon.national_id], dex: -1 }, { id: user.id })
+      return Controller.delete({ pokemon: [firstPokemon.id], dex: -1 }, { id: user.id })
       .catch((err) => err)
       .then((err) => {
         expect(err).to.be.an.instanceof(Errors.NotFound);
@@ -184,7 +184,7 @@ describe('captures controller', () => {
     });
 
     it('rejects when the user does not own the dex', () => {
-      return Controller.delete({ pokemon: [firstPokemon.national_id], dex: otherDex.id }, { id: user.id })
+      return Controller.delete({ pokemon: [firstPokemon.id], dex: otherDex.id }, { id: user.id })
       .catch((err) => err)
       .then((err) => {
         expect(err).to.be.an.instanceof(Errors.ForbiddenAction);

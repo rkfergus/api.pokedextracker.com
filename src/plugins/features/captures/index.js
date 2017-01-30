@@ -35,7 +35,7 @@ exports.register = (server, options, next) => {
     }
   }]);
 
-  return new Pokemon().query((qb) => qb.orderBy('national_id')).fetchAll()
+  return new Pokemon().query((qb) => qb.orderBy('id')).fetchAll()
   .get('models')
   .then((p) => {
     pokemon = p;

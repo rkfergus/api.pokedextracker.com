@@ -7,14 +7,14 @@ const Config = require('../../../../config');
 const Knex   = require('../../../../src/libraries/knex');
 const Server = require('../../../../src/server');
 
-const firstPokemon  = Factory.build('pokemon', { national_id: 1 });
-const secondPokemon = Factory.build('pokemon', { national_id: 2 });
+const firstPokemon  = Factory.build('pokemon', { id: 1, national_id: 1 });
+const secondPokemon = Factory.build('pokemon', { id: 2, national_id: 2 });
 
 const user = Factory.build('user');
 
 const dex = Factory.build('dex', { user_id: user.id });
 
-const firstCapture = Factory.build('capture', { pokemon_id: firstPokemon.national_id, user_id: user.id, dex_id: dex.id });
+const firstCapture = Factory.build('capture', { pokemon_id: firstPokemon.id, user_id: user.id, dex_id: dex.id });
 
 const auth = `Bearer ${JWT.sign(user, Config.JWT_SECRET)}`;
 
@@ -51,11 +51,11 @@ describe('captures integration', () => {
         method: 'POST',
         url: '/captures',
         headers: { authorization: auth },
-        payload: { pokemon: secondPokemon.national_id, dex: dex.id }
+        payload: { pokemon: secondPokemon.id, dex: dex.id }
       })
       .then((res) => {
         expect(res.statusCode).to.eql(200);
-        expect(res.result[0].pokemon.national_id).to.eql(secondPokemon.national_id);
+        expect(res.result[0].pokemon.id).to.eql(secondPokemon.id);
       });
     });
 
@@ -63,7 +63,7 @@ describe('captures integration', () => {
       return Server.inject({
         method: 'POST',
         url: '/captures',
-        payload: { pokemon: secondPokemon.national_id, dex: dex.id }
+        payload: { pokemon: secondPokemon.id, dex: dex.id }
       })
       .then((res) => {
         expect(res.statusCode).to.eql(401);
@@ -79,7 +79,7 @@ describe('captures integration', () => {
         method: 'DELETE',
         url: '/captures',
         headers: { authorization: auth },
-        payload: { pokemon: firstPokemon.national_id, dex: dex.id }
+        payload: { pokemon: firstPokemon.id, dex: dex.id }
       })
       .then((res) => {
         expect(res.statusCode).to.eql(200);
@@ -91,7 +91,7 @@ describe('captures integration', () => {
       return Server.inject({
         method: 'DELETE',
         url: '/captures',
-        payload: { pokemon: firstPokemon.national_id, dex: dex.id }
+        payload: { pokemon: firstPokemon.id, dex: dex.id }
       })
       .then((res) => {
         expect(res.statusCode).to.eql(401);
