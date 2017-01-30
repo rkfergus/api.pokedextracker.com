@@ -10,7 +10,7 @@ const TOTALS = {
     hoenn: 211
   },
   7: {
-    national: 802,
+    national: 820,
     alola: 302
   }
 };
