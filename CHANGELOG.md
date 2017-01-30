@@ -1,3 +1,9 @@
+#### 1.21.1 (2017-1-29)
+
+##### Bug Fixes
+
+* **dex:** change gen 7 national total to 820 ([a1766a45](https://github.com/pokedextracker/api.pokedextracker.com/commit/a1766a45e8eb5cc0f4e2133637658fcccdd13247))
+
 ### 1.21.0 (2017-1-29)
 
 ##### Chores
