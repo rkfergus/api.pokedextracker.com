@@ -1,3 +1,14 @@
+### 1.21.0 (2017-1-29)
+
+##### Chores
+
+* **repo:** change all references of robinjoseph08 to pokedextracker ([5d3955a4](https://github.com/pokedextracker/api.pokedextracker.com/commit/5d3955a47f20ec04f5330cfb6d4014992b3972b1))
+
+##### New Features
+
+* **pokemon:** change primary key of pokemon from national_id to id ([898bf038](https://github.com/pokedextracker/api.pokedextracker.com/commit/898bf0386fa67231567bcf6f33c868e52534df8b))
+* **dexes:** prevent alolan gen 6 dexes ([f991aeaa](https://github.com/pokedextracker/api.pokedextracker.com/commit/f991aeaa6c1e15d8235769f3319943b048aaf248))
+
 #### 1.20.4 (2016-12-10)
 
 ##### Bug Fixes
