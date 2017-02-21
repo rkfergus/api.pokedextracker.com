@@ -28,6 +28,10 @@ exports.create = function (params, payload, auth) {
     payload.user_id = auth.id;
     payload.slug = Slug(payload.title, { lower: true });
 
+    if (payload.slug === '') {
+      throw new Errors.EmptySlug();
+    }
+
     return new Dex().where({ user_id: auth.id, slug: payload.slug }).fetch();
   })
   .then((existing) => {
@@ -55,6 +59,10 @@ exports.update = function (params, payload, auth) {
   .then((dex) => {
     if (payload.title) {
       payload.slug = Slug(payload.title, { lower: true });
+
+      if (payload.slug === '') {
+        throw new Errors.EmptySlug();
+      }
     }
 
     let captures;

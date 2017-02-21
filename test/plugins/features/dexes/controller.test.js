@@ -80,6 +80,14 @@ describe('dexes controller', () => {
       });
     });
 
+    it('rejects if trying to create a dex without a slug', () => {
+      return Controller.create(firstParams, { title: '为什么', shiny, generation, region }, firstUser)
+      .catch((err) => err)
+      .then((err) => {
+        expect(err).to.be.an.instanceof(Errors.EmptySlug);
+      });
+    });
+
     it('rejects if trying to create a dex for another user', () => {
       return Controller.create(secondParams, { title, shiny, generation, region }, firstUser)
       .catch((err) => err)
@@ -176,6 +184,14 @@ describe('dexes controller', () => {
           expect(capture.related('pokemon').get('generation')).to.eql(generation);
           expect(capture.related('pokemon').get(`${region}_id`)).to.exist;
         });
+      });
+    });
+
+    it('rejects if trying to update a dex to one with an empty slug', () => {
+      return Controller.update(firstParams, { title: '为什么' }, firstUser)
+      .catch((err) => err)
+      .then((err) => {
+        expect(err).to.be.an.instanceof(Errors.EmptySlug);
       });
     });
 
