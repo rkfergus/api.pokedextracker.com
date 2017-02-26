@@ -1,3 +1,32 @@
+### 1.22.0 (2017-2-26)
+
+##### Chores
+
+* **node:** use exact node version v5.12.0 ([e73b3c9d](https://github.com/pokedextracker/api.pokedextracker.com/commit/e73b3c9d2b45cf1546ece9a27cb5ec0247d36faa))
+* **deps:**
+  * add bluebird as a dependency ([828c0795](https://github.com/pokedextracker/api.pokedextracker.com/commit/828c07958643421b02e6006bb1a8e0c8c58b1ba3))
+  * update hapi and join from v15.0.1 and v9.0.0 to v16.1.0 and v10.2.2 ([979cb015](https://github.com/pokedextracker/api.pokedextracker.com/commit/979cb015ceda30703c0a8171991538221edd92ce))
+  * update nodemon from v1.9.1 to v1.11.0 ([facb0553](https://github.com/pokedextracker/api.pokedextracker.com/commit/facb05532043f52a13a7933214530998ef869f7a))
+  * update rosie from v1.3.0 to v1.6.0 ([36cedc0d](https://github.com/pokedextracker/api.pokedextracker.com/commit/36cedc0d0c9d788d2d7de2a90279701ebb0dea24))
+  * update sinon from v1.17.3 to v1.17.7 ([fdc3c66d](https://github.com/pokedextracker/api.pokedextracker.com/commit/fdc3c66d8c6d2adfff21e0c6edc275e3dee54e54))
+  * update coveralls from v2.11.8 to v2.11.16 ([2f2eaf37](https://github.com/pokedextracker/api.pokedextracker.com/commit/2f2eaf37af72420b08a1451886c44b5b93bbfc7e))
+  * update newrelic from v1.26.0 to v1.37.2 ([8a4cc69c](https://github.com/pokedextracker/api.pokedextracker.com/commit/8a4cc69cba2f5be619c74eff0c3381e40dd815a0))
+  * update jsonwebtoken from v7.1.3 to v7.3.0 ([8261b5b7](https://github.com/pokedextracker/api.pokedextracker.com/commit/8261b5b7c04344d349d8adb0e4c3d47f48f9359f))
+  * update good from v7.0.1 to v7.1.0 ([48629db9](https://github.com/pokedextracker/api.pokedextracker.com/commit/48629db931227286c37fbe2a237456538c1d22af))
+  * update pg from v6.0.2 to v6.1.2 ([f4c0e216](https://github.com/pokedextracker/api.pokedextracker.com/commit/f4c0e216b978dcdb951697fddeadda6250ae1eeb))
+  * update istanbul from v0.4.2 to v0.4.5 ([825e1ad7](https://github.com/pokedextracker/api.pokedextracker.com/commit/825e1ad74201401ef1246d45192002729d51f39b))
+  * update mocha from v2.4.5 to v3.2.0 ([92316914](https://github.com/pokedextracker/api.pokedextracker.com/commit/92316914dd0d3ed982eaad637b0b2a2ecfd46d93))
+  * update generate-changlog from v1.0.1 to v1.1.0 ([d59ba40d](https://github.com/pokedextracker/api.pokedextracker.com/commit/d59ba40de27b22289469e5481397a9bb64c2702d))
+  * update eslint-config-lob from v2.2.0 to v2.4.0 ([69c8a624](https://github.com/pokedextracker/api.pokedextracker.com/commit/69c8a62487768c9610ed43a89020d2c7f61a68b1))
+  * update bookshelf and knex ([541cf02b](https://github.com/pokedextracker/api.pokedextracker.com/commit/541cf02b7b169a12cd77f13c2ddc1852b19ff215))
+  * update good-squeeze from v4.0.0 to v5.0.1 ([41919583](https://github.com/pokedextracker/api.pokedextracker.com/commit/41919583c6f399e54a2d04c77387f39c2d1070b4))
+  * update bcrypt from v0.8.5 to v1.0.2 ([6ffcc53f](https://github.com/pokedextracker/api.pokedextracker.com/commit/6ffcc53fb9ea6ef0dca1cec5e6311417cd0725c9))
+* **yarn:** switch to yarn ([b057abdc](https://github.com/pokedextracker/api.pokedextracker.com/commit/b057abdcb6a60d54533cb8f19597e64d02cd21af))
+
+##### Bug Fixes
+
+* **dex:** err when trying to set an empty slug ([8fd1c26a](https://github.com/pokedextracker/api.pokedextracker.com/commit/8fd1c26a96ec67421da91c766c9d267e2be5b872))
+
 #### 1.21.1 (2017-1-29)
 
 ##### Bug Fixes
