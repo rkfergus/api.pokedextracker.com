@@ -1,3 +1,9 @@
+#### 1.22.1 (2017-2-26)
+
+##### Chores
+
+* **captures:** remove not null constraint from captures.user_id ([9c7e5161](https://github.com/pokedextracker/api.pokedextracker.com/commit/9c7e5161683b3f6f5cc035cddbbd682e75cf0a2c))
+
 ### 1.22.0 (2017-2-26)
 
 ##### Chores
