@@ -3255,9 +3255,9 @@
       "resolved": "https://registry.npmjs.org/signal-exit/-/signal-exit-3.0.2.tgz"
     },
     "sinon": {
-      "version": "1.17.4",
-      "from": "sinon@>=1.17.3 <2.0.0",
-      "resolved": "https://registry.npmjs.org/sinon/-/sinon-1.17.4.tgz"
+      "version": "1.17.7",
+      "from": "sinon@*",
+      "resolved": "https://registry.npmjs.org/sinon/-/sinon-1.17.7.tgz"
     },
     "slide": {
       "version": "1.1.6",
