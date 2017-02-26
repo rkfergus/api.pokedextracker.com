@@ -1593,9 +1593,21 @@
       }
     },
     "good-squeeze": {
-      "version": "4.0.0",
-      "from": "good-squeeze@latest",
-      "resolved": "https://registry.npmjs.org/good-squeeze/-/good-squeeze-4.0.0.tgz"
+      "version": "5.0.1",
+      "from": "good-squeeze@*",
+      "resolved": "https://registry.npmjs.org/good-squeeze/-/good-squeeze-5.0.1.tgz",
+      "dependencies": {
+        "fast-safe-stringify": {
+          "version": "1.1.0",
+          "from": "fast-safe-stringify@1.1.0",
+          "resolved": "https://registry.npmjs.org/fast-safe-stringify/-/fast-safe-stringify-1.1.0.tgz"
+        },
+        "hoek": {
+          "version": "4.1.0",
+          "from": "hoek@>=4.0.0 <5.0.0",
+          "resolved": "https://registry.npmjs.org/hoek/-/hoek-4.1.0.tgz"
+        }
+      }
     },
     "got": {
       "version": "3.3.1",
