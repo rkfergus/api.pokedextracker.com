@@ -14,11 +14,11 @@ addons:
 services:
   - postgresql
 before_script:
-  - psql -c 'CREATE ROLE "pokedex_tracker_user" CREATEDB CREATEUSER LOGIN;' -U postgres
-  - createdb -O pokedex_tracker_user pokedex_tracker
-  - npm run migrate
+  - createuser --createdb --login pokedex_tracker_user
+  - createdb --owner pokedex_tracker_user pokedex_tracker
+  - yarn run migrate
 script:
-  - npm test
-  - npm run lint
+  - yarn test
+  - yarn run lint
 after_script:
-  - npm run coveralls
+  - yarn run coveralls
