@@ -705,9 +705,14 @@
       "resolved": "https://registry.npmjs.org/eslint/-/eslint-1.10.3.tgz"
     },
     "eslint-config-lob": {
-      "version": "2.2.0",
-      "from": "eslint-config-lob@>=2.0.0 <3.0.0",
-      "resolved": "https://registry.npmjs.org/eslint-config-lob/-/eslint-config-lob-2.2.0.tgz"
+      "version": "2.4.0",
+      "from": "eslint-config-lob@*",
+      "resolved": "https://registry.npmjs.org/eslint-config-lob/-/eslint-config-lob-2.4.0.tgz"
+    },
+    "eslint-plugin-lob": {
+      "version": "1.0.1",
+      "from": "eslint-plugin-lob@*",
+      "resolved": "https://registry.npmjs.org/eslint-plugin-lob/-/eslint-plugin-lob-1.0.1.tgz"
     },
     "espree": {
       "version": "2.2.5",
