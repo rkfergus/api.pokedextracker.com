@@ -19,7 +19,7 @@
     "test:raw": "NODE_ENV=test mocha test --require test/setup.js --recursive --timeout 30000"
   },
   "dependencies": {
-    "bcrypt": "^0.8.5",
+    "bcrypt": "^1.0.2",
     "bookshelf": "^0.10.0",
     "create-boom-error": "^0.1.0",
     "good": "^7.0.1",
