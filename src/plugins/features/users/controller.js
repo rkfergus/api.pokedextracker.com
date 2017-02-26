@@ -1,7 +1,7 @@
 'use strict';
 
 const Bluebird = require('bluebird');
-const Bcrypt   = Bluebird.promisifyAll(require('bcrypt'));
+const Bcrypt   = require('bcrypt');
 const Slug     = require('slug');
 
 const Config = require('../../../../config');
@@ -28,7 +28,7 @@ exports.retrieve = function (username) {
 };
 
 exports.create = function (payload, request) {
-  return Bcrypt.hashAsync(payload.password, Config.SALT_ROUNDS)
+  return Bluebird.resolve(Bcrypt.hash(payload.password, Config.SALT_ROUNDS))
   .then((hash) => {
     payload.password = hash;
 
@@ -73,7 +73,7 @@ exports.update = function (username, payload, auth) {
   return Bluebird.resolve()
   .then(() => {
     if (payload.password) {
-      return Bcrypt.hashAsync(payload.password, Config.SALT_ROUNDS)
+      return Bcrypt.hash(payload.password, Config.SALT_ROUNDS)
       .then((hash) => payload.password = hash);
     }
   })
