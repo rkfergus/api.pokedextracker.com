@@ -3193,9 +3193,9 @@
       }
     },
     "rosie": {
-      "version": "1.3.0",
-      "from": "rosie@>=1.3.0 <2.0.0",
-      "resolved": "https://registry.npmjs.org/rosie/-/rosie-1.3.0.tgz"
+      "version": "1.6.0",
+      "from": "rosie@*",
+      "resolved": "https://registry.npmjs.org/rosie/-/rosie-1.6.0.tgz"
     },
     "run-async": {
       "version": "0.1.0",
