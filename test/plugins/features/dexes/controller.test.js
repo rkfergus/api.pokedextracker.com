@@ -18,9 +18,9 @@ const oldGenPokemon      = Factory.build('pokemon', { id: 1, national_id: 1, gen
 const newGenPokemon      = Factory.build('pokemon', { id: 2, national_id: 2, generation: firstDex.generation, alola_id: 2 });
 const otherRegionPokemon = Factory.build('pokemon', { id: 3, national_id: 3, generation: firstDex.generation - 1, hoenn_id: 1 });
 
-const oldGenCapture      = Factory.build('capture', { pokemon_id: oldGenPokemon.id, dex_id: firstDex.id, user_id: firstUser.id });
-const newGenCapture      = Factory.build('capture', { pokemon_id: newGenPokemon.id, dex_id: firstDex.id, user_id: firstUser.id });
-const otherRegionCapture = Factory.build('capture', { pokemon_id: otherRegionPokemon.id, dex_id: firstDex.id, user_id: firstUser.id });
+const oldGenCapture      = Factory.build('capture', { pokemon_id: oldGenPokemon.id, dex_id: firstDex.id });
+const newGenCapture      = Factory.build('capture', { pokemon_id: newGenPokemon.id, dex_id: firstDex.id });
+const otherRegionCapture = Factory.build('capture', { pokemon_id: otherRegionPokemon.id, dex_id: firstDex.id });
 
 describe('dexes controller', () => {
 

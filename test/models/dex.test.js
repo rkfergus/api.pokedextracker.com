@@ -12,8 +12,8 @@ const secondPokemon = Factory.build('pokemon', { id: 2, national_id: 2 });
 
 const dex = Factory.build('dex', { user_id: user.id });
 
-const firstCapture  = Factory.build('capture', { pokemon_id: firstPokemon.id, user_id: user.id, dex_id: dex.id });
-const secondCapture = Factory.build('capture', { pokemon_id: secondPokemon.id, user_id: user.id, dex_id: dex.id });
+const firstCapture  = Factory.build('capture', { pokemon_id: firstPokemon.id, dex_id: dex.id });
+const secondCapture = Factory.build('capture', { pokemon_id: secondPokemon.id, dex_id: dex.id });
 
 describe('dex model', () => {
 
