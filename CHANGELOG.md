@@ -1,3 +1,9 @@
+#### 1.22.3 (2017-2-26)
+
+##### Chores
+
+* **captures:** drop captures.user_id ([c280a484](https://github.com/pokedextracker/api.pokedextracker.com/commit/c280a4841249d8cf8ab16dfc2fc3f81917be7c5b))
+
 #### 1.22.2 (2017-2-26)
 
 ##### Chores
