@@ -1,3 +1,9 @@
+#### 1.22.2 (2017-2-26)
+
+##### Chores
+
+* **captures:** stop writing to captures.user_id ([699c354d](https://github.com/pokedextracker/api.pokedextracker.com/commit/699c354d9c054bb1e93214ada1fe20671333806b))
+
 #### 1.22.1 (2017-2-26)
 
 ##### Chores
