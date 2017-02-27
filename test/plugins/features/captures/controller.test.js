@@ -19,8 +19,8 @@ const dex       = Factory.build('dex', { user_id: user.id, generation: 1 });
 const otherDex  = Factory.build('dex', { user_id: otherUser.id, generation: 1 });
 const regionDex = Factory.build('dex', { title: 'Another', slug: 'another', user_id: user.id, generation: 1, region: 'alola' });
 
-const firstCapture = Factory.build('capture', { pokemon_id: firstPokemon.id, user_id: user.id, dex_id: dex.id });
-const otherCapture = Factory.build('capture', { pokemon_id: firstPokemon.id, user_id: otherUser.id, dex_id: otherDex.id });
+const firstCapture = Factory.build('capture', { pokemon_id: firstPokemon.id, dex_id: dex.id });
+const otherCapture = Factory.build('capture', { pokemon_id: firstPokemon.id, dex_id: otherDex.id });
 
 describe('captures controller', () => {
 
@@ -34,22 +34,6 @@ describe('captures controller', () => {
   });
 
   describe('list', () => {
-
-    it('returns a collection of captures filtered by user_id, filling in those that do not exist', () => {
-      return new Pokemon().query((qb) => qb.orderBy('id')).fetchAll()
-      .get('models')
-      .then((pokemon) => Controller.list({ user: user.id }, pokemon))
-      .map((capture) => capture.serialize())
-      .then((captures) => {
-        expect(captures).to.have.length(2);
-        expect(captures[0].pokemon.id).to.eql(firstPokemon.id);
-        expect(captures[0].user_id).to.eql(user.id);
-        expect(captures[0].captured).to.be.true;
-        expect(captures[1].pokemon.id).to.eql(secondPokemon.id);
-        expect(captures[1].user_id).to.eql(user.id);
-        expect(captures[1].captured).to.be.false;
-      });
-    });
 
     it('returns a collection of captures filtered by dex_id, filling in those that do not exist', () => {
       return new Pokemon().query((qb) => qb.orderBy('id')).fetchAll()
@@ -94,14 +78,6 @@ describe('captures controller', () => {
       });
     });
 
-    it('rejects for a user id that does not exist', () => {
-      return Controller.list({ user: -1 })
-      .catch((err) => err)
-      .then((err) => {
-        expect(err).to.be.an.instanceof(Errors.NotFound);
-      });
-    });
-
     it('rejects for a dex id that does not exist', () => {
       return Controller.list({ dex: -1 })
       .catch((err) => err)
@@ -119,7 +95,6 @@ describe('captures controller', () => {
       .then((captures) => {
         expect(captures).to.have.length(1);
         expect(captures.at(0).get('pokemon_id')).to.eql(secondPokemon.id);
-        expect(captures.at(0).get('user_id')).to.eql(user.id);
         expect(captures.at(0).get('dex_id')).to.eql(dex.id);
         expect(captures.at(0).get('captured')).to.be.true;
       });
@@ -154,7 +129,6 @@ describe('captures controller', () => {
       .then((captures) => {
         expect(captures).to.have.length(1);
         expect(captures.at(0).get('pokemon_id')).to.eql(firstPokemon.id);
-        expect(captures.at(0).get('user_id')).to.eql(user.id);
         expect(captures.at(0).get('captured')).to.be.true;
       });
     });

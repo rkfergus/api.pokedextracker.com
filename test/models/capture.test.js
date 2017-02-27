@@ -19,7 +19,6 @@ describe('capture model', () => {
       expect(json).to.have.all.keys([
         'pokemon',
         'dex_id',
-        'user_id',
         'captured'
       ]);
       expect(json.pokemon).to.have.all.keys([

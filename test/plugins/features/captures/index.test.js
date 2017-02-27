@@ -14,7 +14,7 @@ const user = Factory.build('user');
 
 const dex = Factory.build('dex', { user_id: user.id });
 
-const firstCapture = Factory.build('capture', { pokemon_id: firstPokemon.id, user_id: user.id, dex_id: dex.id });
+const firstCapture = Factory.build('capture', { pokemon_id: firstPokemon.id, dex_id: dex.id });
 
 const auth = `Bearer ${JWT.sign(user, Config.JWT_SECRET)}`;
 
@@ -34,7 +34,7 @@ describe('captures integration', () => {
     it('returns a collection of captures', () => {
       return Server.inject({
         method: 'GET',
-        url: `/captures?user=${user.id}`
+        url: `/captures?dex=${dex.id}`
       })
       .then((res) => {
         expect(res.statusCode).to.eql(200);

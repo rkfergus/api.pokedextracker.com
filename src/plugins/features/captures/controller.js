@@ -7,27 +7,16 @@ const Dex     = require('../../../models/dex');
 const Errors  = require('../../../libraries/errors');
 const Knex    = require('../../../libraries/knex');
 const Pokemon = require('../../../models/pokemon');
-const User    = require('../../../models/user');
 
 exports.list = function (query, pokemon) {
   let dex;
 
-  return Bluebird.resolve()
-  .then(() => {
-    if (query.user) {
-      return new User({ id: query.user }).fetch({ require: true })
-      .catch(User.NotFoundError, () => {
-        throw new Errors.NotFound('user');
-      });
-    }
-
-    return new Dex({ id: query.dex }).fetch({ require: true })
-    .then((d) => dex = d)
-    .catch(Dex.NotFoundError, () => {
-      throw new Errors.NotFound('dex');
-    });
+  return new Dex({ id: query.dex }).fetch({ require: true })
+  .then((d) => dex = d)
+  .catch(Dex.NotFoundError, () => {
+    throw new Errors.NotFound('dex');
   })
-  .then(() => new Capture().where(query.user ? 'user_id' : 'dex_id', query.user || query.dex).fetchAll({ withRelated: Capture.RELATED }))
+  .then(() => new Capture().where('dex_id', query.dex).fetchAll({ withRelated: Capture.RELATED }))
   .get('models')
   .reduce((captures, capture) => {
     captures[capture.get('pokemon_id')] = capture;
@@ -37,7 +26,7 @@ exports.list = function (query, pokemon) {
     return Bluebird.resolve(pokemon)
     .then((p) => new Array(p.length))
     .map((_, i) => {
-      if (dex && (pokemon[i].get('generation') > dex.get('generation') || !pokemon[i].get(`${dex.get('region')}_id`))) {
+      if (pokemon[i].get('generation') > dex.get('generation') || !pokemon[i].get(`${dex.get('region')}_id`)) {
         return null;
       }
 
@@ -45,14 +34,14 @@ exports.list = function (query, pokemon) {
         return captures[i + 1];
       }
 
-      const capture = Capture.forge({ dex_id: query.dex, user_id: query.user, pokemon_id: i + 1, captured: false });
+      const capture = Capture.forge({ dex_id: query.dex, pokemon_id: i + 1, captured: false });
       capture.relations.pokemon = pokemon[i];
       return capture;
     });
   })
   .filter((capture) => capture)
   .then((captures) => {
-    const property = !dex || dex.get('region') === 'national' ? 'national_order' : `${dex.get('region')}_id`;
+    const property = dex.get('region') === 'national' ? 'national_order' : `${dex.get('region')}_id`;
 
     return captures.sort((a, b) => a.related('pokemon').get(property) - b.related('pokemon').get(property));
   });
@@ -77,7 +66,6 @@ exports.create = function (payload, auth) {
   .map((pokemonId) => {
     return Knex('captures').insert({
       pokemon_id: pokemonId,
-      user_id: auth.id,
       dex_id: payload.dex,
       captured: true
     })
