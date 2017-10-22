@@ -1,5 +1,7 @@
 'use strict';
 
+require('dotenv').config();
+
 const config = {
   development: require('./development'),
   production: require('./production'),
