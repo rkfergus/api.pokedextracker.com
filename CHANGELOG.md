@@ -1,3 +1,10 @@
+### 1.23.0 (2017-12-10)
+
+##### New Features
+
+* **donations:** add donate endpoint (#86) ([e408420e](https://github.com/pokedextracker/api.pokedextracker.com/commit/e408420e82575572870e02a339fa945c598fb85d))
+* **env:** add dotenv ([c583b260](https://github.com/pokedextracker/api.pokedextracker.com/commit/c583b260a7ae60630fc89be432da492cd80c39c9))
+
 #### 1.22.3 (2017-2-26)
 
 ##### Chores
