@@ -1,3 +1,9 @@
+### 1.24.0 (2017-12-18)
+
+##### New Features
+
+* **games:** add game_families and games tables and endpoint (#87) ([5786b2a0](https://github.com/pokedextracker/api.pokedextracker.com/commit/5786b2a07b495a2e7124eadef82dfd69e4ca04e6))
+
 ### 1.23.0 (2017-12-10)
 
 ##### New Features
