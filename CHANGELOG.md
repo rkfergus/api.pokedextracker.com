@@ -1,3 +1,11 @@
+### 1.25.0 (2017-12-21)
+
+##### New Features
+
+* **dexes:** add game_id and regional to dexes (#90) ([eb2aaff2](https://github.com/pokedextracker/api.pokedextracker.com/commit/eb2aaff2e4f48a9aa6508255a6772b1c9268bb77))
+* **game-family:** add game_family_dex_numbers table and properties to pokemon (#89) ([0064edcf](https://github.com/pokedextracker/api.pokedextracker.com/commit/0064edcfeb246a5f8a624d2b5a80af09d29bb9c0))
+* **pokemon:** add game_family_id to pokemon (#88) ([d1519ae7](https://github.com/pokedextracker/api.pokedextracker.com/commit/d1519ae7e41f1b1183ee939a1ddcb84c7097415e))
+
 ### 1.24.0 (2017-12-18)
 
 ##### New Features
