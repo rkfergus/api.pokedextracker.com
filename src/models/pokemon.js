@@ -20,12 +20,29 @@ module.exports = Bookshelf.model('Pokemon', Bookshelf.Model.extend({
     .query((qb) => {
       qb.joinRaw('INNER JOIN pokemon AS evolved ON evolutions.evolved_pokemon_id = evolved.id');
       qb.joinRaw('INNER JOIN pokemon AS evolving ON evolutions.evolving_pokemon_id = evolving.id');
+      qb.joinRaw('INNER JOIN game_families AS evolved_game_family ON evolved.game_family_id = evolved_game_family.id');
+      qb.joinRaw('INNER JOIN game_families AS evolving_game_family ON evolving.game_family_id = evolving_game_family.id');
 
       if (query.generation) {
         qb.whereRaw(`evolved.generation <= ${query.generation} AND evolving.generation <= ${query.generation}`);
       }
+      if (query.game_family) {
+        qb.whereRaw(`
+          evolved_game_family.order <= (
+            SELECT "order" FROM game_families WHERE id = ?
+          ) AND
+          evolving_game_family.order <= (
+            SELECT "order" FROM game_families WHERE id = ?
+          )
+        `, [query.game_family, query.game_family]);
+      }
       if (query.region) {
         qb.whereRaw(`evolved.${query.region}_id IS NOT NULL AND evolving.${query.region}_id IS NOT NULL`);
+      }
+      if (query.regional) {
+        qb.joinRaw('LEFT OUTER JOIN game_family_dex_numbers AS evolved_dex_numbers ON evolved.id = evolved_dex_numbers.pokemon_id');
+        qb.joinRaw('LEFT OUTER JOIN game_family_dex_numbers AS evolving_dex_numbers ON evolving.id = evolving_dex_numbers.pokemon_id');
+        qb.whereRaw(`evolved_dex_numbers.game_family_id = ? AND evolving_dex_numbers.game_family_id = ?`, [query.game_family, query.game_family]);
       }
 
       qb.orderByRaw('CASE WHEN trigger = \'breed\' THEN evolving.national_id ELSE evolved.national_id END, trigger DESC, evolved.national_order ASC');
