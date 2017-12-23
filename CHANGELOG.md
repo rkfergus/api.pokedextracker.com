@@ -1,3 +1,9 @@
+#### 1.25.1 (2017-12-23)
+
+##### Chores
+
+* **dexes:** backfill game_id and regional (#91) ([c696ff93](https://github.com/pokedextracker/api.pokedextracker.com/commit/c696ff93a3e5e5952af0a40d36c701af5767b719))
+
 ### 1.25.0 (2017-12-21)
 
 ##### New Features
