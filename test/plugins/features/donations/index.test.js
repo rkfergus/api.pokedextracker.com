@@ -20,7 +20,7 @@ describe('donations integration', () => {
     let amount;
 
     beforeEach(() => {
-      amount = parseFloat((Math.random() * 100).toFixed(2));
+      amount = parseFloat((Math.random() * 100).toFixed(2)) + 0.50;
 
       return Knex('users').insert(user);
     });
