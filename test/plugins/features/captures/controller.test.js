@@ -8,20 +8,25 @@ const Errors     = require('../../../../src/libraries/errors');
 const Knex       = require('../../../../src/libraries/knex');
 const Pokemon    = require('../../../../src/models/pokemon');
 
-const gameFamily = Factory.build('game-family');
+const firstGameFamily  = Factory.build('game-family');
+const secondGameFamily = Factory.build('game-family');
 
-const game = Factory.build('game', { game_family_id: gameFamily.id });
+const game = Factory.build('game', { game_family_id: firstGameFamily.id });
 
-const firstPokemon      = Factory.build('pokemon', { id: 1, national_id: 1, generation: 1, alola_id: 1, game_family_id: gameFamily.id });
-const secondPokemon     = Factory.build('pokemon', { id: 2, national_id: 2, generation: 1, alola_id: 2, game_family_id: gameFamily.id });
-const generationPokemon = Factory.build('pokemon', { id: 3, national_id: 3, generation: 2, hoenn_id: 1, game_family_id: gameFamily.id });
+const firstPokemon      = Factory.build('pokemon', { id: 1, national_id: 1, generation: 1, alola_id: 1, game_family_id: firstGameFamily.id });
+const secondPokemon     = Factory.build('pokemon', { id: 2, national_id: 2, generation: 1, alola_id: 2, game_family_id: firstGameFamily.id });
+const generationPokemon = Factory.build('pokemon', { id: 3, national_id: 3, generation: 2, hoenn_id: 1, game_family_id: secondGameFamily.id });
+
+const firstDexNumber      = Factory.build('game-family-dex-number', { pokemon_id: firstPokemon.id, game_family_id: firstGameFamily.id, dex_number: 1 });
+const secondDexNumber     = Factory.build('game-family-dex-number', { pokemon_id: secondPokemon.id, game_family_id: firstGameFamily.id, dex_number: 2 });
+const generationDexNumber = Factory.build('game-family-dex-number', { pokemon_id: generationPokemon.id, game_family_id: secondGameFamily.id, dex_number: 1 });
 
 const user      = Factory.build('user');
 const otherUser = Factory.build('user');
 
 const dex       = Factory.build('dex', { user_id: user.id, generation: 1, game_id: game.id });
 const otherDex  = Factory.build('dex', { user_id: otherUser.id, generation: 1, game_id: game.id });
-const regionDex = Factory.build('dex', { title: 'Another', slug: 'another', user_id: user.id, generation: 1, game_id: game.id, region: 'alola' });
+const regionDex = Factory.build('dex', { title: 'Another', slug: 'another', user_id: user.id, generation: 1, game_id: game.id, region: 'alola', regional: true });
 
 const firstCapture = Factory.build('capture', { pokemon_id: firstPokemon.id, dex_id: dex.id });
 const otherCapture = Factory.build('capture', { pokemon_id: firstPokemon.id, dex_id: otherDex.id });
@@ -29,7 +34,7 @@ const otherCapture = Factory.build('capture', { pokemon_id: firstPokemon.id, dex
 describe('captures controller', () => {
 
   beforeEach(() => {
-    return Knex('game_families').insert(gameFamily)
+    return Knex('game_families').insert([firstGameFamily, secondGameFamily])
     .then(() => {
       return Bluebird.all([
         Knex('pokemon').insert([firstPokemon, secondPokemon]),
@@ -37,14 +42,19 @@ describe('captures controller', () => {
         Knex('users').insert([user, otherUser])
       ]);
     })
-    .then(() => Knex('dexes').insert([dex, otherDex, regionDex]))
+    .then(() => {
+      return Bluebird.all([
+        Knex('dexes').insert([dex, otherDex, regionDex]),
+        Knex('game_family_dex_numbers').insert([firstDexNumber, secondDexNumber])
+      ]);
+    })
     .then(() => Knex('captures').insert([firstCapture, otherCapture]));
   });
 
   describe('list', () => {
 
     it('returns a collection of captures filtered by dex_id, filling in those that do not exist', () => {
-      return new Pokemon().query((qb) => qb.orderBy('id')).fetchAll()
+      return new Pokemon().query((qb) => qb.orderBy('id')).fetchAll({ withRelated: Pokemon.RELATED })
       .get('models')
       .then((pokemon) => Controller.list({ dex: dex.id }, pokemon))
       .map((capture) => capture.serialize())
@@ -61,7 +71,8 @@ describe('captures controller', () => {
 
     it('filters out pokemon that are not included in the dex\'s generation', () => {
       return Knex('pokemon').insert(generationPokemon)
-      .then(() => new Pokemon().query((qb) => qb.orderBy('id')).fetchAll())
+      .then(() => Knex('game_family_dex_numbers').insert(generationDexNumber))
+      .then(() => new Pokemon().query((qb) => qb.orderBy('id')).fetchAll({ withRelated: Pokemon.RELATED }))
       .get('models')
       .then((pokemon) => Controller.list({ dex: dex.id }, pokemon))
       .map((capture) => capture.serialize())
@@ -74,7 +85,7 @@ describe('captures controller', () => {
 
     it('filters out pokemon that are not included in the dex\'s region', () => {
       return Knex('pokemon').insert(generationPokemon)
-      .then(() => new Pokemon().query((qb) => qb.orderBy('id')).fetchAll())
+      .then(() => new Pokemon().query((qb) => qb.orderBy('id')).fetchAll({ withRelated: Pokemon.RELATED }))
       .get('models')
       .then((pokemon) => Controller.list({ dex: regionDex.id }, pokemon))
       .map((capture) => capture.serialize())

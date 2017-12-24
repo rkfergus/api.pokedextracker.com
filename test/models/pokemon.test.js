@@ -15,7 +15,8 @@ const spearow     = Factory.build('pokemon', { id: 21, national_id: 21, evolutio
 const fearow      = Factory.build('pokemon', { id: 22, national_id: 22, evolution_family_id: 21, generation: 1, game_family_id: redBlue.id });
 const onix        = Factory.build('pokemon', { id: 95, national_id: 95, evolution_family_id: 95, generation: 1, game_family_id: redBlue.id });
 
-const pikachuDexNumber         = Factory.build('game-family-dex-number', { pokemon_id: pikachu.id, game_family_id: redBlue.id, dex_number: 25 });
+const pikachuRedBlueDexNumber  = Factory.build('game-family-dex-number', { pokemon_id: pikachu.id, game_family_id: redBlue.id, dex_number: 25 });
+const pikachuSunMoonDexNumber  = Factory.build('game-family-dex-number', { pokemon_id: pikachu.id, game_family_id: sunMoon.id, dex_number: 25 });
 const raichuDexNumber          = Factory.build('game-family-dex-number', { pokemon_id: raichu.id, game_family_id: redBlue.id, dex_number: 26 });
 const pichuGoldSilverDexNumber = Factory.build('game-family-dex-number', { pokemon_id: pichu.id, game_family_id: goldSilver.id, dex_number: 172 });
 const pichuSunMoonDexNumber    = Factory.build('game-family-dex-number', { pokemon_id: pichu.id, game_family_id: sunMoon.id, dex_number: 24 });
@@ -35,7 +36,7 @@ describe('pokemon model', () => {
   beforeEach(() => {
     return Knex('game_families').insert([redBlue, goldSilver, sunMoon])
     .then(() => Knex('pokemon').insert([pikachu, raichu, pichu, alolaRaichu, spearow, fearow, onix]))
-    .then(() => Knex('game_family_dex_numbers').insert([pikachuDexNumber, raichuDexNumber, pichuGoldSilverDexNumber, pichuSunMoonDexNumber, alolaRaichuDexNumber, spearowDexNumber, fearowDexNumber, onixDexNumber]))
+    .then(() => Knex('game_family_dex_numbers').insert([pikachuRedBlueDexNumber, pikachuSunMoonDexNumber, raichuDexNumber, pichuGoldSilverDexNumber, pichuSunMoonDexNumber, alolaRaichuDexNumber, spearowDexNumber, fearowDexNumber, onixDexNumber]))
     .then(() => Knex('evolutions').insert([levelEvolution, breedEvolution, stoneEvolution, alolaEvolution, spearowEvolution]));
   });
 
@@ -62,8 +63,34 @@ describe('pokemon model', () => {
       });
     });
 
+    it('returns evolutions based on the game_family filter', () => {
+      return Pokemon.forge(pikachu).evolutions({ game_family: goldSilver.id })
+      .then((evolutions) => {
+        expect(evolutions).to.have.length(3);
+        expect(evolutions[0].get('evolving_pokemon_id')).to.eql(pichu.id);
+        expect(evolutions[0].get('evolved_pokemon_id')).to.eql(pikachu.id);
+        expect(evolutions[1].get('evolving_pokemon_id')).to.eql(pikachu.id);
+        expect(evolutions[1].get('evolved_pokemon_id')).to.eql(pichu.id);
+        expect(evolutions[2].get('evolving_pokemon_id')).to.eql(pikachu.id);
+        expect(evolutions[2].get('evolved_pokemon_id')).to.eql(raichu.id);
+      });
+    });
+
     it('returns evolutions based on the region filter', () => {
       return Pokemon.forge(pikachu).evolutions({ region: 'alola' })
+      .then((evolutions) => {
+        expect(evolutions).to.have.length(3);
+        expect(evolutions[0].get('evolving_pokemon_id')).to.eql(pichu.id);
+        expect(evolutions[0].get('evolved_pokemon_id')).to.eql(pikachu.id);
+        expect(evolutions[1].get('evolving_pokemon_id')).to.eql(pikachu.id);
+        expect(evolutions[1].get('evolved_pokemon_id')).to.eql(pichu.id);
+        expect(evolutions[2].get('evolving_pokemon_id')).to.eql(pikachu.id);
+        expect(evolutions[2].get('evolved_pokemon_id')).to.eql(alolaRaichu.id);
+      });
+    });
+
+    it('returns evolutions based on the regional filter', () => {
+      return Pokemon.forge(pikachu).evolutions({ game_family: sunMoon.id, regional: true })
       .then((evolutions) => {
         expect(evolutions).to.have.length(3);
         expect(evolutions[0].get('evolving_pokemon_id')).to.eql(pichu.id);
@@ -249,6 +276,7 @@ describe('pokemon model', () => {
           'mountain_kalos_id',
           'alola_id',
           'red_blue_id',
+          'sun_moon_id',
           'x_locations',
           'y_locations',
           'or_locations',

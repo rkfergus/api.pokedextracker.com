@@ -23,10 +23,15 @@ exports.list = function (query, pokemon) {
     return captures;
   }, {})
   .then((captures) => {
+    const gameFamily = dex.related('game').related('game_family');
+
     return Bluebird.resolve(pokemon)
     .then((p) => new Array(p.length))
     .map((_, i) => {
-      if (pokemon[i].get('generation') > dex.get('generation') || !pokemon[i].get(`${dex.get('region')}_id`)) {
+      const notInGameFamily = pokemon[i].related('game_family').get('order') > gameFamily.get('order');
+      const notInRegion = dex.get('regional') && pokemon[i].get('dex_number_properties')[`${gameFamily.get('id')}_id`] === undefined;
+
+      if (notInGameFamily || notInRegion) {
         return null;
       }
 
@@ -41,9 +46,16 @@ exports.list = function (query, pokemon) {
   })
   .filter((capture) => capture)
   .then((captures) => {
-    const property = dex.get('region') === 'national' ? 'national_order' : `${dex.get('region')}_id`;
+    return captures.sort((a, b) => {
+      if (dex.get('regional')) {
+        const aId = a.related('pokemon').get('dex_number_properties')[`${dex.related('game').related('game_family').get('id')}_id`];
+        const bId = b.related('pokemon').get('dex_number_properties')[`${dex.related('game').related('game_family').get('id')}_id`];
 
-    return captures.sort((a, b) => a.related('pokemon').get(property) - b.related('pokemon').get(property));
+        return aId - bId;
+      }
+
+      return a.related('pokemon').get('national_order') - b.related('pokemon').get('national_order');
+    });
   });
 };
 
