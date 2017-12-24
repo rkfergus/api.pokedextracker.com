@@ -1,3 +1,15 @@
+### 1.26.0 (2017-12-23)
+
+##### New Features
+
+* **evolutions:** make pokemon retrieve use game_family/regional ([d8ede94c](https://github.com/pokedextracker/api.pokedextracker.com/commit/d8ede94cb20435c56c34d83bdeeb52aa29ed1410))
+* **captures:** use game_family/regional instead of generation/region ([e059de21](https://github.com/pokedextracker/api.pokedextracker.com/commit/e059de21396c941ae15e505f5de86259da23e714))
+* **dexes:** calculate total based on game_family (#92) ([e8608004](https://github.com/pokedextracker/api.pokedextracker.com/commit/e8608004a0cc04615369e1184193c8679ca14d4f))
+
+##### Tests
+
+* **donations:** ensure amount > 0.50 ([eacb88f9](https://github.com/pokedextracker/api.pokedextracker.com/commit/eacb88f9dc3d5985f003bab08d3c79352a4855d4))
+
 #### 1.25.1 (2017-12-23)
 
 ##### Chores
