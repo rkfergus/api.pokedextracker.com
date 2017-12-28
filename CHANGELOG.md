@@ -1,3 +1,9 @@
+### 1.27.0 (2017-12-27)
+
+##### New Features
+
+* **pokemon:** add us_location/um_location columns on pokemon (#94) ([c29d8b4a](https://github.com/pokedextracker/api.pokedextracker.com/commit/c29d8b4a53a3768c63a26469de7ba782add7413a))
+
 ### 1.26.0 (2017-12-23)
 
 ##### New Features
