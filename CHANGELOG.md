@@ -1,3 +1,9 @@
+#### 1.27.1 (2017-12-29)
+
+##### Bug Fixes
+
+* **donations:** update stripe customer details if one exists (#95) ([9b643f48](https://github.com/pokedextracker/api.pokedextracker.com/commit/9b643f48610cf584d72f79aad35adc72cfce5335))
+
 ### 1.27.0 (2017-12-27)
 
 ##### New Features
