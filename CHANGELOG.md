@@ -1,3 +1,9 @@
+#### 1.27.2 (2017-12-31)
+
+##### Bug Fixes
+
+* **games:** order games correctly (#96) ([ceea2c8b](https://github.com/pokedextracker/api.pokedextracker.com/commit/ceea2c8b2dc44d0e3acb8e6023b17015a013040b))
+
 #### 1.27.1 (2017-12-29)
 
 ##### Bug Fixes
