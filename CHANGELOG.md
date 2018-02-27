@@ -1,3 +1,9 @@
+#### 1.27.3 (2018-2-26)
+
+##### Chores
+
+* **cleanup:** remove traces of generation and region (#97) ([5eff1cbf](https://github.com/pokedextracker/api.pokedextracker.com/commit/5eff1cbfa8fe11cb376371101faa58abcb9de0f2))
+
 #### 1.27.2 (2017-12-31)
 
 ##### Bug Fixes
