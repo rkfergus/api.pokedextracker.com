@@ -1,3 +1,9 @@
+#### 1.27.4 (2018-2-26)
+
+##### Chores
+
+* **db:** drop generation and region from pokemon and dexes (#98) ([521d60dd](https://github.com/pokedextracker/api.pokedextracker.com/commit/521d60dd523dab631b1b18d3418f6a99b821435d))
+
 #### 1.27.3 (2018-2-26)
 
 ##### Chores
