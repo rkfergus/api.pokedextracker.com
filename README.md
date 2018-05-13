@@ -1,7 +1,6 @@
 # api.pokedextracker.com
 
-[![Build Status](https://travis-ci.org/pokedextracker/api.pokedextracker.com.svg)](https://travis-ci.org/pokedextracker/api.pokedextracker.com)
-[![Coverage Status](https://coveralls.io/repos/pokedextracker/api.pokedextracker.com/badge.svg?branch=master&service=github)](https://coveralls.io/github/pokedextracker/api.pokedextracker.com?branch=master)
+[![CircleCI](https://circleci.com/gh/pokedextracker/api.pokedextracker.com.svg?style=shield)](https://circleci.com/gh/pokedextracker/api.pokedextracker.com)
 [![Dependency Status](https://david-dm.org/pokedextracker/api.pokedextracker.com.svg)](https://david-dm.org/pokedextracker/api.pokedextracker.com)
 
 The API for [pokedextracker.com](http://pokedextracker.com). It's written in Node.js v5 using the following libraries/packages:
@@ -15,16 +14,15 @@ The API for [pokedextracker.com](http://pokedextracker.com). It's written in Nod
 
 ## Install
 
-This project is meant to be run with Node.js v5.12.0, so make sure you have it installed and active when running this application. This project also relies on the `yarn.lock` file to lock down dependency versions, so we recommend that you use [`yarn`](https://yarnpkg.com/en/) instead of `npm` to avoid "it works on my computer" bugs that are all too common with just a `package.json`. Assuming you have [nvm](https://github.com/creationix/nvm) installed, you just need to install v5 and then install the dependencies:
+This project is meant to be run with Node.js v6.14.2, so make sure you have it installed and active when running this application. This project also relies on the `yarn.lock` file to lock down dependency versions, so we recommend that you use [`yarn`](https://yarnpkg.com/en/) instead of `npm` to avoid "it works on my computer" bugs that are all too common with just a `package.json`. Assuming you have [`nodenv`](https://github.com/nodenv/nodenv) installed, you just need to install v6.14.2 and then install the dependencies:
 
 ```bash
-$ nvm install 5.12.0
-$ nvm use 5.12.0
+$ nodenv install 6.14.2
 $ cd api.pokedextracker.com
 $ yarn
 ```
 
-If you have [avn](https://github.com/wbyoung/avn) or [`nodenv`](https://github.com/nodenv/nodenv) setup, the `.node-version` file should automatically switch the version for you.
+The `.node-version` file should automatically switch the version for you whenever you `cd` into the project directory.
 
 ### Database
 
