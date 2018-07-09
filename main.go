@@ -16,15 +16,15 @@ func main() {
 	cfg := config.New()
 	db, err := database.New(cfg)
 	if err != nil {
-		log.Fatal().Err(err).Msg("")
+		log.Err(err).Fatal("database error")
 	}
 	app := application.New(db, cfg)
 	srv := server.New(app)
 
-	log.Info().Int("port", cfg.Port).Msg("server started")
+	log.Info("server started", map[string]interface{}{"port": cfg.Port})
 	err = srv.ListenAndServe()
 	if err != nil && err != http.ErrServerClosed {
-		log.Fatal().Err(err).Msg("server stopped")
+		log.Err(err).Fatal("server stopped")
 	}
-	log.Info().Msg("server stopped")
+	log.Info("server started")
 }

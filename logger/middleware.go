@@ -12,17 +12,17 @@ func Middleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		t1 := time.Now()
 		id := uuid.NewV4()
-		log := l.With().Str("id", id.String()).Logger()
+		log := l.ID(id.String())
 		c.Set("logger", log)
 		c.Next()
 		t2 := time.Now()
-		log.Info().
-			Int("status_code", c.Writer.Status()).
-			Str("method", c.Request.Method).
-			Str("path", c.Request.URL.Path).
-			Float64("duration", t2.Sub(t1).Seconds()*1000).
-			Str("referer", c.Request.Referer()).
-			Str("user_agent", c.Request.UserAgent()).
-			Msg("request handled")
+		log.Info("request handled", map[string]interface{}{
+			"status_code": c.Writer.Status(),
+			"method":      c.Request.Method,
+			"path":        c.Request.URL.Path,
+			"duration":    t2.Sub(t1).Seconds() * 1000,
+			"referer":     c.Request.Referer(),
+			"user_agent":  c.Request.UserAgent(),
+		})
 	}
 }
