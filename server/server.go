@@ -4,35 +4,34 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"os"
-	"os/signal"
-	"syscall"
 
-	"github.com/gorilla/mux"
+	"github.com/gin-gonic/gin"
 	"github.com/pokedextracker/api.pokedextracker.com/application"
-	"github.com/pokedextracker/api.pokedextracker.com/games"
 	"github.com/pokedextracker/api.pokedextracker.com/logger"
 	"github.com/pokedextracker/api.pokedextracker.com/pokemon"
+	"github.com/pokedextracker/api.pokedextracker.com/signals"
 	"github.com/rs/zerolog/log"
 )
 
 func New(app *application.App) *http.Server {
-	r := mux.NewRouter()
+	gin.SetMode(gin.ReleaseMode)
+	r := gin.New()
 
-	r.Use(logger.Middleware)
+	r.Use(logger.Middleware())
+	r.Use(gin.Recovery())
+	r.Use(application.Middleware(app))
 
 	pokemon.RegisterRoutes(r)
-	games.RegisterRoutes(r)
+	// games.RegisterRoutes(r)
 
-	r.NotFoundHandler = logger.Middleware(http.HandlerFunc(notFoundHandler))
+	// r.NotFoundHandler = logger.Middleware(http.HandlerFunc(notFoundHandler))
 
 	srv := &http.Server{
 		Addr:    fmt.Sprintf(":%d", app.Config.Port),
 		Handler: r,
 	}
 
-	graceful := make(chan os.Signal, 1)
-	signal.Notify(graceful, syscall.SIGINT, syscall.SIGTERM)
+	graceful := signals.Setup()
 
 	go func() {
 		<-graceful

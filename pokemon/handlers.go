@@ -4,13 +4,14 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/gin-gonic/gin"
 	"github.com/gorilla/mux"
 	"github.com/pokedextracker/api.pokedextracker.com/application"
 	"github.com/pokedextracker/api.pokedextracker.com/dexnumbers"
 )
 
-func listHandler(w http.ResponseWriter, r *http.Request) {
-	app := application.FromContext(r.Context())
+func listHandler(c *gin.Context) {
+	app := c.MustGet("app").(*application.App)
 
 	var pokemon []*Pokemon
 	var dexNumbers []*dexnumbers.GameFamilyDexNumber
@@ -29,7 +30,7 @@ func listHandler(w http.ResponseWriter, r *http.Request) {
 		p.LoadEvolutions(evolutions)
 	}
 
-	json.NewEncoder(w).Encode(pokemon)
+	c.JSON(http.StatusOK, pokemon)
 }
 
 func retrieveHandler(w http.ResponseWriter, r *http.Request) {

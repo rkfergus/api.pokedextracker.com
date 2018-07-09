@@ -1,10 +1,10 @@
 package pokemon
 
-import "github.com/gorilla/mux"
+import "github.com/gin-gonic/gin"
 
-func RegisterRoutes(r *mux.Router) {
-	s := r.PathPrefix("/pokemon").Subrouter()
+func RegisterRoutes(r *gin.Engine) {
+	g := r.Group("/pokemon")
 
-	s.HandleFunc("", listHandler)
-	s.HandleFunc("/{id}", retrieveHandler)
+	g.GET("", listHandler)
+	// g.GET("/:id", retrieveHandler)
 }

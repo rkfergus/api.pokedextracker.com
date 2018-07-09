@@ -1,16 +1,12 @@
 package application
 
 import (
-	"net/http"
-
-	"github.com/gorilla/mux"
+	"github.com/gin-gonic/gin"
 )
 
-func Middleware(app *App) mux.MiddlewareFunc {
-	return func(next http.Handler) http.Handler {
-		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			ctx := app.WithContext(r.Context())
-			next.ServeHTTP(w, r.WithContext(ctx))
-		})
+func Middleware(app *App) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Set("app", app)
+		c.Next()
 	}
 }
