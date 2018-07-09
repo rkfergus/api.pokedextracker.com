@@ -116,7 +116,7 @@ func (p *Pokemon) LoadDexNumbers(dexNumbers []*dexnumbers.GameFamilyDexNumber) {
 }
 
 func (p *Pokemon) LoadEvolutions(evolutions []*Evolution) {
-	p.EvolutionFamily = EvolutionFamily{make([][]PokemonSummary, 3), make([][]Evolution, 2)}
+	p.EvolutionFamily = EvolutionFamily{[][]PokemonSummary{}, [][]Evolution{}}
 	for _, e := range evolutions {
 		if e.EvolutionFamilyID != p.EvolutionFamilyID {
 			continue
@@ -125,15 +125,19 @@ func (p *Pokemon) LoadEvolutions(evolutions []*Evolution) {
 		i := e.Stage - 1
 		breed := e.Trigger == "breed"
 
-		var (
-			first  PokemonSummary
-			second PokemonSummary
-		)
+		var first, second PokemonSummary
 
 		if breed {
 			first, second = e.EvolvedPokemon, e.EvolvingPokemon
 		} else {
 			first, second = e.EvolvingPokemon, e.EvolvedPokemon
+		}
+
+		if len(p.EvolutionFamily.Pokemon) <= i {
+			p.EvolutionFamily.Pokemon = append(p.EvolutionFamily.Pokemon, []PokemonSummary{})
+		}
+		if len(p.EvolutionFamily.Pokemon) <= i+1 && len(p.EvolutionFamily.Pokemon) < 3 {
+			p.EvolutionFamily.Pokemon = append(p.EvolutionFamily.Pokemon, []PokemonSummary{})
 		}
 
 		if !findPokemon(p.EvolutionFamily.Pokemon[i], first) {
@@ -143,7 +147,21 @@ func (p *Pokemon) LoadEvolutions(evolutions []*Evolution) {
 			p.EvolutionFamily.Pokemon[i+1] = append(p.EvolutionFamily.Pokemon[i+1], second)
 		}
 
+		if len(p.EvolutionFamily.Evolutions) <= i {
+			p.EvolutionFamily.Evolutions = append(p.EvolutionFamily.Evolutions, []Evolution{})
+		}
 		p.EvolutionFamily.Evolutions[i] = append(p.EvolutionFamily.Evolutions[i], *e)
+	}
+
+	// for pokemon without any evolutions, add itself to the Pokemon slice
+	if len(p.EvolutionFamily.Pokemon) == 0 {
+		summary := PokemonSummary{
+			ID:         p.ID,
+			NationalID: p.NationalID,
+			Name:       p.Name,
+			Form:       p.Form,
+		}
+		p.EvolutionFamily.Pokemon = append(p.EvolutionFamily.Pokemon, []PokemonSummary{summary})
 	}
 }
 
