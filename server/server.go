@@ -10,6 +10,7 @@ import (
 	"github.com/pokedextracker/api.pokedextracker.com/games"
 	"github.com/pokedextracker/api.pokedextracker.com/logger"
 	"github.com/pokedextracker/api.pokedextracker.com/pokemon"
+	"github.com/pokedextracker/api.pokedextracker.com/recovery"
 	"github.com/pokedextracker/api.pokedextracker.com/signals"
 )
 
@@ -19,7 +20,7 @@ func New(app *application.App) *http.Server {
 	r := gin.New()
 
 	r.Use(logger.Middleware())
-	r.Use(gin.Recovery())
+	r.Use(recovery.Middleware())
 	r.Use(application.Middleware(app))
 
 	pokemon.RegisterRoutes(r)
@@ -46,5 +47,5 @@ func New(app *application.App) *http.Server {
 }
 
 func notFoundHandler(c *gin.Context) {
-	c.JSON(404, gin.H{"error": gin.H{"message": "not found", "status_code": 404}})
+	c.JSON(http.StatusNotFound, gin.H{"error": gin.H{"message": "not found", "status_code": http.StatusNotFound}})
 }
