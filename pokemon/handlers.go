@@ -1,11 +1,9 @@
 package pokemon
 
 import (
-	"encoding/json"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/gorilla/mux"
 	"github.com/pokedextracker/api.pokedextracker.com/application"
 	"github.com/pokedextracker/api.pokedextracker.com/dexnumbers"
 )
@@ -33,10 +31,10 @@ func listHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, pokemon)
 }
 
-func retrieveHandler(w http.ResponseWriter, r *http.Request) {
-	app := application.FromContext(r.Context())
+func retrieveHandler(c *gin.Context) {
+	app := c.MustGet("app").(*application.App)
 
-	id := mux.Vars(r)["id"]
+	id := c.Param("id")
 
 	var p Pokemon
 	var dexNumbers []*dexnumbers.GameFamilyDexNumber
@@ -54,5 +52,5 @@ func retrieveHandler(w http.ResponseWriter, r *http.Request) {
 	p.LoadDexNumbers(dexNumbers)
 	p.LoadEvolutions(evolutions)
 
-	json.NewEncoder(w).Encode(p)
+	c.JSON(http.StatusOK, p)
 }

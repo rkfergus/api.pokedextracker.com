@@ -1,9 +1,9 @@
 package games
 
-import "github.com/gorilla/mux"
+import "github.com/gin-gonic/gin"
 
-func RegisterRoutes(r *mux.Router) {
-	s := r.PathPrefix("/games").Subrouter()
+func RegisterRoutes(r *gin.Engine) {
+	g := r.Group("/games")
 
-	s.HandleFunc("", listHandler)
+	g.GET("", listHandler)
 }

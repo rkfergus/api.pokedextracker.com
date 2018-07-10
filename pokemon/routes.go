@@ -6,5 +6,5 @@ func RegisterRoutes(r *gin.Engine) {
 	g := r.Group("/pokemon")
 
 	g.GET("", listHandler)
-	// g.GET("/:id", retrieveHandler)
+	g.GET("/:id", retrieveHandler)
 }

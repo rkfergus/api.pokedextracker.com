@@ -1,14 +1,14 @@
 package games
 
 import (
-	"encoding/json"
 	"net/http"
 
+	"github.com/gin-gonic/gin"
 	"github.com/pokedextracker/api.pokedextracker.com/application"
 )
 
-func listHandler(w http.ResponseWriter, r *http.Request) {
-	app := application.FromContext(r.Context())
+func listHandler(c *gin.Context) {
+	app := c.MustGet("app").(*application.App)
 
 	var games []Game
 
@@ -18,5 +18,5 @@ func listHandler(w http.ResponseWriter, r *http.Request) {
 		Order("game_families.order DESC, games.order ASC").
 		Find(&games)
 
-	json.NewEncoder(w).Encode(games)
+	c.JSON(http.StatusOK, games)
 }
