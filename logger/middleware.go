@@ -16,13 +16,13 @@ func Middleware() gin.HandlerFunc {
 		c.Set("logger", log)
 		c.Next()
 		t2 := time.Now()
-		log.Info("request handled", Data{
+		log.Root(Data{
 			"status_code": c.Writer.Status(),
 			"method":      c.Request.Method,
 			"path":        c.Request.URL.Path,
 			"duration":    t2.Sub(t1).Seconds() * 1000,
 			"referer":     c.Request.Referer(),
 			"user_agent":  c.Request.UserAgent(),
-		})
+		}).Info("request handled")
 	}
 }
