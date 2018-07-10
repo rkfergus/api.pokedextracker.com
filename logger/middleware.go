@@ -16,7 +16,7 @@ func Middleware() gin.HandlerFunc {
 		c.Set("logger", log)
 		c.Next()
 		t2 := time.Now()
-		log.Info("request handled", map[string]interface{}{
+		log.Info("request handled", Data{
 			"status_code": c.Writer.Status(),
 			"method":      c.Request.Method,
 			"path":        c.Request.URL.Path,

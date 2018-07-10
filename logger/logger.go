@@ -7,12 +7,14 @@ import (
 	"github.com/rs/zerolog"
 )
 
+type Data map[string]interface{}
+
 type Logger struct {
 	zl   zerolog.Logger
 	id   string
-	data []map[string]interface{}
+	data []Data
 	err  error
-	root []map[string]interface{}
+	root []Data
 }
 
 func New() Logger {
@@ -30,8 +32,8 @@ func New() Logger {
 
 	return Logger{
 		zl:   zl.Logger(),
-		data: []map[string]interface{}{},
-		root: []map[string]interface{}{},
+		data: []Data{},
+		root: []Data{},
 	}
 }
 
@@ -40,7 +42,7 @@ func (log Logger) ID(id string) Logger {
 	return log
 }
 
-func (log Logger) Data(data map[string]interface{}) Logger {
+func (log Logger) Data(data Data) Logger {
 	log.data = append(log.data, data)
 	return log
 }
@@ -50,32 +52,32 @@ func (log Logger) Err(err error) Logger {
 	return log
 }
 
-func (log Logger) Root(root map[string]interface{}) Logger {
+func (log Logger) Root(root Data) Logger {
 	log.root = append(log.root, root)
 	return log
 }
 
-func (log Logger) Info(message string, fields ...map[string]interface{}) {
+func (log Logger) Info(message string, fields ...Data) {
 	log.log(log.zl.Info(), message, fields...)
 }
 
-func (log Logger) Error(message string, fields ...map[string]interface{}) {
+func (log Logger) Error(message string, fields ...Data) {
 	log.log(log.zl.Error(), message, fields...)
 }
 
-func (log Logger) Warn(message string, fields ...map[string]interface{}) {
+func (log Logger) Warn(message string, fields ...Data) {
 	log.log(log.zl.Warn(), message, fields...)
 }
 
-func (log Logger) Debug(message string, fields ...map[string]interface{}) {
+func (log Logger) Debug(message string, fields ...Data) {
 	log.log(log.zl.Debug(), message, fields...)
 }
 
-func (log Logger) Fatal(message string, fields ...map[string]interface{}) {
+func (log Logger) Fatal(message string, fields ...Data) {
 	log.log(log.zl.Fatal(), message, fields...)
 }
 
-func (log Logger) log(evt *zerolog.Event, message string, fields ...map[string]interface{}) {
+func (log Logger) log(evt *zerolog.Event, message string, fields ...Data) {
 	// Merge data fields
 	hasData := false
 	data := zerolog.Dict()

@@ -21,7 +21,7 @@ func main() {
 	app := application.New(db, cfg)
 	srv := server.New(app)
 
-	log.Info("server started", map[string]interface{}{"port": cfg.Port})
+	log.Info("server started", logger.Data{"port": cfg.Port})
 	err = srv.ListenAndServe()
 	if err != nil && err != http.ErrServerClosed {
 		log.Err(err).Fatal("server stopped")

@@ -17,9 +17,9 @@ func Middleware() gin.HandlerFunc {
 				if ok {
 					log = log.Err(err)
 				} else {
-					log = log.Data(map[string]interface{}{"error": r})
+					log = log.Data(logger.Data{"error": r})
 				}
-				log.Error("server error", map[string]interface{}{"stack": debug.Stack()})
+				log.Error("server error", logger.Data{"stack": debug.Stack()})
 				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": gin.H{"message": "internal server error", "status_code": http.StatusInternalServerError}})
 			}
 		}()
