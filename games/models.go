@@ -3,9 +3,11 @@ package games
 import "github.com/pokedextracker/api.pokedextracker.com/gamefamilies"
 
 type Game struct {
-	ID           string                  `gorm:"primary_key" json:"id"`
+	tableName struct{} `sql:"games,alias:games"`
+
+	ID           string                  `json:"id"`
 	Name         string                  `json:"name"`
 	GameFamilyID string                  `json:"-"`
-	GameFamily   gamefamilies.GameFamily `gorm:"foreignkey:GameFamilyID" json:"game_family"`
+	GameFamily   gamefamilies.GameFamily `json:"game_family"`
 	Order        int                     `json:"order"`
 }

@@ -1,7 +1,7 @@
 package dexnumbers
 
 type GameFamilyDexNumber struct {
-	GameFamilyID string `gorm:"primary_key"`
-	PokemonID    int    `gorm:"primary_key"`
+	GameFamilyID string `pg:",pk"`
+	PokemonID    int    `pg:",pk"`
 	DexNumber    int
 }

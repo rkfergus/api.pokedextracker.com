@@ -1,7 +1,9 @@
 package gamefamilies
 
 type GameFamily struct {
-	ID            string `gorm:"primary_key" json:"id"`
+	tableName struct{} `sql:"game_families,alias:game_families"`
+
+	ID            string `json:"id"`
 	Generation    int    `json:"generation"`
 	RegionalTotal int    `json:"regional_total"`
 	NationalTotal int    `json:"national_total"`

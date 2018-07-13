@@ -3,35 +3,38 @@ package pokemon
 import (
 	"strings"
 
+	"github.com/go-pg/pg/orm"
 	"github.com/pokedextracker/api.pokedextracker.com/dexnumbers"
 	"github.com/pokedextracker/api.pokedextracker.com/gamefamilies"
 )
 
 type Pokemon struct {
-	ID           int                     `gorm:"primary_key" json:"id"`
+	tableName struct{} `sql:"pokemon,alias:pokemon"`
+
+	ID           int                     `json:"id"`
 	NationalID   int                     `json:"national_id"`
 	Name         string                  `json:"name"`
 	GameFamilyID string                  `json:"-"`
-	GameFamily   gamefamilies.GameFamily `gorm:"foreignkey:GameFamilyID" json:"game_family"`
+	GameFamily   gamefamilies.GameFamily `json:"game_family"`
 	Form         *string                 `json:"form"`
 	Box          *string                 `json:"box"`
 
-	RedBlueID                *int `json:"red_blue_id,omitempty"`
-	YellowID                 *int `json:"yellow_id,omitempty"`
-	GoldSilverID             *int `json:"gold_silver_id,omitempty"`
-	CrystalID                *int `json:"crystal_id,omitempty"`
-	RubySapphireID           *int `json:"ruby_sapphire_id,omitempty"`
-	FireRedLeafGreenID       *int `json:"fire_red_leaf_green_id,omitempty"`
-	EmeraldID                *int `json:"emerald_id,omitempty"`
-	DiamondPearlID           *int `json:"diamond_pearl_id,omitempty"`
-	PlatinumID               *int `json:"platinum_id,omitempty"`
-	HeartGoldSoulSilverID    *int `json:"heart_gold_soul_silver_id,omitempty"`
-	BlackWhiteID             *int `json:"black_white_id,omitempty"`
-	Black2White2ID           *int `json:"black_2_white_2_id,omitempty"`
-	XYID                     *int `json:"x_y_id,omitempty"`
-	OmegaRubyAlphaSapphireID *int `json:"omega_ruby_alpha_sapphire_id,omitempty"`
-	SunMoonID                *int `json:"sun_moon_id,omitempty"`
-	UltraSunUltraMoonID      *int `json:"ultra_sun_ultra_moon_id,omitempty"`
+	RedBlueID                *int `sql:"-" json:"red_blue_id,omitempty"`
+	YellowID                 *int `sql:"-" json:"yellow_id,omitempty"`
+	GoldSilverID             *int `sql:"-" json:"gold_silver_id,omitempty"`
+	CrystalID                *int `sql:"-" json:"crystal_id,omitempty"`
+	RubySapphireID           *int `sql:"-" json:"ruby_sapphire_id,omitempty"`
+	FireRedLeafGreenID       *int `sql:"-" json:"fire_red_leaf_green_id,omitempty"`
+	EmeraldID                *int `sql:"-" json:"emerald_id,omitempty"`
+	DiamondPearlID           *int `sql:"-" json:"diamond_pearl_id,omitempty"`
+	PlatinumID               *int `sql:"-" json:"platinum_id,omitempty"`
+	HeartGoldSoulSilverID    *int `sql:"-" json:"heart_gold_soul_silver_id,omitempty"`
+	BlackWhiteID             *int `sql:"-" json:"black_white_id,omitempty"`
+	Black2White2ID           *int `sql:"-" json:"black_2_white_2_id,omitempty"`
+	XYID                     *int `sql:"-" json:"x_y_id,omitempty"`
+	OmegaRubyAlphaSapphireID *int `sql:"-" json:"omega_ruby_alpha_sapphire_id,omitempty"`
+	SunMoonID                *int `sql:"-" json:"sun_moon_id,omitempty"`
+	UltraSunUltraMoonID      *int `sql:"-" json:"ultra_sun_ultra_moon_id,omitempty"`
 
 	XLocation    string `json:"-"`
 	YLocation    string `json:"-"`
@@ -42,24 +45,20 @@ type Pokemon struct {
 	USLocation   string `json:"-"`
 	UMLocation   string `json:"-"`
 
-	XLocations    []string `gorm:"-" json:"x_locations"`
-	YLocations    []string `gorm:"-" json:"y_locations"`
-	ORLocations   []string `gorm:"-" json:"or_locations"`
-	ASLocations   []string `gorm:"-" json:"as_locations"`
-	SunLocations  []string `gorm:"-" json:"sun_locations"`
-	MoonLocations []string `gorm:"-" json:"moon_locations"`
-	USLocations   []string `gorm:"-" json:"us_locations"`
-	UMLocations   []string `gorm:"-" json:"um_locations"`
+	XLocations    []string `sql:"-" json:"x_locations"`
+	YLocations    []string `sql:"-" json:"y_locations"`
+	ORLocations   []string `sql:"-" json:"or_locations"`
+	ASLocations   []string `sql:"-" json:"as_locations"`
+	SunLocations  []string `sql:"-" json:"sun_locations"`
+	MoonLocations []string `sql:"-" json:"moon_locations"`
+	USLocations   []string `sql:"-" json:"us_locations"`
+	UMLocations   []string `sql:"-" json:"um_locations"`
 
 	EvolutionFamilyID int             `json:"-"`
-	EvolutionFamily   EvolutionFamily `gorm:"-" json:"evolution_family"`
+	EvolutionFamily   EvolutionFamily `sql:"-" json:"evolution_family"`
 }
 
-func (*Pokemon) TableName() string {
-	return "pokemon"
-}
-
-func (p *Pokemon) AfterFind() error {
+func (p *Pokemon) AfterQuery(db orm.DB) error {
 	p.XLocations = splitLocations(p.XLocation)
 	p.YLocations = splitLocations(p.YLocation)
 	p.ORLocations = splitLocations(p.ORLocation)
@@ -171,21 +170,21 @@ type EvolutionFamily struct {
 }
 
 type PokemonSummary struct {
-	ID         int     `gorm:"primary_key" json:"id"`
+	tableName struct{} `sql:"pokemon,alias:pokemon"`
+
+	ID         int     `json:"id"`
 	NationalID int     `json:"national_id"`
 	Name       string  `json:"name"`
 	Form       *string `json:"form"`
 }
 
-func (*PokemonSummary) TableName() string {
-	return "pokemon"
-}
-
 type Evolution struct {
-	EvolvingPokemonID int            `gorm:"primary_key" json:"-"`
-	EvolvedPokemonID  int            `gorm:"primary_key" json:"-"`
-	EvolvingPokemon   PokemonSummary `gorm:"foreignkey:EvolvingPokemonID" json:"-"`
-	EvolvedPokemon    PokemonSummary `gorm:"foreignkey:EvolvedPokemonID" json:"-"`
+	tableName struct{} `sql:"evolutions,alias:evolutions"`
+
+	EvolvingPokemonID int            `sql:",pk" json:"-"`
+	EvolvedPokemonID  int            `sql:",pk" json:"-"`
+	EvolvingPokemon   PokemonSummary `json:"-"`
+	EvolvedPokemon    PokemonSummary `json:"-"`
 	EvolutionFamilyID int            `json:"-"`
 	Stage             int            `json:"-"`
 	Trigger           string         `json:"trigger"`

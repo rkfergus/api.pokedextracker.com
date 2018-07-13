@@ -3,16 +3,16 @@ package application
 import (
 	"context"
 
-	"github.com/jinzhu/gorm"
+	"github.com/go-pg/pg"
 	"github.com/pokedextracker/api.pokedextracker.com/config"
 )
 
 type App struct {
-	DB     *gorm.DB
+	DB     *pg.DB
 	Config *config.Config
 }
 
-func New(db *gorm.DB, cfg *config.Config) *App {
+func New(db *pg.DB, cfg *config.Config) *App {
 	return &App{db, cfg}
 }
 

@@ -15,13 +15,28 @@ func listHandler(c *gin.Context) {
 	var dexNumbers []*dexnumbers.GameFamilyDexNumber
 	var evolutions []*Evolution
 
-	app.DB.Order("national_order ASC").Find(&pokemon)
-	app.DB.Find(&dexNumbers)
-	app.DB.
-		Joins("INNER JOIN pokemon AS evolved ON evolutions.evolved_pokemon_id = evolved.id").
-		Joins("INNER JOIN pokemon AS evolving ON evolutions.evolving_pokemon_id = evolving.id").
-		Order("CASE WHEN trigger = 'breed' THEN evolving.national_id ELSE evolved.national_id END, trigger DESC, evolved.national_order ASC").
-		Find(&evolutions)
+	err := app.DB.Model(&pokemon).Relation("GameFamily").Order("national_order ASC").Select()
+	if err != nil {
+		c.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
+	err = app.DB.Model(&dexNumbers).Select()
+	if err != nil {
+		c.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
+	err = app.DB.
+		Model(&evolutions).
+		Relation("EvolvingPokemon").
+		Relation("EvolvedPokemon").
+		Join("INNER JOIN pokemon AS evolved ON evolutions.evolved_pokemon_id = evolved.id").
+		Join("INNER JOIN pokemon AS evolving ON evolutions.evolving_pokemon_id = evolving.id").
+		OrderExpr("CASE WHEN trigger = 'breed' THEN evolving.national_id ELSE evolved.national_id END, trigger DESC, evolved.national_order ASC").
+		Select()
+	if err != nil {
+		c.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
 
 	for _, p := range pokemon {
 		p.LoadDexNumbers(dexNumbers)
@@ -40,14 +55,29 @@ func retrieveHandler(c *gin.Context) {
 	var dexNumbers []*dexnumbers.GameFamilyDexNumber
 	var evolutions []*Evolution
 
-	app.DB.Where("id = ?", id).First(&p)
-	app.DB.Where("pokemon_id = ?", id).Find(&dexNumbers)
-	app.DB.
-		Joins("INNER JOIN pokemon AS evolved ON evolutions.evolved_pokemon_id = evolved.id").
-		Joins("INNER JOIN pokemon AS evolving ON evolutions.evolving_pokemon_id = evolving.id").
+	err := app.DB.Model(&p).Relation("GameFamily").Where("pokemon.id = ?", id).First()
+	if err != nil {
+		c.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
+	err = app.DB.Model(&dexNumbers).Where("pokemon_id = ?", id).Select()
+	if err != nil {
+		c.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
+	err = app.DB.
+		Model(&evolutions).
+		Relation("EvolvingPokemon").
+		Relation("EvolvedPokemon").
+		Join("INNER JOIN pokemon AS evolved ON evolutions.evolved_pokemon_id = evolved.id").
+		Join("INNER JOIN pokemon AS evolving ON evolutions.evolving_pokemon_id = evolving.id").
 		Where("evolutions.evolution_family_id = ?", p.EvolutionFamilyID).
-		Order("CASE WHEN trigger = 'breed' THEN evolving.national_id ELSE evolved.national_id END, trigger DESC, evolved.national_order ASC").
-		Find(&evolutions)
+		OrderExpr("CASE WHEN trigger = 'breed' THEN evolving.national_id ELSE evolved.national_id END, trigger DESC, evolved.national_order ASC").
+		Select()
+	if err != nil {
+		c.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
 
 	p.LoadDexNumbers(dexNumbers)
 	p.LoadEvolutions(evolutions)

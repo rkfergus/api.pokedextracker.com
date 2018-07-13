@@ -12,11 +12,17 @@ func listHandler(c *gin.Context) {
 
 	var games []Game
 
-	app.DB.
-		Joins("INNER JOIN game_families ON games.game_family_id = game_families.id").
+	err := app.DB.
+		Model(&games).
+		Relation("GameFamily").
+		Join("INNER JOIN game_families ON games.game_family_id = game_families.id").
 		Where("game_families.published = TRUE").
-		Order("game_families.order DESC, games.order ASC").
-		Find(&games)
+		OrderExpr("game_families.order DESC, games.order ASC").
+		Select()
+	if err != nil {
+		c.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
 
 	c.JSON(http.StatusOK, games)
 }

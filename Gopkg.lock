@@ -18,35 +18,29 @@
   version = "v1.2"
 
 [[projects]]
+  name = "github.com/go-pg/pg"
+  packages = [
+    ".",
+    "internal",
+    "internal/parser",
+    "internal/pool",
+    "orm",
+    "types"
+  ]
+  revision = "d4fc7afde3ee9d0a780f9c67daf8a8a3bfd84060"
+  version = "v6.14.2"
+
+[[projects]]
   name = "github.com/golang/protobuf"
   packages = ["proto"]
   revision = "b4deda0973fb4c70b50d226b1af49f3da59f5265"
   version = "v1.1.0"
 
 [[projects]]
-  name = "github.com/jinzhu/gorm"
-  packages = [
-    ".",
-    "dialects/postgres"
-  ]
-  revision = "6ed508ec6a4ecb3531899a69cbc746ccf65a4166"
-  version = "v1.9.1"
-
-[[projects]]
   branch = "master"
   name = "github.com/jinzhu/inflection"
   packages = ["."]
   revision = "04140366298a54a039076d798123ffa108fff46c"
-
-[[projects]]
-  branch = "master"
-  name = "github.com/lib/pq"
-  packages = [
-    ".",
-    "hstore",
-    "oid"
-  ]
-  revision = "88edab0803230a3898347e77b474f8c1820a1f20"
 
 [[projects]]
   name = "github.com/mattn/go-isatty"
@@ -59,8 +53,7 @@
   packages = [
     ".",
     "internal/cbor",
-    "internal/json",
-    "log"
+    "internal/json"
   ]
   revision = "05eafee0eb17d0150591a8f30f0fa592cc9b7471"
   version = "v1.6.0"
@@ -98,6 +91,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "033ca2f98e7fe8eee7a57dda844ee58393cd00c3b998f35014681a24cd53e748"
+  inputs-digest = "126f15bdd0544185242fee2254a7a56b74a2f144832a678599d5e8e120d4b719"
   solver-name = "gps-cdcl"
   solver-version = 1
