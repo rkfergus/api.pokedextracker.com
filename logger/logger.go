@@ -31,7 +31,7 @@ func New() Logger {
 		Str("host", host)
 
 	if release != "" {
-		zl.Str("release", release)
+		zl = zl.Str("release", release)
 	}
 
 	return Logger{
