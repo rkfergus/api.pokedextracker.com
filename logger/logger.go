@@ -17,6 +17,10 @@ type Logger struct {
 	root []Data
 }
 
+func init() {
+	zerolog.TimestampFieldName = "timestamp"
+}
+
 func New() Logger {
 	host, _ := os.Hostname()
 	release := os.Getenv("RELEASE")
