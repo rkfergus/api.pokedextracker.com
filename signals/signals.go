@@ -16,7 +16,7 @@ func Setup() (stopCh <-chan struct{}) {
 
 	stop := make(chan struct{})
 	c := make(chan os.Signal, 2)
-	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
+	signal.Notify(c, syscall.SIGINT, syscall.SIGTERM)
 	go func() {
 		<-c
 		close(stop)
