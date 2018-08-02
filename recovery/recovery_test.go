@@ -4,11 +4,12 @@ import (
 	"errors"
 	"net/http"
 	"net/http/httptest"
-	"strings"
 	"testing"
 
 	"github.com/gin-gonic/gin"
 	"github.com/pokedextracker/api.pokedextracker.com/logger"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestRecovery(t *testing.T) {
@@ -16,40 +17,23 @@ func TestRecovery(t *testing.T) {
 	r.Use(logger.Middleware())
 	r.Use(Middleware())
 
-	r.GET("/error", func(c *gin.Context) {
-		panic(errors.New("error"))
-	})
-	r.GET("/string", func(c *gin.Context) {
-		panic("string")
-	})
+	r.GET("/error", func(c *gin.Context) { panic(errors.New("error")) })
+	r.GET("/string", func(c *gin.Context) { panic("string") })
 
 	req, err := http.NewRequest("GET", "/error", nil)
-	if err != nil {
-		t.Fatalf("unexpecetd error when making new request: %s", err)
-	}
+	require.Nil(t, err, "unexpecetd error when making new request")
+
 	w := httptest.NewRecorder()
 
 	r.ServeHTTP(w, req)
 
-	if w.Code != http.StatusInternalServerError {
-		t.Errorf("incorrect recovered status code\ngot:  %d\nwant: %d", w.Code, http.StatusInternalServerError)
-	}
-
-	body := w.Body.String()
-	wantBody := "internal server error"
-	if !strings.Contains(body, wantBody) {
-		t.Errorf("incorrect error message\ngot:  %s\nwant: %s", body, wantBody)
-	}
+	assert.Equal(t, http.StatusInternalServerError, w.Code, "incorrect recovered status code")
+	assert.Contains(t, w.Body.String(), "internal server error", "incorrect error message")
 
 	req, err = http.NewRequest("GET", "/string", nil)
-	if err != nil {
-		t.Fatalf("unexpecetd error when making new request: %s", err)
-	}
+	require.Nil(t, err, "unexpecetd error when making new request")
+
 	w = httptest.NewRecorder()
 
-	r.ServeHTTP(w, req)
-
-	if w.Code != http.StatusInternalServerError {
-		t.Errorf("expected to handle panicking with a non-error")
-	}
+	assert.NotPanics(t, func() { r.ServeHTTP(w, req) }, "expected to handle panicking with a non-error")
 }

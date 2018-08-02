@@ -6,6 +6,8 @@ import (
 	"testing"
 
 	"github.com/gin-gonic/gin"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestHealthRoute(t *testing.T) {
@@ -14,20 +16,12 @@ func TestHealthRoute(t *testing.T) {
 	RegisterRoutes(r)
 
 	req, err := http.NewRequest("GET", "/health", nil)
-	if err != nil {
-		t.Fatalf("unexpecetd error when making new request: %s", err)
-	}
+	require.Nil(t, err, "unexpecetd error when making new request")
+
 	w := httptest.NewRecorder()
 
 	r.ServeHTTP(w, req)
 
-	if w.Code != http.StatusOK {
-		t.Errorf("incorrect status code\ngot:  %d\nwant: %d", w.Code, http.StatusOK)
-	}
-
-	body := w.Body.String()
-	wantBody := `{"healthy":true}`
-	if body != wantBody {
-		t.Errorf("incorrect response\ngot:  %s\nwant: %s", body, wantBody)
-	}
+	assert.Equal(t, http.StatusOK, w.Code, "incorrect status code")
+	assert.Equal(t, `{"healthy":true}`, w.Body.String(), "incorrect response")
 }
