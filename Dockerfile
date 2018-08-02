@@ -1,12 +1,21 @@
-FROM node:6.14.2
+FROM golang:1.10.3 as build
 
-RUN mkdir /app
-WORKDIR /app
+RUN curl -fsSL -o /usr/local/bin/dep https://github.com/golang/dep/releases/download/v0.4.1/dep-linux-amd64
+RUN chmod +x /usr/local/bin/dep
 
-COPY package.json package.json
-COPY yarn.lock yarn.lock
-RUN yarn --production --silent
+WORKDIR /go/src/github.com/pokedextracker/api.pokedextracker.com
+
+COPY Gopkg.toml Gopkg.toml
+COPY Gopkg.lock Gopkg.lock
+RUN dep ensure -vendor-only
 
 COPY . .
 
-CMD ["node", "src/index.js"]
+RUN CGO_ENABLED=0 GOOS=linux go build -installsuffix cgo -ldflags '-w -s' -o app .
+
+FROM alpine:3.7
+
+RUN apk --no-cache add ca-certificates
+COPY --from=build /go/src/github.com/pokedextracker/api.pokedextracker.com/app .
+
+CMD ["./app"]
