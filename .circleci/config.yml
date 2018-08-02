@@ -2,13 +2,9 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/node:6.14.2
-      - image: circleci/postgres:9.4.11
-        environment:
-          POSTGRES_USER: pokedex_tracker_user
-          POSTGRES_DB: pokedex_tracker
-          POSTGRES_PASSWORD: ""
-    working_directory: ~/api.pokedextracker.com
+      - image: circleci/golang:1.10.3
+      - image: circleci/postgres:9.4
+    working_directory: /go/src/github.com/pokedextracker/api.pokedextracker.com
     steps:
       - restore_cache:
           keys:
@@ -19,34 +15,30 @@ jobs:
       - save_cache:
           key: source-v1-{{ .Branch }}-{{ .Revision }}
           paths:
-            - ~/api.pokedextracker.com/.git
+            - /go/src/github.com/pokedextracker/api.pokedextracker.com/.git
       - restore_cache:
           keys:
-            - yarn-v1-{{ checksum "yarn.lock" }}
-            - yarn-v1-
+            - vendor-v1-{{ checksum ".go-version" }}-{{ checksum "Gopkg.lock" }}
+            - vendor-v1-{{ checksum ".go-version" }}-
+            - vendor-v1-
+      - run:
+          name: Install tools
+          command: make setup
       - run:
           name: Install dependencies
-          command: yarn
+          command: make install
       - save_cache:
-          key: yarn-v1-{{ checksum "yarn.lock" }}
+          key: vendor-v1-{{ checksum ".go-version" }}-{{ checksum "Gopkg.lock" }}
           paths:
-            - ~/api.pokedextracker.com/node_modules
-            - ~/.cache/yarn
-      - run:
-          name: Migrate database
-          command: yarn db:migrate
-      - run:
-          name: Run linter
-          command: yarn lint
+            - /go/src/github.com/pokedextracker/api.pokedextracker.com/vendor
+    #   - run:
+    #       name: Run linter
+    #       command: make lint
       - run:
           name: Run tests
-          command: yarn test
+          command: make test
       - run:
           name: Enforce coverage
-          command: yarn enforce
-      - run:
-          name: Compress coverage directory
-          command: test -d coverage && tar czvf ~/coverage.tar.gz coverage
-          when: on_fail
+          command: make enforce
       - store_artifacts:
-          path: ~/coverage.tar.gz
+          path: coverage.out
