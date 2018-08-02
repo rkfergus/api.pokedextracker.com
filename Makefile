@@ -19,7 +19,7 @@ lint:
 
 test:
 	@echo "---> Testing"
-	go test ./... -coverprofile $(COVERAGE_PROFILE) $(TFLAGS)
+	GIN_MODE=release go test ./... -coverprofile $(COVERAGE_PROFILE) $(TFLAGS)
 
 enforce:
 	@echo "---> Enforcing coverage"
