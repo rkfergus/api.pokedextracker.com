@@ -19,21 +19,19 @@ func TestRecovery(t *testing.T) {
 
 	r.GET("/error", func(c *gin.Context) { panic(errors.New("error")) })
 	r.GET("/string", func(c *gin.Context) { panic("string") })
+	r.GET("/int", func(c *gin.Context) { panic(1) })
 
-	req, err := http.NewRequest("GET", "/error", nil)
-	require.Nil(t, err, "unexpecetd error when making new request")
+	paths := []string{"/error", "/string", "/int"}
 
-	w := httptest.NewRecorder()
+	for _, path := range paths {
+		req, err := http.NewRequest("GET", path, nil)
+		require.Nil(t, err, "unexpecetd error when making new request")
 
-	r.ServeHTTP(w, req)
+		w := httptest.NewRecorder()
 
-	assert.Equal(t, http.StatusInternalServerError, w.Code, "incorrect recovered status code")
-	assert.Contains(t, w.Body.String(), "internal server error", "incorrect error message")
+		r.ServeHTTP(w, req)
 
-	req, err = http.NewRequest("GET", "/string", nil)
-	require.Nil(t, err, "unexpecetd error when making new request")
-
-	w = httptest.NewRecorder()
-
-	assert.NotPanics(t, func() { r.ServeHTTP(w, req) }, "expected to handle panicking with a non-error")
+		assert.Equal(t, http.StatusInternalServerError, w.Code, "incorrect recovered status code")
+		assert.Contains(t, w.Body.String(), "internal server error", "incorrect error message")
+	}
 }
