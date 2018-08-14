@@ -11,11 +11,11 @@ RUN dep ensure -vendor-only
 
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux go build -installsuffix cgo -ldflags '-w -s' -o app .
+RUN CGO_ENABLED=0 GOOS=linux go build -installsuffix cgo -ldflags '-w -s' -o ./bin/serve ./cmd/serve
 
 FROM alpine:3.7
 
 RUN apk --no-cache add ca-certificates
-COPY --from=build /go/src/github.com/pokedextracker/api.pokedextracker.com/app .
+COPY --from=build /go/src/github.com/pokedextracker/api.pokedextracker.com/bin /bin
 
-CMD ["./app"]
+CMD ["serve"]
