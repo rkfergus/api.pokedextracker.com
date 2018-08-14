@@ -30,6 +30,8 @@ func New() *Config {
 	switch os.Getenv(environmentENV) {
 	case "development", "":
 		loadDevelopmentConfig(cfg)
+	case "test":
+		loadTestConfig(cfg)
 	case "staging":
 		loadStagingConfig(cfg)
 	case "production":
