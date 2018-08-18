@@ -61,6 +61,12 @@
   version = "v1.0.0"
 
 [[projects]]
+  branch = "master"
+  name = "github.com/robinjoseph08/go-pg-migrations"
+  packages = ["."]
+  revision = "4872a7ffbc2db3bcc2145e5200ffb06db253457b"
+
+[[projects]]
   name = "github.com/rs/zerolog"
   packages = [
     ".",
@@ -112,6 +118,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "cc73c537eb6782869ef459be9d8bf299aa2aff5c7b97814f1dfbe53ca1d0613e"
+  inputs-digest = "86b5511055e7edaf399bc470b0469e0ae657710f4606d06c9fe6ac7543fd6cf1"
   solver-name = "gps-cdcl"
   solver-version = 1

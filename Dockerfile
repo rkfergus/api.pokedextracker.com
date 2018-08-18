@@ -12,6 +12,7 @@ RUN dep ensure -vendor-only
 COPY . .
 
 RUN CGO_ENABLED=0 GOOS=linux go build -installsuffix cgo -ldflags '-w -s' -o ./bin/serve ./cmd/serve
+RUN CGO_ENABLED=0 GOOS=linux go build -installsuffix cgo -ldflags '-w -s' -o ./bin/migrations ./cmd/migrations
 
 FROM alpine:3.7
 
