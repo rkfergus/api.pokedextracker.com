@@ -3,7 +3,13 @@ jobs:
   build:
     docker:
       - image: circleci/golang:1.10.3
+        environment:
+          ENVIRONMENT: test
       - image: circleci/postgres:9.4
+        environment:
+          POSTGRES_USER: pokedex_tracker_user
+          POSTGRES_DB: pokedex_tracker_test
+          POSTGRES_PASSWORD: ""
     working_directory: /go/src/github.com/pokedextracker/api.pokedextracker.com
     steps:
       - restore_cache:
@@ -22,7 +28,7 @@ jobs:
             - vendor-v1-{{ checksum ".go-version" }}-
             - vendor-v1-
       - run:
-          name: Install tools
+          name: Set up project
           command: make setup
       - run:
           name: Install dependencies
@@ -34,6 +40,9 @@ jobs:
     #   - run:
     #       name: Run linter
     #       command: make lint
+      - run:
+          name: Run migrations
+          command: make migrate
       - run:
           name: Run tests
           command: make test

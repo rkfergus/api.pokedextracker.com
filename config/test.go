@@ -5,5 +5,5 @@ func loadTestConfig(cfg *Config) {
 	cfg.DatabaseName = "pokedex_tracker_test"
 	cfg.DatabaseSSLMode = "disable"
 	cfg.DatabaseUser = "pokedex_tracker_user"
-	cfg.Environment = "development"
+	cfg.Environment = "test"
 }
