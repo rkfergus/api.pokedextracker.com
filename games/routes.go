@@ -1,9 +1,9 @@
 package games
 
-import "github.com/gin-gonic/gin"
+import "github.com/labstack/echo"
 
-func RegisterRoutes(r *gin.Engine) {
-	g := r.Group("/games")
+func RegisterRoutes(e *echo.Echo) {
+	g := e.Group("/games")
 
 	g.GET("", listHandler)
 }

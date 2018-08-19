@@ -14,7 +14,7 @@ type User struct {
 	Username     string      `json:"username"`
 	FriendCode   string      `json:"friend_code"`
 	Dexes        []dexes.Dex `json:"dexes"`
-	Donated      bool        `json:"donated"`
+	Donated      bool        `sql:"-" json:"donated"`
 	DateCreated  time.Time   `json:"date_created"`
 	DateModified time.Time   `json:"date_modified"`
 

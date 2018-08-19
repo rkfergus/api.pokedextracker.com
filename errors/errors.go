@@ -1,7 +1,12 @@
 package errors
 
-import "fmt"
+import (
+	"fmt"
+	"net/http"
+
+	"github.com/labstack/echo"
+)
 
 func NotFound(resource string) error {
-	return fmt.Errorf("%s not found", resource)
+	return echo.NewHTTPError(http.StatusNotFound, fmt.Sprintf("%s not found", resource))
 }

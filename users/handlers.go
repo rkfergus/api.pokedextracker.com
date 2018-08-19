@@ -3,44 +3,50 @@ package users
 import (
 	"net/http"
 
-	"github.com/gin-gonic/gin"
 	"github.com/go-pg/pg"
+	"github.com/go-pg/pg/orm"
+	"github.com/labstack/echo"
 	"github.com/pokedextracker/api.pokedextracker.com/application"
 	"github.com/pokedextracker/api.pokedextracker.com/errors"
 )
 
-func createHandler(c *gin.Context) {
+func createHandler(c echo.Context) error {
 	params := createParams{}
 	if err := c.Bind(&params); err != nil {
-		c.AbortWithError(http.StatusNotFound, err).SetType(gin.ErrorTypePublic)
-		return
+		return err
 	}
-	c.JSON(http.StatusOK, params.Username)
+	return c.JSON(http.StatusOK, params.Username)
 }
 
-func listHandler(c *gin.Context) {
-
+func listHandler(c echo.Context) error {
+	return nil
 }
 
-func retrieveHandler(c *gin.Context) {
-	app := c.MustGet("app").(*application.App)
+func retrieveHandler(c echo.Context) error {
+	app := c.Get("app").(*application.App)
 	username := c.Param("username")
 
 	user := User{}
 
-	_, err := app.DB.QueryOne(&user, "SELECT * FROM users WHERE username = ?", username)
+	err := app.DB.
+		Model(&user).
+		Relation("Dexes", func(q *orm.Query) (*orm.Query, error) {
+			return q.Order("dexes.date_created ASC"), nil
+		}).
+		Relation("Dexes.Game").
+		Relation("Dexes.Game.GameFamily").
+		Where("username = ?", username).
+		First()
 	if err != nil {
 		if err == pg.ErrNoRows {
-			c.AbortWithError(http.StatusNotFound, errors.NotFound("user")).SetType(gin.ErrorTypePublic)
-		} else {
-			c.AbortWithError(http.StatusInternalServerError, err)
+			return errors.NotFound("user")
 		}
-		return
+		return err
 	}
 
-	c.JSON(http.StatusOK, user)
+	return c.JSON(http.StatusOK, user)
 }
 
-func updateHandler(c *gin.Context) {
-
+func updateHandler(c echo.Context) error {
+	return nil
 }

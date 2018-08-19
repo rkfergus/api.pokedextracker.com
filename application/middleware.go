@@ -1,14 +1,16 @@
 package application
 
 import (
-	"github.com/gin-gonic/gin"
+	"github.com/labstack/echo"
 )
 
-// Middleware returns a new gin middleware function that attaches the given App
+// Middleware returns a new Echo middleware function that attaches the given App
 // instance to the request context.
-func Middleware(app *App) gin.HandlerFunc {
-	return func(c *gin.Context) {
-		c.Set("app", app)
-		c.Next()
+func Middleware(app *App) func(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(next echo.HandlerFunc) echo.HandlerFunc {
+		return func(c echo.Context) error {
+			c.Set("app", app)
+			return next(c)
+		}
 	}
 }

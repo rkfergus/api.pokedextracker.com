@@ -6,20 +6,20 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/gin-gonic/gin"
+	"github.com/labstack/echo"
 	"github.com/pokedextracker/api.pokedextracker.com/logger"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 func TestRecovery(t *testing.T) {
-	r := gin.New()
-	r.Use(logger.Middleware())
-	r.Use(Middleware())
+	e := echo.New()
+	e.Use(logger.Middleware())
+	e.Use(Middleware())
 
-	r.GET("/error", func(c *gin.Context) { panic(errors.New("error")) })
-	r.GET("/string", func(c *gin.Context) { panic("string") })
-	r.GET("/int", func(c *gin.Context) { panic(1) })
+	e.GET("/error", func(c echo.Context) error { panic(errors.New("error")) })
+	e.GET("/string", func(c echo.Context) error { panic("string") })
+	e.GET("/int", func(c echo.Context) error { panic(1) })
 
 	paths := []string{"/error", "/string", "/int"}
 
@@ -29,9 +29,9 @@ func TestRecovery(t *testing.T) {
 
 		w := httptest.NewRecorder()
 
-		r.ServeHTTP(w, req)
+		e.ServeHTTP(w, req)
 
 		assert.Equal(t, http.StatusInternalServerError, w.Code, "incorrect recovered status code")
-		assert.Contains(t, w.Body.String(), "internal server error", "incorrect error message")
+		assert.Contains(t, w.Body.String(), "Internal Server Error", "incorrect error message")
 	}
 }

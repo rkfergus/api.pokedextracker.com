@@ -1,9 +1,9 @@
 package pokemon
 
-import "github.com/gin-gonic/gin"
+import "github.com/labstack/echo"
 
-func RegisterRoutes(r *gin.Engine) {
-	g := r.Group("/pokemon")
+func RegisterRoutes(e *echo.Echo) {
+	g := e.Group("/pokemon")
 
 	g.GET("", listHandler)
 	g.GET("/:id", retrieveHandler)

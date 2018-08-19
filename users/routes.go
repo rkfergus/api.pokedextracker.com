@@ -1,10 +1,10 @@
 package users
 
-import "github.com/gin-gonic/gin"
+import "github.com/labstack/echo"
 
-// RegisterRoutes takes in a Gin router and resgiters routes onto it.
-func RegisterRoutes(r *gin.Engine) {
-	g := r.Group("/users")
+// RegisterRoutes takes in an Echo router and resgiters routes onto it.
+func RegisterRoutes(e *echo.Echo) {
+	g := e.Group("/users")
 
 	g.POST("", createHandler)
 	g.GET("", listHandler)

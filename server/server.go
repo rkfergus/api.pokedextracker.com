@@ -5,7 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/gin-gonic/gin"
+	"github.com/labstack/echo"
+	elog "github.com/labstack/gommon/log"
 	"github.com/pokedextracker/api.pokedextracker.com/application"
 	"github.com/pokedextracker/api.pokedextracker.com/errors"
 	"github.com/pokedextracker/api.pokedextracker.com/games"
@@ -15,32 +16,30 @@ import (
 	"github.com/pokedextracker/api.pokedextracker.com/recovery"
 	"github.com/pokedextracker/api.pokedextracker.com/signals"
 	"github.com/pokedextracker/api.pokedextracker.com/users"
-
-	// load our custom validators
-	_ "github.com/pokedextracker/api.pokedextracker.com/validators"
 )
 
 // New returns a new HTTP server with the registered routes.
 func New(app *application.App) *http.Server {
 	log := logger.New()
-	gin.SetMode(gin.ReleaseMode)
-	r := gin.New()
+	e := echo.New()
 
-	r.Use(logger.Middleware())
-	r.Use(recovery.Middleware())
-	r.Use(application.Middleware(app))
-	r.Use(errors.Middleware())
+	e.Logger.SetLevel(elog.OFF)
 
-	games.RegisterRoutes(r)
-	health.RegisterRoutes(r)
-	pokemon.RegisterRoutes(r)
-	users.RegisterRoutes(r)
+	e.Use(logger.Middleware())
+	e.Use(recovery.Middleware())
+	e.Use(application.Middleware(app))
 
-	r.NoRoute(notFoundHandler)
+	games.RegisterRoutes(e)
+	health.RegisterRoutes(e)
+	pokemon.RegisterRoutes(e)
+	users.RegisterRoutes(e)
+
+	echo.NotFoundHandler = notFoundHandler
+	e.HTTPErrorHandler = errors.Handler
 
 	srv := &http.Server{
 		Addr:    fmt.Sprintf(":%d", app.Config.Port),
-		Handler: r,
+		Handler: e,
 	}
 
 	graceful := signals.Setup()
@@ -56,6 +55,6 @@ func New(app *application.App) *http.Server {
 	return srv
 }
 
-func notFoundHandler(c *gin.Context) {
-	c.JSON(http.StatusNotFound, gin.H{"error": gin.H{"message": "not found", "status_code": http.StatusNotFound}})
+func notFoundHandler(c echo.Context) error {
+	return echo.NewHTTPError(http.StatusNotFound, "not found")
 }

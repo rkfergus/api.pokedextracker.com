@@ -5,7 +5,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/gin-gonic/gin"
+	"github.com/labstack/echo"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -13,15 +13,15 @@ import (
 func TestMiddleware(t *testing.T) {
 	app := &App{}
 
-	r := gin.New()
+	e := echo.New()
 
-	r.Use(Middleware(app))
+	e.Use(Middleware(app))
 
-	r.GET("/app", func(c *gin.Context) {
-		app, exists := c.Get("app")
+	e.GET("/app", func(c echo.Context) error {
+		app, exists := c.Get("app").(*App)
 		assert.Equal(t, true, exists, "expected app to exist on context")
 		assert.NotNil(t, app, "expected app to be non-nil")
-		c.String(http.StatusOK, "ok")
+		return c.String(http.StatusOK, "ok")
 	})
 
 	req, err := http.NewRequest("GET", "/app", nil)
@@ -29,7 +29,7 @@ func TestMiddleware(t *testing.T) {
 
 	w := httptest.NewRecorder()
 
-	r.ServeHTTP(w, req)
+	e.ServeHTTP(w, req)
 
 	assert.Equal(t, http.StatusOK, w.Code, "incorrect status code")
 	assert.Equal(t, "ok", w.Body.String(), "incorrect response")

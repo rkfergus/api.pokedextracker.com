@@ -3,13 +3,13 @@ package pokemon
 import (
 	"net/http"
 
-	"github.com/gin-gonic/gin"
+	"github.com/labstack/echo"
 	"github.com/pokedextracker/api.pokedextracker.com/application"
 	"github.com/pokedextracker/api.pokedextracker.com/dexnumbers"
 )
 
-func listHandler(c *gin.Context) {
-	app := c.MustGet("app").(*application.App)
+func listHandler(c echo.Context) error {
+	app := c.Get("app").(*application.App)
 
 	var pokemon []*Pokemon
 	var dexNumbers []*dexnumbers.GameFamilyDexNumber
@@ -17,13 +17,11 @@ func listHandler(c *gin.Context) {
 
 	err := app.DB.Model(&pokemon).Relation("GameFamily").Order("national_order ASC").Select()
 	if err != nil {
-		c.AbortWithError(http.StatusInternalServerError, err)
-		return
+		return err
 	}
 	err = app.DB.Model(&dexNumbers).Select()
 	if err != nil {
-		c.AbortWithError(http.StatusInternalServerError, err)
-		return
+		return err
 	}
 	err = app.DB.
 		Model(&evolutions).
@@ -34,8 +32,7 @@ func listHandler(c *gin.Context) {
 		OrderExpr("CASE WHEN trigger = 'breed' THEN evolving.national_id ELSE evolved.national_id END, trigger DESC, evolved.national_order ASC").
 		Select()
 	if err != nil {
-		c.AbortWithError(http.StatusInternalServerError, err)
-		return
+		return err
 	}
 
 	for _, p := range pokemon {
@@ -43,11 +40,11 @@ func listHandler(c *gin.Context) {
 		p.LoadEvolutions(evolutions)
 	}
 
-	c.JSON(http.StatusOK, pokemon)
+	return c.JSON(http.StatusOK, pokemon)
 }
 
-func retrieveHandler(c *gin.Context) {
-	app := c.MustGet("app").(*application.App)
+func retrieveHandler(c echo.Context) error {
+	app := c.Get("app").(*application.App)
 
 	id := c.Param("id")
 
@@ -57,13 +54,11 @@ func retrieveHandler(c *gin.Context) {
 
 	err := app.DB.Model(&p).Relation("GameFamily").Where("pokemon.id = ?", id).First()
 	if err != nil {
-		c.AbortWithError(http.StatusInternalServerError, err)
-		return
+		return err
 	}
 	err = app.DB.Model(&dexNumbers).Where("pokemon_id = ?", id).Select()
 	if err != nil {
-		c.AbortWithError(http.StatusInternalServerError, err)
-		return
+		return err
 	}
 	err = app.DB.
 		Model(&evolutions).
@@ -75,12 +70,11 @@ func retrieveHandler(c *gin.Context) {
 		OrderExpr("CASE WHEN trigger = 'breed' THEN evolving.national_id ELSE evolved.national_id END, trigger DESC, evolved.national_order ASC").
 		Select()
 	if err != nil {
-		c.AbortWithError(http.StatusInternalServerError, err)
-		return
+		return err
 	}
 
 	p.LoadDexNumbers(dexNumbers)
 	p.LoadEvolutions(evolutions)
 
-	c.JSON(http.StatusOK, p)
+	return c.JSON(http.StatusOK, p)
 }

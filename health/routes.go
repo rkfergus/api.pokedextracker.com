@@ -3,13 +3,15 @@ package health
 import (
 	"net/http"
 
-	"github.com/gin-gonic/gin"
+	"github.com/labstack/echo"
 )
 
-func RegisterRoutes(r *gin.Engine) {
-	r.GET("/health", healthHandler)
+var resp = []byte(`{"healthy":true}`)
+
+func RegisterRoutes(e *echo.Echo) {
+	e.GET("/health", healthHandler)
 }
 
-func healthHandler(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{"healthy": true})
+func healthHandler(c echo.Context) error {
+	return c.JSONBlob(http.StatusOK, resp)
 }
