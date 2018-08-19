@@ -26,5 +26,5 @@ func main() {
 	if err != nil && err != http.ErrServerClosed {
 		log.Err(err).Fatal("server stopped")
 	}
-	log.Info("server started")
+	log.Info("server stopped")
 }

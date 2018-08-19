@@ -23,16 +23,11 @@ func init() {
 
 func New() Logger {
 	host, _ := os.Hostname()
-	release := os.Getenv("RELEASE")
 
 	zl := zerolog.New(os.Stdout).
 		With().
 		Timestamp().
-		Str("host", host)
-
-	if release != "" {
-		zl = zl.Str("release", release)
-	}
+		Str("hostname", host)
 
 	return Logger{
 		zl:   zl.Logger(),

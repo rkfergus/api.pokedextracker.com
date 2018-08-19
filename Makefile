@@ -18,7 +18,7 @@ default: build
 .PHONY: build
 build: install
 	@echo "---> Building"
-	go build -o ./bin/$(PKG_NAME) $(BFLAGS)
+	CGO_ENABLED=0 go build -o ./bin/$(PKG_NAME) -installsuffix cgo -ldflags '-w -s' $(BFLAGS) ./cmd/serve
 
 .PHONY: clean
 clean:
@@ -55,10 +55,15 @@ rollback:
 	@echo "---> Rolling back"
 	go run cmd/migrations/*.go rollback
 
+.PHONY: serve
+serve:
+	@echo "---> Serving"
+	gin --port 8648 --appPort 8469 --path . --build ./cmd/serve --immediate --bin ./bin/gin-$(PKG_NAME) run
+
 .PHONY: setup
 setup:
 	@echo "--> Setting up"
-	go get -u -v github.com/alecthomas/gometalinter github.com/golang/dep/cmd/dep
+	go get -u -v github.com/alecthomas/gometalinter github.com/golang/dep/cmd/dep github.com/codegangsta/gin
 	gometalinter --install
 ifdef PSQL
 	dropdb --if-exists $(DEVELOPMENT_DATABASE_NAME)
