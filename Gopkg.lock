@@ -4,8 +4,8 @@
 [[projects]]
   name = "github.com/davecgh/go-spew"
   packages = ["spew"]
-  revision = "346938d642f2ec3594ed81d874461961cd0faa76"
-  version = "v1.1.0"
+  revision = "8991bc29aa16c548c550c7ff78260e27b9ab7c73"
+  version = "v1.1.1"
 
 [[projects]]
   branch = "master"
@@ -18,10 +18,11 @@
   packages = [
     ".",
     "binding",
+    "json",
     "render"
   ]
-  revision = "d459835d2b077e44f7c9b453505ee29881d5d12d"
-  version = "v1.2"
+  revision = "b869fe1415e4b9eb52f247441830d502aece2d4d"
+  version = "v1.3.0"
 
 [[projects]]
   name = "github.com/go-pg/pg"
@@ -33,8 +34,8 @@
     "orm",
     "types"
   ]
-  revision = "d4fc7afde3ee9d0a780f9c67daf8a8a3bfd84060"
-  version = "v6.14.2"
+  revision = "c0368cd6ee62269f0a5c3d6c9c02c6d192760bc6"
+  version = "v6.14.3"
 
 [[projects]]
   name = "github.com/golang/protobuf"
@@ -49,10 +50,28 @@
   revision = "04140366298a54a039076d798123ffa108fff46c"
 
 [[projects]]
+  name = "github.com/json-iterator/go"
+  packages = ["."]
+  revision = "1624edc4454b8682399def8740d46db5e4362ba4"
+  version = "1.1.5"
+
+[[projects]]
   name = "github.com/mattn/go-isatty"
   packages = ["."]
   revision = "0360b2af4f38e8d38c7fce2a9f4e702702d73a39"
   version = "v0.0.3"
+
+[[projects]]
+  name = "github.com/modern-go/concurrent"
+  packages = ["."]
+  revision = "bacd9c7ef1dd9b15be4a9909b8ac7a4e313eec94"
+  version = "1.0.3"
+
+[[projects]]
+  name = "github.com/modern-go/reflect2"
+  packages = ["."]
+  revision = "4b7aa43c6742a2c18fdef89dd197aaae7dac7ccd"
+  version = "1.0.1"
 
 [[projects]]
   name = "github.com/pmezard/go-difflib"
@@ -73,8 +92,8 @@
     "internal/cbor",
     "internal/json"
   ]
-  revision = "05eafee0eb17d0150591a8f30f0fa592cc9b7471"
-  version = "v1.6.0"
+  revision = "77db4b4f350e31be66a57c332acb7721cf9ff9bb"
+  version = "v1.8.0"
 
 [[projects]]
   name = "github.com/satori/go.uuid"
@@ -101,7 +120,7 @@
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix"]
-  revision = "63fc586f45fe72d95d5240a5d5eb95e6503907d3"
+  revision = "1c9583448a9c3aa0f9a6a5241bf73c0bd8aafded"
 
 [[projects]]
   name = "gopkg.in/go-playground/validator.v8"
@@ -118,6 +137,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "86b5511055e7edaf399bc470b0469e0ae657710f4606d06c9fe6ac7543fd6cf1"
+  inputs-digest = "839ede6cfb4ffd854fe261d4eaf2768843b82e36ac81ae6748d4985461de7908"
   solver-name = "gps-cdcl"
   solver-version = 1
