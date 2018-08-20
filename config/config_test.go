@@ -18,6 +18,8 @@ func TestEnvironments(t *testing.T) {
 	defer func() {
 		err := os.Setenv(environmentENV, originalEnv)
 		require.Nil(t, err, "unexpected error restoring original environment")
+		err = os.Setenv("PORT", "")
+		require.Nil(t, err, "unexpected error clearing PORT env")
 	}()
 
 	envs := []string{"development", "staging", "production"}
@@ -29,4 +31,11 @@ func TestEnvironments(t *testing.T) {
 		cfg := New()
 		assert.Equal(t, cfg.Environment, env, "incorrect environment")
 	}
+
+	err := os.Setenv(environmentENV, "development")
+	require.Nil(t, err, "unexpected error overwriting environment")
+	err = os.Setenv("PORT", "1234")
+	require.Nil(t, err, "unexpected error setting PORT env")
+	cfg := New()
+	assert.Equal(t, 1234, cfg.Port)
 }
