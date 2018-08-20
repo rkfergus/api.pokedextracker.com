@@ -11,8 +11,8 @@ type Dex struct {
 	UserID   int        `json:"user_id"`
 	Title    string     `json:"title"`
 	Slug     string     `json:"slug"`
-	Shiny    bool       `json:"shiny"`
+	Shiny    bool       `sql:",notnull" json:"shiny"`
 	GameID   string     `json:"-"`
 	Game     games.Game `json:"game"`
-	Regional bool       `json:"regional"`
+	Regional bool       `sql:",notnull" json:"regional"`
 }

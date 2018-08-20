@@ -7,7 +7,7 @@ jobs:
           ENVIRONMENT: test
       - image: circleci/postgres:9.4
         environment:
-          POSTGRES_USER: pokedex_tracker_user
+          POSTGRES_USER: pokedex_tracker_admin
           POSTGRES_DB: pokedex_tracker_test
           POSTGRES_PASSWORD: ""
     working_directory: /go/src/github.com/pokedextracker/api.pokedextracker.com

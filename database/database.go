@@ -2,7 +2,6 @@ package database
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/go-pg/pg"
 	"github.com/pokedextracker/api.pokedextracker.com/config"
@@ -22,15 +21,5 @@ func New(cfg *config.Config) (*pg.DB, error) {
 	if err != nil {
 		return nil, err
 	}
-	db.OnQueryProcessed(func(event *pg.QueryProcessedEvent) {
-		query, err := event.FormattedQuery()
-		if err != nil {
-			panic(err)
-		}
-
-		fmt.Println("======")
-		fmt.Printf("%s %s\n", time.Since(event.StartTime), query)
-		fmt.Println("======")
-	})
 	return db, nil
 }

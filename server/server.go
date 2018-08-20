@@ -8,6 +8,7 @@ import (
 	"github.com/labstack/echo"
 	elog "github.com/labstack/gommon/log"
 	"github.com/pokedextracker/api.pokedextracker.com/application"
+	"github.com/pokedextracker/api.pokedextracker.com/binder"
 	"github.com/pokedextracker/api.pokedextracker.com/errors"
 	"github.com/pokedextracker/api.pokedextracker.com/games"
 	"github.com/pokedextracker/api.pokedextracker.com/health"
@@ -24,6 +25,7 @@ func New(app *application.App) *http.Server {
 	e := echo.New()
 
 	e.Logger.SetLevel(elog.OFF)
+	e.Binder = binder.New()
 
 	e.Use(logger.Middleware())
 	e.Use(recovery.Middleware())

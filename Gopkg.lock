@@ -21,6 +21,21 @@
   version = "v6.14.3"
 
 [[projects]]
+  name = "github.com/go-playground/locales"
+  packages = [
+    ".",
+    "currency"
+  ]
+  revision = "f63010822830b6fe52288ee52d5a1151088ce039"
+  version = "v0.12.1"
+
+[[projects]]
+  name = "github.com/go-playground/universal-translator"
+  packages = ["."]
+  revision = "b32fa301c9fe55953584134cb6853a13c87ec0a1"
+  version = "v0.16.0"
+
+[[projects]]
   branch = "master"
   name = "github.com/jinzhu/inflection"
   packages = ["."]
@@ -82,6 +97,12 @@
   version = "v1.2.0"
 
 [[projects]]
+  name = "github.com/segmentio/go-snakecase"
+  packages = ["."]
+  revision = "3ecf343f213326f182b8477c337a2be66c9205b0"
+  version = "v1.0.0"
+
+[[projects]]
   name = "github.com/stretchr/testify"
   packages = [
     "assert",
@@ -117,9 +138,24 @@
   packages = ["unix"]
   revision = "1c9583448a9c3aa0f9a6a5241bf73c0bd8aafded"
 
+[[projects]]
+  name = "gopkg.in/go-playground/mold.v2"
+  packages = [
+    ".",
+    "modifiers"
+  ]
+  revision = "6bc20ce40733e8e04c2fda4523a957dd8e198948"
+  version = "v2.2.0"
+
+[[projects]]
+  name = "gopkg.in/go-playground/validator.v9"
+  packages = ["."]
+  revision = "e69e9a28bb62b977fdc58d051f1bb477b7cbe486"
+  version = "v9.21.0"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "0d9b9df348a2236008cc31e064c6bbe1929d067bb309a2ac16357fbe58255244"
+  inputs-digest = "0450abc6409b74e47cd25d536e5c5f0b90dfb38c443eb2af9cf812c762585e3f"
   solver-name = "gps-cdcl"
   solver-version = 1

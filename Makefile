@@ -9,7 +9,7 @@ COVERAGE_PROFILE ?= coverage.out
 
 PSQL := $(shell command -v psql 2> /dev/null)
 
-DATABASE_USER             ?= pokedex_tracker_user
+DATABASE_USER             ?= pokedex_tracker_admin
 TEST_DATABASE_NAME        ?= pokedex_tracker_test
 DEVELOPMENT_DATABASE_NAME ?= pokedex_tracker
 
