@@ -2,7 +2,6 @@ package binder
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo"
@@ -22,15 +21,14 @@ func New() *Binder {
 	conform := modifiers.New()
 	validate := validator.New()
 
-	validate.RegisterValidation("friendcode", friendCode)
-	validate.RegisterValidation("token", token)
+	validate.RegisterValidation("friendcode", friendcodeFunc)
+	validate.RegisterValidation("token", tokenFunc)
 
 	return &Binder{db, conform, validate}
 }
 
 func (b *Binder) Bind(i interface{}, c echo.Context) error {
 	if err := b.db.Bind(i, c); err != nil {
-		fmt.Println(err)
 		return err
 	}
 	if err := b.conform.Struct(context.Background(), i); err != nil {
