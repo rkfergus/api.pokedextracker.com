@@ -19,7 +19,10 @@ func main() {
 		log.Err(err).Fatal("database error")
 	}
 	app := application.New(db, cfg)
-	srv := server.New(app)
+	srv, err := server.New(app)
+	if err != nil {
+		log.Err(err).Fatal("server error")
+	}
 
 	log.Info("server started", logger.Data{"port": cfg.Port})
 	err = srv.ListenAndServe()

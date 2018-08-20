@@ -20,12 +20,17 @@ import (
 )
 
 // New returns a new HTTP server with the registered routes.
-func New(app *application.App) *http.Server {
+func New(app *application.App) (*http.Server, error) {
 	log := logger.New()
 	e := echo.New()
 
 	e.Logger.SetLevel(elog.OFF)
-	e.Binder = binder.New()
+
+	b, err := binder.New()
+	if err != nil {
+		return nil, err
+	}
+	e.Binder = b
 
 	e.Use(logger.Middleware())
 	e.Use(recovery.Middleware())
@@ -54,7 +59,7 @@ func New(app *application.App) *http.Server {
 		}
 	}()
 
-	return srv
+	return srv, nil
 }
 
 func notFoundHandler(c echo.Context) error {

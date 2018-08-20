@@ -17,7 +17,8 @@ func TestNew(t *testing.T) {
 	db, err := database.New(cfg)
 	require.Nil(t, err, "unexpected error when making new database struct")
 	app := application.New(db, cfg)
-	srv := New(app)
+	srv, err := New(app)
+	require.NoError(t, err)
 
 	req, err := http.NewRequest("GET", "/health", nil)
 	require.Nil(t, err, "unexpecetd error when making new request")

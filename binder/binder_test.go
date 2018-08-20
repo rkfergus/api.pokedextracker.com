@@ -19,12 +19,13 @@ var (
 )
 
 func TestNew(t *testing.T) {
-	b := New()
+	b, err := New()
+	assert.NoError(t, err)
 	assert.NotNil(t, b)
 
 	c := newContext(json, "invalid")
 	p := params{}
-	err := b.Bind(&p, c)
+	err = b.Bind(&p, c)
 	assert.Contains(t, err.Error(), "Unsupported Media Type", "expected Bind to use the default binder")
 
 	c = newContext(json, echo.MIMEApplicationJSON)

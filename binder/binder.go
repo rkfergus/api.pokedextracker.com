@@ -10,23 +10,33 @@ import (
 	validator "gopkg.in/go-playground/validator.v9"
 )
 
+// Binder is a custom struct that implements the Echo Binder interface. It binds
+// to a struct, uses mold to clean up the params, and validator to validate
+// them.
 type Binder struct {
 	db       *echo.DefaultBinder
 	conform  *mold.Transformer
 	validate *validator.Validate
 }
 
-func New() *Binder {
+// New initializes a new Binder instance with the appropriate validation
+// functions registered.
+func New() (*Binder, error) {
 	db := &echo.DefaultBinder{}
 	conform := modifiers.New()
 	validate := validator.New()
 
-	validate.RegisterValidation("friendcode", friendcodeFunc)
-	validate.RegisterValidation("token", tokenFunc)
+	if err := validate.RegisterValidation("friendcode", friendcodeFunc); err != nil {
+		return nil, err
+	}
+	if err := validate.RegisterValidation("token", tokenFunc); err != nil {
+		return nil, err
+	}
 
-	return &Binder{db, conform, validate}
+	return &Binder{db, conform, validate}, nil
 }
 
+// Bind binds, modifies, and validates payloads against the given struct.
 func (b *Binder) Bind(i interface{}, c echo.Context) error {
 	if err := b.db.Bind(i, c); err != nil {
 		return err
