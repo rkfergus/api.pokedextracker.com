@@ -11,15 +11,15 @@ func init() {
 	const maxCentralKalosID = 153
 	const maxCoastalKalosID = 153
 	families := map[string][]string{
-		"Kanto":         []string{"red_blue", "yellow", "fire_red_leaf_green"},
-		"Johto":         []string{"gold_silver", "crystal", "heart_gold_soul_silver"},
-		"Hoenn":         []string{"ruby_sapphire", "emerald", "omega_ruby_alpha_sapphire"},
-		"Sinnoh":        []string{"diamond_pearl", "platinum"},
-		"Unova":         []string{"black_white", "black_2_white_2"},
-		"CentralKalos":  []string{"x_y"},
-		"CoastalKalos":  []string{"x_y"},
-		"MountainKalos": []string{"x_y"},
-		"Alola":         []string{"sun_moon"},
+		"Kanto":         {"red_blue", "yellow", "fire_red_leaf_green"},
+		"Johto":         {"gold_silver", "crystal", "heart_gold_soul_silver"},
+		"Hoenn":         {"ruby_sapphire", "emerald", "omega_ruby_alpha_sapphire"},
+		"Sinnoh":        {"diamond_pearl", "platinum"},
+		"Unova":         {"black_white", "black_2_white_2"},
+		"CentralKalos":  {"x_y"},
+		"CoastalKalos":  {"x_y"},
+		"MountainKalos": {"x_y"},
+		"Alola":         {"sun_moon"},
 	}
 	type gameFamily struct {
 		tableName struct{} `sql:"game_families,alias:game_families"`
