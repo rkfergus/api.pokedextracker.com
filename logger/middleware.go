@@ -7,6 +7,8 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
+// Middleware attaches a Logger instance with a request ID onto the context. It
+// also logs every request along with metadata about the request.
 func Middleware() func(next echo.HandlerFunc) echo.HandlerFunc {
 	l := New()
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
