@@ -10,7 +10,11 @@ import (
 
 const stackSize = 4 << 10 // 4KB
 
+// Handler is an Echo error handler that uses HTTP errors accordingly, and any
+// generic error will be interpreted as an internal server error.
 func Handler(err error, c echo.Context) {
+	log := c.Get("logger").(logger.Logger)
+
 	code := http.StatusInternalServerError
 	var msg interface{}
 	msg = err.Error()
@@ -19,11 +23,13 @@ func Handler(err error, c echo.Context) {
 		msg = he.Message
 	}
 	if code == http.StatusInternalServerError {
-		log := c.Get("logger").(logger.Logger)
 		stack := make([]byte, stackSize)
 		length := runtime.Stack(stack, true)
 		log.Err(err).Error("server error", logger.Data{"stack": stack[:length]})
 		msg = "internal server error"
 	}
-	c.JSON(code, map[string]interface{}{"error": map[string]interface{}{"message": msg, "status_code": code}})
+	err = c.JSON(code, map[string]interface{}{"error": map[string]interface{}{"message": msg, "status_code": code}})
+	if err != nil {
+		log.Err(err).Error("error handler json error")
+	}
 }
