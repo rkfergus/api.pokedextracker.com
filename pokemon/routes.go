@@ -1,11 +1,16 @@
 package pokemon
 
-import "github.com/labstack/echo"
+import (
+	"github.com/labstack/echo"
+	"github.com/pokedextracker/api.pokedextracker.com/application"
+)
 
 // RegisterRoutes takes in an Echo router and registers routes onto it.
-func RegisterRoutes(e *echo.Echo) {
+func RegisterRoutes(e *echo.Echo, app *application.App) {
 	g := e.Group("/pokemon")
 
-	g.GET("", listHandler)
-	g.GET("/:id", retrieveHandler)
+	h := handler{app}
+
+	g.GET("", h.listHandler)
+	g.GET("/:id", h.retrieveHandler)
 }

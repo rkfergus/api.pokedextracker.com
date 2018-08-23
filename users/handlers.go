@@ -15,9 +15,11 @@ import (
 
 const cost = 10
 
-func createHandler(c echo.Context) error {
-	app := c.Get("app").(*application.App)
+type handler struct {
+	app *application.App
+}
 
+func (h *handler) createHandler(c echo.Context) error {
 	params := createParams{}
 	if err := c.Bind(&params); err != nil {
 		return err
@@ -53,7 +55,7 @@ func createHandler(c echo.Context) error {
 		Regional: *params.Regional,
 	}
 
-	err = app.DB.RunInTransaction(func(tx *pg.Tx) error {
+	err = h.app.DB.RunInTransaction(func(tx *pg.Tx) error {
 		if _, err := tx.Model(&user).Insert(); err != nil {
 			return err
 		}
@@ -67,7 +69,7 @@ func createHandler(c echo.Context) error {
 		}
 		return err
 	}
-	err = app.DB.
+	err = h.app.DB.
 		Model(&user).
 		Relation("Dexes").
 		Relation("Dexes.Game").
@@ -82,17 +84,16 @@ func createHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, user)
 }
 
-func listHandler(c echo.Context) error {
+func (h *handler) listHandler(c echo.Context) error {
 	return nil
 }
 
-func retrieveHandler(c echo.Context) error {
-	app := c.Get("app").(*application.App)
+func (h *handler) retrieveHandler(c echo.Context) error {
 	username := c.Param("username")
 
 	user := User{}
 
-	err := app.DB.
+	err := h.app.DB.
 		Model(&user).
 		Relation("Dexes", func(q *orm.Query) (*orm.Query, error) {
 			return q.Order("dexes.date_created ASC"), nil
@@ -111,6 +112,6 @@ func retrieveHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, user)
 }
 
-func updateHandler(c echo.Context) error {
+func (h *handler) updateHandler(c echo.Context) error {
 	return nil
 }

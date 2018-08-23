@@ -34,12 +34,11 @@ func New(app *application.App) (*http.Server, error) {
 
 	e.Use(logger.Middleware())
 	e.Use(recovery.Middleware())
-	e.Use(application.Middleware(app))
 
-	games.RegisterRoutes(e)
 	health.RegisterRoutes(e)
-	pokemon.RegisterRoutes(e)
-	users.RegisterRoutes(e)
+	games.RegisterRoutes(e, app)
+	pokemon.RegisterRoutes(e, app)
+	users.RegisterRoutes(e, app)
 
 	echo.NotFoundHandler = notFoundHandler
 	e.HTTPErrorHandler = errors.Handler

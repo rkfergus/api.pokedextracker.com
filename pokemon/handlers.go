@@ -8,22 +8,24 @@ import (
 	"github.com/pokedextracker/api.pokedextracker.com/dexnumbers"
 )
 
-func listHandler(c echo.Context) error {
-	app := c.Get("app").(*application.App)
+type handler struct {
+	app *application.App
+}
 
+func (h *handler) listHandler(c echo.Context) error {
 	var pokemon []*Pokemon
 	var dexNumbers []*dexnumbers.GameFamilyDexNumber
 	var evolutions []*Evolution
 
-	err := app.DB.Model(&pokemon).Relation("GameFamily").Order("national_order ASC").Select()
+	err := h.app.DB.Model(&pokemon).Relation("GameFamily").Order("national_order ASC").Select()
 	if err != nil {
 		return err
 	}
-	err = app.DB.Model(&dexNumbers).Select()
+	err = h.app.DB.Model(&dexNumbers).Select()
 	if err != nil {
 		return err
 	}
-	err = app.DB.
+	err = h.app.DB.
 		Model(&evolutions).
 		Relation("EvolvingPokemon").
 		Relation("EvolvedPokemon").
@@ -43,24 +45,22 @@ func listHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, pokemon)
 }
 
-func retrieveHandler(c echo.Context) error {
-	app := c.Get("app").(*application.App)
-
+func (h *handler) retrieveHandler(c echo.Context) error {
 	id := c.Param("id")
 
 	var p Pokemon
 	var dexNumbers []*dexnumbers.GameFamilyDexNumber
 	var evolutions []*Evolution
 
-	err := app.DB.Model(&p).Relation("GameFamily").Where("pokemon.id = ?", id).First()
+	err := h.app.DB.Model(&p).Relation("GameFamily").Where("pokemon.id = ?", id).First()
 	if err != nil {
 		return err
 	}
-	err = app.DB.Model(&dexNumbers).Where("pokemon_id = ?", id).Select()
+	err = h.app.DB.Model(&dexNumbers).Where("pokemon_id = ?", id).Select()
 	if err != nil {
 		return err
 	}
-	err = app.DB.
+	err = h.app.DB.
 		Model(&evolutions).
 		Relation("EvolvingPokemon").
 		Relation("EvolvedPokemon").

@@ -7,12 +7,14 @@ import (
 	"github.com/pokedextracker/api.pokedextracker.com/application"
 )
 
-func listHandler(c echo.Context) error {
-	app := c.Get("app").(*application.App)
+type handler struct {
+	app *application.App
+}
 
+func (h *handler) listHandler(c echo.Context) error {
 	var games []Game
 
-	err := app.DB.
+	err := h.app.DB.
 		Model(&games).
 		Relation("GameFamily").
 		Join("INNER JOIN game_families ON games.game_family_id = game_families.id").
