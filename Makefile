@@ -55,6 +55,11 @@ rollback:
 	@echo "---> Rolling back"
 	go run cmd/migrations/*.go rollback
 
+.PHONY: seed
+seed:
+	@echo "---> Populating seeds"
+	go run cmd/seeds/*.go
+
 .PHONY: serve
 serve:
 	@echo "---> Serving"

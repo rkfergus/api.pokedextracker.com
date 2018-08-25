@@ -44,6 +44,9 @@ jobs:
           name: Run migrations
           command: make migrate
       - run:
+          name: Seed database
+          command: make seed
+      - run:
           name: Run tests
           command: make test
       - run:
