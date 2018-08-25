@@ -16,14 +16,14 @@ DEVELOPMENT_DATABASE_NAME ?= pokedex_tracker
 default: build
 
 .PHONY: build
-build: install
+build:
 	@echo "---> Building"
 	CGO_ENABLED=0 go build -o ./bin/$(PKG_NAME) -installsuffix cgo -ldflags '-w -s' $(BFLAGS) ./cmd/serve
 
 .PHONY: clean
 clean:
 	@echo "---> Cleaning"
-	rm -rf ./bin ./vendor
+	rm -rf ./bin
 
 .PHONY: enforce
 enforce:
@@ -38,7 +38,7 @@ html:
 .PHONY: install
 install:
 	@echo "---> Installing dependencies"
-	dep ensure
+	go mod download
 
 .PHONY: lint
 lint:
@@ -63,7 +63,7 @@ serve:
 .PHONY: setup
 setup:
 	@echo "--> Setting up"
-	go get -u -v github.com/alecthomas/gometalinter github.com/golang/dep/cmd/dep github.com/codegangsta/gin
+	go get -u -v github.com/alecthomas/gometalinter github.com/codegangsta/gin
 	gometalinter --install
 ifdef PSQL
 	dropdb --if-exists $(DEVELOPMENT_DATABASE_NAME)
