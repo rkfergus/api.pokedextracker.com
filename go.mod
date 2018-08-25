@@ -1,6 +1,7 @@
 module github.com/pokedextracker/api.pokedextracker.com
 
 require (
+	github.com/bluele/factory-go v0.0.0-20180415032208-14d56da9cb7c
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/fsnotify/fsnotify v1.4.7 // indirect
 	github.com/go-pg/pg v6.14.3+incompatible

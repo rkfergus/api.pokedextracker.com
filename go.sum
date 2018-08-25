@@ -1,3 +1,5 @@
+github.com/bluele/factory-go v0.0.0-20180415032208-14d56da9cb7c h1:KghVh2MLqm364ke+ORQSngZ2Ob0bfH+mvOBssjqu7T4=
+github.com/bluele/factory-go v0.0.0-20180415032208-14d56da9cb7c/go.mod h1:C+/xfXxCR66wsm6I3Mzbf72W/Lz2NPsGQhSWDVBa5YU=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/fsnotify/fsnotify v1.4.7 h1:IXs+QLmnXW2CcXuY+8Mzv/fWEsPGWxqefPtCP5CnV9I=
