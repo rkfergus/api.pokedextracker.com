@@ -3,6 +3,7 @@ package application
 import (
 	"github.com/go-pg/pg"
 	"github.com/pokedextracker/api.pokedextracker.com/config"
+	"github.com/pokedextracker/api.pokedextracker.com/database"
 )
 
 // App contains necessary references that will be persisted throughout the
@@ -12,7 +13,12 @@ type App struct {
 	Config *config.Config
 }
 
-// New creates a new instance of App with the given DB and Config.
-func New(db *pg.DB, cfg *config.Config) *App {
-	return &App{db, cfg}
+// New creates a new instance of App with a DB and Config.
+func New() (*App, error) {
+	cfg := config.New()
+	db, err := database.New(cfg)
+	if err != nil {
+		return nil, err
+	}
+	return &App{db, cfg}, nil
 }

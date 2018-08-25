@@ -6,17 +6,13 @@ import (
 	"testing"
 
 	"github.com/pokedextracker/api.pokedextracker.com/application"
-	"github.com/pokedextracker/api.pokedextracker.com/config"
-	"github.com/pokedextracker/api.pokedextracker.com/database"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 func TestNew(t *testing.T) {
-	cfg := config.New()
-	db, err := database.New(cfg)
-	require.Nil(t, err, "unexpected error when making new database struct")
-	app := application.New(db, cfg)
+	app, err := application.New()
+	require.NoError(t, err)
 	srv, err := New(app)
 	require.NoError(t, err)
 
