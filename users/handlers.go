@@ -8,8 +8,8 @@ import (
 	"github.com/go-pg/pg/orm"
 	"github.com/labstack/echo"
 	"github.com/pokedextracker/api.pokedextracker.com/application"
-	"github.com/pokedextracker/api.pokedextracker.com/dexes"
 	"github.com/pokedextracker/api.pokedextracker.com/errors"
+	"github.com/pokedextracker/api.pokedextracker.com/models"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -40,14 +40,14 @@ func (h *handler) createHandler(c echo.Context) error {
 		ip = c.Request().RemoteAddr
 	}
 
-	user := User{
+	user := models.User{
 		Username:   params.Username,
 		Password:   string(hash),
 		FriendCode: params.FriendCode,
 		Referrer:   params.Referrer,
 		LastIP:     &ip,
 	}
-	dex := dexes.Dex{
+	dex := models.Dex{
 		Title:    params.Title,
 		Slug:     params.Title, // TODO: slugify the title
 		Shiny:    *params.Shiny,
@@ -91,7 +91,7 @@ func (h *handler) listHandler(c echo.Context) error {
 func (h *handler) retrieveHandler(c echo.Context) error {
 	username := c.Param("username")
 
-	user := User{}
+	user := models.User{}
 
 	err := h.app.DB.
 		Model(&user).

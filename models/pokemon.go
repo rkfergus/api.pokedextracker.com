@@ -1,23 +1,21 @@
-package pokemon
+package models
 
 import (
 	"strings"
 
 	"github.com/go-pg/pg/orm"
-	"github.com/pokedextracker/api.pokedextracker.com/dexnumbers"
-	"github.com/pokedextracker/api.pokedextracker.com/gamefamilies"
 )
 
 type Pokemon struct {
 	tableName struct{} `sql:"pokemon,alias:pokemon"`
 
-	ID           int                     `json:"id"`
-	NationalID   int                     `json:"national_id"`
-	Name         string                  `json:"name"`
-	GameFamilyID string                  `json:"-"`
-	GameFamily   gamefamilies.GameFamily `json:"game_family"`
-	Form         *string                 `json:"form"`
-	Box          *string                 `json:"box"`
+	ID           int        `json:"id"`
+	NationalID   int        `json:"national_id"`
+	Name         string     `json:"name"`
+	GameFamilyID string     `json:"-"`
+	GameFamily   GameFamily `json:"game_family"`
+	Form         *string    `json:"form"`
+	Box          *string    `json:"box"`
 
 	RedBlueID                *int `sql:"-" json:"red_blue_id,omitempty"`
 	YellowID                 *int `sql:"-" json:"yellow_id,omitempty"`
@@ -71,44 +69,44 @@ func (p *Pokemon) AfterQuery(db orm.DB) error {
 	return nil
 }
 
-func (p *Pokemon) LoadDexNumbers(dexNumbers []*dexnumbers.GameFamilyDexNumber) {
+func (p *Pokemon) LoadDexNumbers(dexNumbers []*GameFamilyDexNumber) {
 	for _, dn := range dexNumbers {
 		if dn.PokemonID != p.ID {
 			continue
 		}
 		n := dn.DexNumber
 		switch dn.GameFamilyID {
-		case gamefamilies.RedBlueID:
+		case RedBlueID:
 			p.RedBlueID = &n
-		case gamefamilies.YellowID:
+		case YellowID:
 			p.YellowID = &n
-		case gamefamilies.GoldSilverID:
+		case GoldSilverID:
 			p.GoldSilverID = &n
-		case gamefamilies.CrystalID:
+		case CrystalID:
 			p.CrystalID = &n
-		case gamefamilies.RubySapphireID:
+		case RubySapphireID:
 			p.RubySapphireID = &n
-		case gamefamilies.FireRedLeafGreenID:
+		case FireRedLeafGreenID:
 			p.FireRedLeafGreenID = &n
-		case gamefamilies.EmeraldID:
+		case EmeraldID:
 			p.EmeraldID = &n
-		case gamefamilies.DiamondPearlID:
+		case DiamondPearlID:
 			p.DiamondPearlID = &n
-		case gamefamilies.PlatinumID:
+		case PlatinumID:
 			p.PlatinumID = &n
-		case gamefamilies.HeartGoldSoulSilverID:
+		case HeartGoldSoulSilverID:
 			p.HeartGoldSoulSilverID = &n
-		case gamefamilies.BlackWhiteID:
+		case BlackWhiteID:
 			p.BlackWhiteID = &n
-		case gamefamilies.Black2White2ID:
+		case Black2White2ID:
 			p.Black2White2ID = &n
-		case gamefamilies.XYID:
+		case XYID:
 			p.XYID = &n
-		case gamefamilies.OmegaRubyAlphaSapphireID:
+		case OmegaRubyAlphaSapphireID:
 			p.OmegaRubyAlphaSapphireID = &n
-		case gamefamilies.SunMoonID:
+		case SunMoonID:
 			p.SunMoonID = &n
-		case gamefamilies.UltraSunUltraMoonID:
+		case UltraSunUltraMoonID:
 			p.UltraSunUltraMoonID = &dn.DexNumber
 		}
 	}

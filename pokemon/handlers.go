@@ -5,7 +5,7 @@ import (
 
 	"github.com/labstack/echo"
 	"github.com/pokedextracker/api.pokedextracker.com/application"
-	"github.com/pokedextracker/api.pokedextracker.com/dexnumbers"
+	"github.com/pokedextracker/api.pokedextracker.com/models"
 )
 
 type handler struct {
@@ -13,9 +13,9 @@ type handler struct {
 }
 
 func (h *handler) listHandler(c echo.Context) error {
-	var pokemon []*Pokemon
-	var dexNumbers []*dexnumbers.GameFamilyDexNumber
-	var evolutions []*Evolution
+	var pokemon []*models.Pokemon
+	var dexNumbers []*models.GameFamilyDexNumber
+	var evolutions []*models.Evolution
 
 	err := h.app.DB.Model(&pokemon).Relation("GameFamily").Order("national_order ASC").Select()
 	if err != nil {
@@ -48,9 +48,9 @@ func (h *handler) listHandler(c echo.Context) error {
 func (h *handler) retrieveHandler(c echo.Context) error {
 	id := c.Param("id")
 
-	var p Pokemon
-	var dexNumbers []*dexnumbers.GameFamilyDexNumber
-	var evolutions []*Evolution
+	var p models.Pokemon
+	var dexNumbers []*models.GameFamilyDexNumber
+	var evolutions []*models.Evolution
 
 	err := h.app.DB.Model(&p).Relation("GameFamily").Where("pokemon.id = ?", id).First()
 	if err != nil {

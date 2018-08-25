@@ -1,4 +1,4 @@
-package dexnumbers
+package models
 
 type GameFamilyDexNumber struct {
 	GameFamilyID string `pg:",pk"`

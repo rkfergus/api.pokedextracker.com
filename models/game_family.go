@@ -1,4 +1,4 @@
-package gamefamilies
+package models
 
 type GameFamily struct {
 	tableName struct{} `sql:"game_families,alias:game_families"`

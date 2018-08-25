@@ -5,6 +5,7 @@ import (
 
 	"github.com/labstack/echo"
 	"github.com/pokedextracker/api.pokedextracker.com/application"
+	"github.com/pokedextracker/api.pokedextracker.com/models"
 )
 
 type handler struct {
@@ -12,7 +13,7 @@ type handler struct {
 }
 
 func (h *handler) listHandler(c echo.Context) error {
-	var games []Game
+	var games []models.Game
 
 	err := h.app.DB.
 		Model(&games).
