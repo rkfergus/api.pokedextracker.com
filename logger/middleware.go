@@ -5,6 +5,7 @@ import (
 
 	"github.com/gofrs/uuid"
 	"github.com/labstack/echo"
+	"github.com/pkg/errors"
 )
 
 // Middleware attaches a Logger instance with a request ID onto the context. It
@@ -16,7 +17,7 @@ func Middleware() func(next echo.HandlerFunc) echo.HandlerFunc {
 			t1 := time.Now()
 			id, err := uuid.NewV4()
 			if err != nil {
-				return err
+				return errors.WithStack(err)
 			}
 			log := l.ID(id.String())
 			c.Set("logger", log)
@@ -35,4 +36,15 @@ func Middleware() func(next echo.HandlerFunc) echo.HandlerFunc {
 			return nil
 		}
 	}
+}
+
+// FromContext returns a Logger from the given echo.Context. If there is no
+// attached logger, then this will just return a new Logger instance.
+func FromContext(c echo.Context) Logger {
+	var log Logger
+	log, ok := c.Get("logger").(Logger)
+	if !ok {
+		log = New()
+	}
+	return log
 }

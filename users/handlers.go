@@ -7,6 +7,7 @@ import (
 	"github.com/go-pg/pg"
 	"github.com/go-pg/pg/orm"
 	"github.com/labstack/echo"
+	pkgerrors "github.com/pkg/errors"
 	"github.com/pokedextracker/api.pokedextracker.com/application"
 	"github.com/pokedextracker/api.pokedextracker.com/errors"
 	"github.com/pokedextracker/api.pokedextracker.com/models"
@@ -29,7 +30,7 @@ func (h *handler) createHandler(c echo.Context) error {
 
 	hash, err := bcrypt.GenerateFromPassword([]byte(params.Password), cost)
 	if err != nil {
-		return err
+		return pkgerrors.WithStack(err)
 	}
 
 	xff := c.Request().Header.Get("x-forwarded-for")
@@ -67,7 +68,7 @@ func (h *handler) createHandler(c echo.Context) error {
 		if e, ok := err.(pg.Error); ok && e.Field('C') == errors.PGUniqueViolationCode {
 			return errors.ExistingUsername()
 		}
-		return err
+		return pkgerrors.WithStack(err)
 	}
 	err = h.app.DB.
 		Model(&user).
@@ -77,7 +78,7 @@ func (h *handler) createHandler(c echo.Context) error {
 		Where("username = ?", user.Username).
 		First()
 	if err != nil {
-		return err
+		return pkgerrors.WithStack(err)
 	}
 
 	// TODO: return session
@@ -106,7 +107,7 @@ func (h *handler) retrieveHandler(c echo.Context) error {
 		if err == pg.ErrNoRows {
 			return errors.NotFound("user")
 		}
-		return err
+		return pkgerrors.WithStack(err)
 	}
 
 	return c.JSON(http.StatusOK, user)
