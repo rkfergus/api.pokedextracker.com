@@ -3,8 +3,8 @@ package logger
 import (
 	"time"
 
+	"github.com/gofrs/uuid"
 	"github.com/labstack/echo"
-	uuid "github.com/satori/go.uuid"
 )
 
 // Middleware attaches a Logger instance with a request ID onto the context. It
@@ -14,7 +14,10 @@ func Middleware() func(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 			t1 := time.Now()
-			id := uuid.NewV4()
+			id, err := uuid.NewV4()
+			if err != nil {
+				return err
+			}
 			log := l.ID(id.String())
 			c.Set("logger", log)
 			if err := next(c); err != nil {

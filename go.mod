@@ -7,6 +7,7 @@ require (
 	github.com/go-pg/pg v6.14.3+incompatible
 	github.com/go-playground/locales v0.12.1 // indirect
 	github.com/go-playground/universal-translator v0.16.0
+	github.com/gofrs/uuid v3.1.0+incompatible
 	github.com/golang/protobuf v1.2.0 // indirect
 	github.com/hpcloud/tail v1.0.0 // indirect
 	github.com/jinzhu/inflection v0.0.0-20180308033659-04140366298a // indirect
@@ -20,7 +21,6 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/robinjoseph08/go-pg-migrations v0.1.1
 	github.com/rs/zerolog v1.8.0
-	github.com/satori/go.uuid v1.2.0
 	github.com/segmentio/go-snakecase v1.0.0 // indirect
 	github.com/stretchr/testify v1.2.2
 	github.com/valyala/bytebufferpool v0.0.0-20160817181652-e746df99fe4a // indirect
