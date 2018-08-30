@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/golang:1.11rc2
+      - image: circleci/golang:1.11.0
         environment:
           ENVIRONMENT: test
       - image: circleci/postgres:9.4
