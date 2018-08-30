@@ -3,7 +3,7 @@ package database
 import (
 	"testing"
 
-	"github.com/pokedextracker/api.pokedextracker.com/config"
+	"github.com/pokedextracker/api.pokedextracker.com/pkg/config"
 	"github.com/stretchr/testify/assert"
 )
 

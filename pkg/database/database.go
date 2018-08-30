@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/go-pg/pg"
-	"github.com/pokedextracker/api.pokedextracker.com/config"
+	"github.com/pokedextracker/api.pokedextracker.com/pkg/config"
 )
 
 // New initializes a new database struct.

@@ -7,7 +7,7 @@ import (
 
 	"github.com/labstack/echo"
 	"github.com/pkg/errors"
-	"github.com/pokedextracker/api.pokedextracker.com/logger"
+	"github.com/pokedextracker/api.pokedextracker.com/pkg/logger"
 )
 
 const stackSize = 4 << 10 // 4KB

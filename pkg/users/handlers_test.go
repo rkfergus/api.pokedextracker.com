@@ -5,10 +5,10 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/pokedextracker/api.pokedextracker.com/application"
-	"github.com/pokedextracker/api.pokedextracker.com/errors"
 	"github.com/pokedextracker/api.pokedextracker.com/internal/test"
-	"github.com/pokedextracker/api.pokedextracker.com/models"
+	"github.com/pokedextracker/api.pokedextracker.com/pkg/application"
+	"github.com/pokedextracker/api.pokedextracker.com/pkg/errors"
+	"github.com/pokedextracker/api.pokedextracker.com/pkg/models"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

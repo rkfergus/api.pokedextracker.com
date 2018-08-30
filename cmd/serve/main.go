@@ -3,9 +3,9 @@ package main
 import (
 	"net/http"
 
-	"github.com/pokedextracker/api.pokedextracker.com/application"
-	"github.com/pokedextracker/api.pokedextracker.com/logger"
-	"github.com/pokedextracker/api.pokedextracker.com/server"
+	"github.com/pokedextracker/api.pokedextracker.com/pkg/application"
+	"github.com/pokedextracker/api.pokedextracker.com/pkg/logger"
+	"github.com/pokedextracker/api.pokedextracker.com/pkg/server"
 )
 
 func main() {

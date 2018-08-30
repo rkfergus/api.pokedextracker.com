@@ -7,16 +7,16 @@ import (
 
 	"github.com/labstack/echo"
 	elog "github.com/labstack/gommon/log"
-	"github.com/pokedextracker/api.pokedextracker.com/application"
-	"github.com/pokedextracker/api.pokedextracker.com/binder"
-	"github.com/pokedextracker/api.pokedextracker.com/errors"
-	"github.com/pokedextracker/api.pokedextracker.com/games"
-	"github.com/pokedextracker/api.pokedextracker.com/health"
-	"github.com/pokedextracker/api.pokedextracker.com/logger"
-	"github.com/pokedextracker/api.pokedextracker.com/pokemon"
-	"github.com/pokedextracker/api.pokedextracker.com/recovery"
-	"github.com/pokedextracker/api.pokedextracker.com/signals"
-	"github.com/pokedextracker/api.pokedextracker.com/users"
+	"github.com/pokedextracker/api.pokedextracker.com/pkg/application"
+	"github.com/pokedextracker/api.pokedextracker.com/pkg/binder"
+	"github.com/pokedextracker/api.pokedextracker.com/pkg/errors"
+	"github.com/pokedextracker/api.pokedextracker.com/pkg/games"
+	"github.com/pokedextracker/api.pokedextracker.com/pkg/health"
+	"github.com/pokedextracker/api.pokedextracker.com/pkg/logger"
+	"github.com/pokedextracker/api.pokedextracker.com/pkg/pokemon"
+	"github.com/pokedextracker/api.pokedextracker.com/pkg/recovery"
+	"github.com/pokedextracker/api.pokedextracker.com/pkg/signals"
+	"github.com/pokedextracker/api.pokedextracker.com/pkg/users"
 )
 
 // New returns a new HTTP server with the registered routes.

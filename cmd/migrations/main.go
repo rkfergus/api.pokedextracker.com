@@ -4,8 +4,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/pokedextracker/api.pokedextracker.com/config"
-	"github.com/pokedextracker/api.pokedextracker.com/database"
+	"github.com/pokedextracker/api.pokedextracker.com/pkg/config"
+	"github.com/pokedextracker/api.pokedextracker.com/pkg/database"
 	"github.com/robinjoseph08/go-pg-migrations"
 )
 

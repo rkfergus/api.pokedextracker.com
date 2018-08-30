@@ -8,9 +8,9 @@ import (
 	"github.com/go-pg/pg/orm"
 	"github.com/labstack/echo"
 	pkgerrors "github.com/pkg/errors"
-	"github.com/pokedextracker/api.pokedextracker.com/application"
-	"github.com/pokedextracker/api.pokedextracker.com/errors"
-	"github.com/pokedextracker/api.pokedextracker.com/models"
+	"github.com/pokedextracker/api.pokedextracker.com/pkg/application"
+	"github.com/pokedextracker/api.pokedextracker.com/pkg/errors"
+	"github.com/pokedextracker/api.pokedextracker.com/pkg/models"
 	"golang.org/x/crypto/bcrypt"
 )
 

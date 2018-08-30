@@ -5,7 +5,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/pokedextracker/api.pokedextracker.com/application"
+	"github.com/pokedextracker/api.pokedextracker.com/pkg/application"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

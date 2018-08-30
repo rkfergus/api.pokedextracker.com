@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/labstack/echo"
-	"github.com/pokedextracker/api.pokedextracker.com/application"
+	"github.com/pokedextracker/api.pokedextracker.com/pkg/application"
 	"github.com/stretchr/testify/assert"
 )
 

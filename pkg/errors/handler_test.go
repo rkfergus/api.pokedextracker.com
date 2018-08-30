@@ -7,7 +7,7 @@ import (
 	"testing"
 
 	"github.com/labstack/echo"
-	"github.com/pokedextracker/api.pokedextracker.com/logger"
+	"github.com/pokedextracker/api.pokedextracker.com/pkg/logger"
 	"github.com/stretchr/testify/assert"
 )
 

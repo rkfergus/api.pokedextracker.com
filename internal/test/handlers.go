@@ -8,7 +8,7 @@ import (
 	"testing"
 
 	"github.com/labstack/echo"
-	"github.com/pokedextracker/api.pokedextracker.com/binder"
+	"github.com/pokedextracker/api.pokedextracker.com/pkg/binder"
 	"github.com/stretchr/testify/require"
 )
 

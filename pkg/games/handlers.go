@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo"
-	"github.com/pokedextracker/api.pokedextracker.com/application"
-	"github.com/pokedextracker/api.pokedextracker.com/models"
+	"github.com/pokedextracker/api.pokedextracker.com/pkg/application"
+	"github.com/pokedextracker/api.pokedextracker.com/pkg/models"
 )
 
 type handler struct {

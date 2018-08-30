@@ -7,8 +7,8 @@ import (
 	"path/filepath"
 
 	"github.com/go-pg/pg"
-	"github.com/pokedextracker/api.pokedextracker.com/config"
-	"github.com/pokedextracker/api.pokedextracker.com/database"
+	"github.com/pokedextracker/api.pokedextracker.com/pkg/config"
+	"github.com/pokedextracker/api.pokedextracker.com/pkg/database"
 )
 
 const directory = "./cmd/seeds"
