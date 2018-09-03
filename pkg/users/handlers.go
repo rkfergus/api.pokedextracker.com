@@ -103,10 +103,9 @@ func (h *handler) retrieveHandler(c echo.Context) error {
 		Relation("Dexes.Game.GameFamily").
 		Where("username = ?", username).
 		First()
-	if err != nil {
-		if err == pg.ErrNoRows {
-			return errors.NotFound("user")
-		}
+	if err == pg.ErrNoRows {
+		return errors.NotFound("user")
+	} else if err != nil {
 		return pkgerrors.WithStack(err)
 	}
 

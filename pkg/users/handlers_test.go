@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/pokedextracker/api.pokedextracker.com/internal/factories"
 	"github.com/pokedextracker/api.pokedextracker.com/internal/test"
 	"github.com/pokedextracker/api.pokedextracker.com/pkg/application"
 	"github.com/pokedextracker/api.pokedextracker.com/pkg/errors"
@@ -23,7 +24,7 @@ func TestCreateHandler(t *testing.T) {
 		require.NoError(tt, err)
 
 		payload := test.SerializeStruct(tt, params)
-		c, _, rr := test.NewContext(tt, payload)
+		c, rr := test.NewContext(tt, payload)
 
 		err = h.createHandler(c)
 		assert.NoError(tt, err)
@@ -51,7 +52,7 @@ func TestCreateHandler(t *testing.T) {
 		params.Username = ""
 
 		payload := test.SerializeStruct(tt, params)
-		c, _, _ := test.NewContext(tt, payload)
+		c, _ := test.NewContext(tt, payload)
 
 		err = h.createHandler(c)
 		assert.Contains(tt, err.Error(), "required")
@@ -64,13 +65,13 @@ func TestCreateHandler(t *testing.T) {
 		require.NoError(tt, err)
 
 		payload := test.SerializeStruct(tt, params)
-		c, _, _ := test.NewContext(tt, payload)
+		c, _ := test.NewContext(tt, payload)
 
 		err = h.createHandler(c)
 		require.NoError(tt, err)
 
 		payload = test.SerializeStruct(tt, params)
-		c, _, _ = test.NewContext(tt, payload)
+		c, _ = test.NewContext(tt, payload)
 
 		err = h.createHandler(c)
 		assert.Equal(tt, err, errors.ExistingUsername())
@@ -84,8 +85,8 @@ func TestCreateHandler(t *testing.T) {
 		require.NoError(tt, err)
 
 		payload := test.SerializeStruct(tt, params)
-		c, req, _ := test.NewContext(tt, payload)
-		req.Header.Add("X-Forwarded-For", xff)
+		c, _ := test.NewContext(tt, payload)
+		c.Request().Header.Add("X-Forwarded-For", xff)
 
 		err = h.createHandler(c)
 		assert.NoError(tt, err)
@@ -95,6 +96,43 @@ func TestCreateHandler(t *testing.T) {
 		require.NoError(tt, err)
 
 		assert.Equal(tt, xff, *user.LastIP)
+	})
+}
+
+func TestRetrieveHandler(t *testing.T) {
+	h := newHandler(t)
+
+	t.Run("retrieves user on success", func(tt *testing.T) {
+		test.TruncateTables(tt, h.app.DB)
+		var user models.User
+		err := factories.User.Construct(&user)
+		require.NoError(tt, err)
+		err = h.app.DB.Insert(&user)
+		require.NoError(tt, err)
+
+		c, rr := test.NewContext(tt, nil)
+		c.SetParamNames("username")
+		c.SetParamValues(user.Username)
+
+		err = h.retrieveHandler(c)
+		assert.NoError(tt, err)
+		assert.Equal(tt, http.StatusOK, rr.Code)
+
+		var response models.User
+		err = json.Unmarshal(rr.Body.Bytes(), &response)
+		require.NoError(tt, err)
+		assert.Equal(tt, response.ID, user.ID)
+	})
+
+	t.Run("returns 404 if user isn't found", func(tt *testing.T) {
+		test.TruncateTables(tt, h.app.DB)
+
+		c, _ := test.NewContext(tt, nil)
+		c.SetParamNames("username")
+		c.SetParamValues("foo")
+
+		err := h.retrieveHandler(c)
+		assert.Equal(tt, err, errors.NotFound("user"))
 	})
 }
 
