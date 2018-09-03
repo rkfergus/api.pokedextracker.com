@@ -63,7 +63,7 @@ seed:
 .PHONY: serve
 serve:
 	@echo "---> Serving"
-	gin --port 8648 --appPort 8469 --path . --build ./cmd/serve --immediate --bin ./bin/gin-$(PKG_NAME) run
+	gin --port 8648 --appPort 8649 --path . --build ./cmd/serve --immediate --bin ./bin/gin-$(PKG_NAME) run
 
 .PHONY: setup
 setup:
