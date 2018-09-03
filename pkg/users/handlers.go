@@ -20,7 +20,7 @@ type handler struct {
 	app *application.App
 }
 
-func (h *handler) createHandler(c echo.Context) error {
+func (h *handler) create(c echo.Context) error {
 	params := createParams{}
 	if err := c.Bind(&params); err != nil {
 		return err
@@ -85,11 +85,11 @@ func (h *handler) createHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, user)
 }
 
-func (h *handler) listHandler(c echo.Context) error {
+func (h *handler) list(c echo.Context) error {
 	return nil
 }
 
-func (h *handler) retrieveHandler(c echo.Context) error {
+func (h *handler) retrieve(c echo.Context) error {
 	username := c.Param("username")
 
 	user := models.User{}
@@ -112,6 +112,6 @@ func (h *handler) retrieveHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, user)
 }
 
-func (h *handler) updateHandler(c echo.Context) error {
+func (h *handler) update(c echo.Context) error {
 	return nil
 }

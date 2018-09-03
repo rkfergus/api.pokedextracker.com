@@ -20,7 +20,7 @@ func TestRegisterRoutes(t *testing.T) {
 
 	for _, r := range e.Routes() {
 		// only count routes added by the function
-		if strings.Contains(r.Name, "Handler") {
+		if strings.Contains(r.Name, "*handler") {
 			routes = append(routes, fmt.Sprintf("%s %s", r.Method, r.Path))
 		}
 	}

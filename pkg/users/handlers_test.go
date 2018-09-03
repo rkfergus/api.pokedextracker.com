@@ -26,7 +26,7 @@ func TestCreateHandler(t *testing.T) {
 		payload := test.SerializeStruct(tt, params)
 		c, rr := test.NewContext(tt, payload)
 
-		err = h.createHandler(c)
+		err = h.create(c)
 		assert.NoError(tt, err)
 		assert.Equal(tt, http.StatusOK, rr.Code)
 
@@ -54,7 +54,7 @@ func TestCreateHandler(t *testing.T) {
 		payload := test.SerializeStruct(tt, params)
 		c, _ := test.NewContext(tt, payload)
 
-		err = h.createHandler(c)
+		err = h.create(c)
 		assert.Contains(tt, err.Error(), "required")
 	})
 
@@ -67,13 +67,13 @@ func TestCreateHandler(t *testing.T) {
 		payload := test.SerializeStruct(tt, params)
 		c, _ := test.NewContext(tt, payload)
 
-		err = h.createHandler(c)
+		err = h.create(c)
 		require.NoError(tt, err)
 
 		payload = test.SerializeStruct(tt, params)
 		c, _ = test.NewContext(tt, payload)
 
-		err = h.createHandler(c)
+		err = h.create(c)
 		assert.Equal(tt, err, errors.ExistingUsername())
 	})
 
@@ -88,7 +88,7 @@ func TestCreateHandler(t *testing.T) {
 		c, _ := test.NewContext(tt, payload)
 		c.Request().Header.Add("X-Forwarded-For", xff)
 
-		err = h.createHandler(c)
+		err = h.create(c)
 		assert.NoError(tt, err)
 
 		var user models.User
@@ -114,7 +114,7 @@ func TestRetrieveHandler(t *testing.T) {
 		c.SetParamNames("username")
 		c.SetParamValues(user.Username)
 
-		err = h.retrieveHandler(c)
+		err = h.retrieve(c)
 		assert.NoError(tt, err)
 		assert.Equal(tt, http.StatusOK, rr.Code)
 
@@ -131,7 +131,7 @@ func TestRetrieveHandler(t *testing.T) {
 		c.SetParamNames("username")
 		c.SetParamValues("foo")
 
-		err := h.retrieveHandler(c)
+		err := h.retrieve(c)
 		assert.Equal(tt, err, errors.NotFound("user"))
 	})
 }

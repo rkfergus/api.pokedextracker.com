@@ -11,8 +11,8 @@ func RegisterRoutes(e *echo.Echo, app *application.App) {
 
 	h := handler{app}
 
-	g.POST("", h.createHandler)
-	g.GET("", h.listHandler)
-	g.GET("/:username", h.retrieveHandler)
-	g.POST("/:id", h.updateHandler)
+	g.POST("", h.create)
+	g.GET("", h.list)
+	g.GET("/:username", h.retrieve)
+	g.POST("/:id", h.update)
 }
