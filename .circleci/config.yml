@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/golang:1.11.0
+      - image: circleci/golang:1.10.4
         environment:
           ENVIRONMENT: test
       - image: circleci/postgres:9.4
@@ -10,23 +10,23 @@ jobs:
           POSTGRES_USER: pokedex_tracker_admin
           POSTGRES_DB: pokedex_tracker_test
           POSTGRES_PASSWORD: ""
-    working_directory: ~/api.pokedextracker.com
+    working_directory: /go/src/github.com/pokedextracker/api.pokedextracker.com
     steps:
       - restore_cache:
           keys:
-            - source-v2-{{ .Branch }}-{{ .Revision }}
-            - source-v2-{{ .Branch }}-
-            - source-v2-
+            - source-v1-{{ .Branch }}-{{ .Revision }}
+            - source-v1-{{ .Branch }}-
+            - source-v1-
       - checkout
       - save_cache:
-          key: source-v2-{{ .Branch }}-{{ .Revision }}
+          key: source-v1-{{ .Branch }}-{{ .Revision }}
           paths:
-            - ~/api.pokedextracker.com/.git
+            - /go/src/github.com/pokedextracker/api.pokedextracker.com/.git
       - restore_cache:
           keys:
-            - vendor-v2-{{ checksum ".go-version" }}-{{ checksum "go.sum" }}
-            - vendor-v2-{{ checksum ".go-version" }}-
-            - vendor-v2-
+            - vendor-v1-{{ checksum ".go-version" }}-{{ checksum "Gopkg.lock" }}
+            - vendor-v1-{{ checksum ".go-version" }}-
+            - vendor-v1-
       - run:
           name: Set up project
           command: make setup
@@ -34,9 +34,10 @@ jobs:
           name: Install dependencies
           command: make install
       - save_cache:
-          key: vendor-v2-{{ checksum ".go-version" }}-{{ checksum "go.sum" }}
+          key: vendor-v1-{{ checksum ".go-version" }}-{{ checksum "Gopkg.lock" }}
           paths:
             - ~/.cache/go-build
+            - /go/src/github.com/pokedextracker/api.pokedextracker.com/vendor
     #   - run:
     #       name: Run linter
     #       command: make lint

@@ -1,10 +1,13 @@
-FROM golang:1.11.0 as builder
+FROM golang:1.10.4 as builder
 
-WORKDIR /app
+RUN curl -fsSL -o /usr/local/bin/dep https://github.com/golang/dep/releases/download/v0.4.1/dep-linux-amd64
+RUN chmod +x /usr/local/bin/dep
 
-COPY go.mod go.mod
-COPY go.sum go.sum
-RUN go mod download
+WORKDIR /go/src/github.com/pokedextracker/api.pokedextracker.com
+
+COPY Gopkg.toml Gopkg.toml
+COPY Gopkg.lock Gopkg.lock
+RUN dep ensure -vendor-only
 
 COPY . .
 
@@ -13,7 +16,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build -installsuffix cgo -ldflags '-w -s' -o ./b
 
 FROM gruebel/upx:latest as upx
 
-COPY --from=builder /app/bin /app/original
+COPY --from=builder /go/src/github.com/pokedextracker/api.pokedextracker.com/bin /app/original
 
 RUN mkdir /app/bin
 RUN upx --best --lzma -o /app/bin/serve /app/original/serve
