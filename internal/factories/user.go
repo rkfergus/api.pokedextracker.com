@@ -7,10 +7,9 @@ import (
 
 var (
 	friendCode = "1234-1234-1234"
-	shiny      = false
-	regional   = false
 )
 
+// User is a factory to create fake users for tests.
 var User = factory.NewFactory(&models.User{
 	Password:   "password",
 	FriendCode: &friendCode,

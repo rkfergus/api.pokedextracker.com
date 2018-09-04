@@ -31,7 +31,7 @@ func main() {
 
 func loadFile(db *pg.DB, file string) {
 	path := filepath.Join(directory, file)
-	b, err := ioutil.ReadFile(path)
+	b, err := ioutil.ReadFile(path) // nolint: gosec
 	if err != nil {
 		log.Fatalln(err)
 	}

@@ -1,5 +1,6 @@
 package models
 
+// Game is a model representing a game.
 type Game struct {
 	tableName struct{} `sql:"games,alias:games"`
 

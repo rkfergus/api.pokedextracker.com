@@ -1,5 +1,7 @@
 package models
 
+// GameFamily is a model representing a game family. A game family is a set of
+// games that were released at the same time, usually as complementing games.
 type GameFamily struct {
 	tableName struct{} `sql:"game_families,alias:game_families"`
 
@@ -11,6 +13,7 @@ type GameFamily struct {
 	Published     bool   `json:"published"`
 }
 
+// These constants correspond to the IDs of the game families.
 const (
 	RedBlueID                = "red_blue"
 	YellowID                 = "yellow"

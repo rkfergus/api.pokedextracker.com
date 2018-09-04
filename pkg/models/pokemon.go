@@ -6,6 +6,8 @@ import (
 	"github.com/go-pg/pg/orm"
 )
 
+// Pokemon is a model representing a Pokemon. There is a row for every Pokemon
+// and form.
 type Pokemon struct {
 	tableName struct{} `sql:"pokemon,alias:pokemon"`
 
@@ -56,6 +58,8 @@ type Pokemon struct {
 	EvolutionFamily   EvolutionFamily `sql:"-" json:"evolution_family"`
 }
 
+// AfterQuery is a model hook that splints the saved comma-separated locations
+// into a slice of locations.
 func (p *Pokemon) AfterQuery(db orm.DB) error {
 	p.XLocations = splitLocations(p.XLocation)
 	p.YLocations = splitLocations(p.YLocation)
@@ -69,6 +73,8 @@ func (p *Pokemon) AfterQuery(db orm.DB) error {
 	return nil
 }
 
+// LoadDexNumbers takes in all possible GameFamilyDexNumbers and use them to
+// load the correct dex numbers into p.
 func (p *Pokemon) LoadDexNumbers(dexNumbers []*GameFamilyDexNumber) {
 	for _, dn := range dexNumbers {
 		if dn.PokemonID != p.ID {
