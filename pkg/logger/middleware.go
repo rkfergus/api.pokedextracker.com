@@ -29,6 +29,7 @@ func Middleware() func(next echo.HandlerFunc) echo.HandlerFunc {
 				"status_code": c.Response().Status,
 				"method":      c.Request().Method,
 				"path":        c.Request().URL.Path,
+				"route":       c.Path(),
 				"duration":    t2.Sub(t1).Seconds() * 1000,
 				"referer":     c.Request().Referer(),
 				"user_agent":  c.Request().UserAgent(),
