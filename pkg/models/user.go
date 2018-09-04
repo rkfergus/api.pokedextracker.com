@@ -1,6 +1,7 @@
 package models
 
 import (
+	"encoding/json"
 	"time"
 )
 
@@ -12,7 +13,6 @@ type User struct {
 	Username     string    `json:"username"`
 	FriendCode   *string   `json:"friend_code"`
 	Dexes        []Dex     `json:"dexes"`
-	Donated      bool      `sql:"-" json:"donated"`
 	DateCreated  time.Time `json:"date_created"`
 	DateModified time.Time `json:"date_modified"`
 
@@ -21,4 +21,17 @@ type User struct {
 	LastLogin *time.Time `json:"-"`
 	Referrer  *string    `json:"-"`
 	StripeID  *string    `json:"-"`
+}
+
+// MarshalJSON is used to satisfy the Marshaler interface to customize the way
+// it's serialized into JSON.
+func (u User) MarshalJSON() ([]byte, error) {
+	type alias User
+	return json.Marshal(&struct {
+		alias
+		Donated bool `json:"donated"`
+	}{
+		alias:   (alias)(u),
+		Donated: u.StripeID != nil,
+	})
 }
