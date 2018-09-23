@@ -1,9 +1,12 @@
 package logger
 
 import (
+	"fmt"
 	"os"
+	"runtime"
 	"time"
 
+	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
 )
 
@@ -17,6 +20,12 @@ type Logger struct {
 	data []Data
 	err  error
 	root []Data
+}
+
+const stackSize = 4 << 10 // 4KB
+
+type stackTracer interface {
+	StackTrace() errors.StackTrace
 }
 
 func init() {
@@ -117,5 +126,21 @@ func (log Logger) log(evt *zerolog.Event, message string, fields ...Data) {
 	if hasData {
 		evt = evt.Dict("data", data)
 	}
-	evt.Int64("nanoseconds", time.Now().UnixNano()).Err(log.err).Msg(message)
+
+	if log.err != nil {
+		var stack []byte
+		// support pkg/errors stackTracer interface
+		if err, ok := log.err.(stackTracer); ok {
+			st := err.StackTrace()
+			stack = []byte(fmt.Sprintf("%+v", st))
+		} else {
+			stack = make([]byte, stackSize)
+			n := runtime.Stack(stack, true)
+			stack = stack[:n]
+		}
+		f := Data{"message": log.err, "stack": stack}
+		evt = evt.Dict("error", zerolog.Dict().Fields(f))
+	}
+
+	evt.Int64("nanoseconds", time.Now().UnixNano()).Msg(message)
 }

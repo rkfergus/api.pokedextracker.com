@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/labstack/echo"
+	"github.com/pokedextracker/api.pokedextracker.com/internal/test"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -29,4 +30,20 @@ func TestMiddleware(t *testing.T) {
 	e.ServeHTTP(rr, req)
 
 	assert.Equal(t, http.StatusOK, rr.Code)
+}
+
+func TestFromContext(t *testing.T) {
+	log := New().ID("foo")
+	c, _ := test.NewContext(t, nil)
+	c.Set(key, log)
+
+	l := FromContext(c)
+
+	assert.Equal(t, log.id, l.id)
+
+	c, _ = test.NewContext(t, nil)
+
+	l = FromContext(c)
+
+	assert.Equal(t, "", l.id)
 }

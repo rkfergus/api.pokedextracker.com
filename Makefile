@@ -84,4 +84,4 @@ endif
 .PHONY: test
 test:
 	@echo "---> Testing"
-	GIN_MODE=release ENVIRONMENT=test go test ./... -coverprofile $(COVERAGE_PROFILE) $(TFLAGS)
+	GIN_MODE=release ENVIRONMENT=test go test -race ./pkg/... -coverprofile $(COVERAGE_PROFILE) $(TFLAGS)

@@ -8,6 +8,8 @@ import (
 	"github.com/pkg/errors"
 )
 
+const key = "logger"
+
 // Middleware attaches a Logger instance with a request ID onto the context. It
 // also logs every request along with metadata about the request.
 func Middleware() func(next echo.HandlerFunc) echo.HandlerFunc {
@@ -20,7 +22,7 @@ func Middleware() func(next echo.HandlerFunc) echo.HandlerFunc {
 				return errors.WithStack(err)
 			}
 			log := l.ID(id.String())
-			c.Set("logger", log)
+			c.Set(key, log)
 			if err := next(c); err != nil {
 				c.Error(err)
 			}
@@ -43,7 +45,7 @@ func Middleware() func(next echo.HandlerFunc) echo.HandlerFunc {
 // attached logger, then this will just return a new Logger instance.
 func FromContext(c echo.Context) Logger {
 	var log Logger
-	log, ok := c.Get("logger").(Logger)
+	log, ok := c.Get(key).(Logger)
 	if !ok {
 		log = New()
 	}

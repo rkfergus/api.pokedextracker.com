@@ -7,6 +7,7 @@ import (
 	"os"
 	"testing"
 
+	pkgerrors "github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -30,12 +31,12 @@ func TestLogger(t *testing.T) {
 	log := New().
 		ID("id123").
 		Data(Data{"1": "1", "2": "2"}).
-		Root(Data{"4": "4"}).
-		Err(errors.New("test error"))
+		Root(Data{"4": "4"})
 
-	log.Info("foo", Data{"1": "11", "3": "3"})
-	log.Error("foo", Data{"1": "11", "3": "3"})
+	log.Err(errors.New("normal error")).Error("foo", Data{"1": "11", "3": "3"})
+	log.Err(pkgerrors.New("pkg error")).Error("foo", Data{"1": "11", "3": "3"})
 	log.Warn("foo", Data{"1": "11", "3": "3"})
+	log.Info("foo", Data{"1": "11", "3": "3"})
 	log.Debug("foo", Data{"1": "11", "3": "3"})
 
 	err = w.Close()
@@ -50,7 +51,8 @@ func TestLogger(t *testing.T) {
 	assert.Contains(t, line, `"2":"2"`)
 	assert.Contains(t, line, `"3":"3"`)
 	assert.Contains(t, line, `"4":"4"`)
-	assert.Contains(t, line, `"error":"test error"`)
+	assert.Contains(t, line, `"error":{"message":"normal error",`)
+	assert.Contains(t, line, `"error":{"message":"pkg error",`)
 	assert.Contains(t, line, `"level":"info"`)
 	assert.Contains(t, line, `"message":"foo"`)
 }
