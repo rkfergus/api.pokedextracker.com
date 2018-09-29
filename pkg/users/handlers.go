@@ -86,7 +86,29 @@ func (h *handler) create(c echo.Context) error {
 }
 
 func (h *handler) list(c echo.Context) error {
-	return nil
+	params := listParams{}
+	if err := c.Bind(&params); err != nil {
+		return err
+	}
+
+	users := []models.User{}
+
+	err := h.app.DB.
+		Model(&users).
+		Relation("Dexes", func(q *orm.Query) (*orm.Query, error) {
+			return q.Order("dexes.date_created ASC"), nil
+		}).
+		Relation("Dexes.Game").
+		Relation("Dexes.Game.GameFamily").
+		Limit(params.Limit).
+		Offset(params.Offset).
+		Order("id DESC").
+		Select()
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(http.StatusOK, users)
 }
 
 func (h *handler) retrieve(c echo.Context) error {

@@ -4,6 +4,7 @@ import (
 	"context"
 	"net/http"
 
+	"github.com/creasty/defaults"
 	"github.com/labstack/echo"
 	mold "gopkg.in/go-playground/mold.v2"
 	"gopkg.in/go-playground/mold.v2/modifiers"
@@ -42,6 +43,9 @@ func (b *Binder) Bind(i interface{}, c echo.Context) error {
 		return err
 	}
 	if err := b.conform.Struct(context.Background(), i); err != nil {
+		return err
+	}
+	if err := defaults.Set(i); err != nil {
 		return err
 	}
 	if err := b.validate.Struct(i); err != nil {
