@@ -1,62 +1,103 @@
 # api.pokedextracker.com
 
 [![CircleCI](https://circleci.com/gh/pokedextracker/api.pokedextracker.com.svg?style=shield)](https://circleci.com/gh/pokedextracker/api.pokedextracker.com)
-[![Dependency Status](https://david-dm.org/pokedextracker/api.pokedextracker.com.svg)](https://david-dm.org/pokedextracker/api.pokedextracker.com)
 
-The API for [pokedextracker.com](http://pokedextracker.com). It's written in Node.js v5 using the following libraries/packages:
-
-* [Hapi](http://hapijs.com/) - API Framework
-* [Joi](https://github.com/hapijs/joi) - Data Validator
-* [Bookshelf](http://bookshelfjs.org/) - ORM
-* [Knex](http://knexjs.org/) - SQL Query Builder
-* [Bcrypt](https://github.com/ncb000gt/node.bcrypt.js/) - Password Hasher
-* [JWT](https://jwt.io/) - JSON Web Token
+The API for [pokedextracker.com](https://pokedextracker.com).
 
 ## Install
 
-This project is meant to be run with Node.js v6.14.2, so make sure you have it installed and active when running this application. This project also relies on the `yarn.lock` file to lock down dependency versions, so we recommend that you use [`yarn`](https://yarnpkg.com/en/) instead of `npm` to avoid "it works on my computer" bugs that are all too common with just a `package.json`. Assuming you have [`nodenv`](https://github.com/nodenv/nodenv) installed, you just need to install v6.14.2 and then install the dependencies:
+This project is meant to be run with at least Go v1.10 (due to new features
+added to coverage tracking). If you use
+[`goenv`](https://github.com/syndbg/goenv), it should pick up the `.go-version`
+file in this repo and use the appropriate version. It also currently uses
+[`dep`](https://github.com/golang/dep) to manage dependencies. If you're running
+the project for the first time, you can run the commands below to get everything
+set up correctly.
 
-```bash
-$ nodenv install 6.14.2
-$ cd api.pokedextracker.com
-$ yarn
+This project uses PostgreSQL 9.x as its database. Assuming you already have it
+installed (either through [`brew`](http://brew.sh/) on OS X or `apt-get` on
+Ubuntu), you can run `make setup` to setup the role and database.
+
+```sh
+$ goenv install 1.10.4
+$ mkdir -p $GOPATH/src/github.com/pokedextracker
+$ git clone git@github.com:pokedextracker/api.pokedextracker.com.git $GOPATH/src/github.com/pokedextracker/api.pokedextracker.com
+$ cd $GOPATH/src/github.com/pokedextracker/api.pokedextracker.com
+$ make setup
+$ make install
 ```
-
-The `.node-version` file should automatically switch the version for you whenever you `cd` into the project directory.
 
 ### Database
 
-This project uses PostgreSQL as its database, so you'll need to have the role and database setup. Assuming you already have it installed (either through [`brew`](http://brew.sh/) on OS X or `apt-get` on Ubuntu), you can just run the following:
+Now that the database and role are setup, you can just run the following
+commands to run the migrations.
 
-```
-$ psql postgres
-postgres=# CREATE ROLE "pokedex_tracker_admin" CREATEDB CREATEUSER LOGIN;
-$ createdb -O pokedex_tracker_admin pokedex_tracker
-$ yarn db:migrate
+```sh
+$ make migrate
 ```
 
 ### Secrets
 
-There are some secrets needed to run this repo locally, such as the Stripe API Key. Since no secrets are being checked in, you should copy `.env.example` to `.env` and populate it with all of the secrets listed there.
+There are some secrets needed to run this repo locally, such as the Stripe API
+Key. Since no secrets are being checked in, you should copy `.env.example` to
+`.env` and populate it with all of the secrets listed there.
 
 ## Data
 
-This repo doesn't include a way to completely load up the DB with all of the actual Pokemon data. That's only been loaded into the staging and production databases. For testing purposes and to make sure everything is functioning as expected, having that data isn't entirely necessary. You should be relying on tests and factories instead of the database state.
+This repo doesn't include a way to completely load up the DB with all of the
+actual Pokemon data. That's only been loaded into the staging and production
+databases. For testing purposes and to make sure everything is functioning as
+expected, having that data isn't entirely necessary. You should be relying on
+tests and factories instead of the database state.
+
+## Development
+
+To run the server locally during active development, you can just run the
+following command.
+
+```sh
+$ make serve
+```
+
+This will start the server listening on port 8648. So to interact with it, you
+can use `curl`.
+
+```sh
+$ curl -s http://localhost:8648/pokemon
+```
 
 ## Tests
 
-This project uses [Mocha](https://mochajs.org/) as the test runner, [Chai BDD](http://chaijs.com/api/bdd/) as our assertion library, and [Istanbul](https://github.com/gotwarlost/istanbul) to track code coverage. To run the tests locally, all you need to do is run:
+To run the tests and collect coverage information, you can just run the
+following command.
 
-```
-$ yarn test
+```sh
+$ make test
 ```
 
-It will output the results of the test, and a coverage summary. To see a line-by-line breakdown of coverage to see what you missed, you should open `./coverage/lcov-report/index.html`.
+It will output the results of the test, and a coverage summary for each package.
+To see an HTML breakdown of coverage to see what you missed, you should run the
+following command.
+
+```sh
+$ make html
+```
+
+To see the cumulative coverage total and find out if it meets the project
+requirements, you can run the following command.
+
+```sh
+$ make enforce
+```
 
 ## Docker
 
-Every merge into the `master` branch on GitHub triggers a new build for a Docker image. That image will overwrite the `latest` tag, and there will be an explicit tag with the first 7 characters of the commit hash. The server will be listening on port 8647 so if you run a container locally, make sure that traffic is forwarded to that port. For example:
+Every merge into the `master` branch on GitHub triggers a new build for a Docker
+image. That image will overwrite the `latest` tag, and there will be an explicit
+tag with the first 7 characters of the commit hash. The server will be listening
+on port 8648 so if you run a container locally, make sure that traffic is
+forwarded to that port. For example:
 
  ```sh
-$ docker run --rm --publish 8647:8647 --name pokedextracker-api pokedextracker/api.pokedextracker.com:latest
+$ docker run --rm --publish 8648:8648 --name pokedextracker-api pokedextracker/api.pokedextracker.com:latest
 ```
