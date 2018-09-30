@@ -11,5 +11,5 @@ func RegisterRoutes(e *echo.Echo, app *application.App) {
 
 	h := handler{app}
 
-	g.GET("", h.listHandler)
+	g.GET("", h.list)
 }

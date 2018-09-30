@@ -6,13 +6,15 @@ import (
 )
 
 var (
-	friendCode = "1234-1234-1234"
+	friendCode  = "1234-1234-1234"
+	defaultUser = &models.User{
+		Password:   "password",
+		FriendCode: &friendCode,
+	}
 )
 
 // User is a factory to create fake users for tests.
-var User = factory.NewFactory(&models.User{
-	Password:   "password",
-	FriendCode: &friendCode,
-}).SeqString("Username", func(n string) (interface{}, error) {
-	return n, nil
-})
+var User = factory.NewFactory(defaultUser).
+	SeqString("Username", func(n string) (interface{}, error) {
+		return n, nil
+	})

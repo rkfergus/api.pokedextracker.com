@@ -77,6 +77,11 @@ ifdef PSQL
 	createuser --createdb $(DATABASE_USER)
 	createdb -U $(DATABASE_USER) $(TEST_DATABASE_NAME)
 	createdb -U $(DATABASE_USER) $(DEVELOPMENT_DATABASE_NAME)
+	make install
+	make migrate
+	ENVIRONMENT=test make migrate
+	make seed
+	ENVIRONMENT=test make seed
 else
 	$(info Skipping database setup)
 endif

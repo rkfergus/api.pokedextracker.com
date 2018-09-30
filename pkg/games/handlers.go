@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo"
+	"github.com/pkg/errors"
 	"github.com/pokedextracker/api.pokedextracker.com/pkg/application"
 	"github.com/pokedextracker/api.pokedextracker.com/pkg/models"
 )
@@ -12,7 +13,7 @@ type handler struct {
 	app *application.App
 }
 
-func (h *handler) listHandler(c echo.Context) error {
+func (h *handler) list(c echo.Context) error {
 	var games []models.Game
 
 	err := h.app.DB.
@@ -23,7 +24,7 @@ func (h *handler) listHandler(c echo.Context) error {
 		OrderExpr("game_families.order DESC, games.order ASC").
 		Select()
 	if err != nil {
-		return err
+		return errors.WithStack(err)
 	}
 
 	return c.JSON(http.StatusOK, games)
