@@ -1,3 +1,20 @@
+### 1.28.0 (2018-12-22)
+
+##### New Features
+
+* **locations:** add locations table and return it with pokemon (#105) ([f47ca05d](https://github.com/pokedextracker/api.pokedextracker.com/commit/f47ca05d00e4eaaf6357d2663d44991f60b0c64a))
+* **metrics:** add statsd metrics (#103) ([1f89e763](https://github.com/pokedextracker/api.pokedextracker.com/commit/1f89e763e33dec2923c5ec1dded4f1c5c42608d8))
+* **health:** add health check and logging (#101) ([6f8030a8](https://github.com/pokedextracker/api.pokedextracker.com/commit/6f8030a836be8361a5961bfa6c2785f8e7edf559))
+* **docker:** add dockerfile (#100) ([789f20e1](https://github.com/pokedextracker/api.pokedextracker.com/commit/789f20e13c1235697c2edf2cf48f5186a0e92e79))
+
+##### Bug Fixes
+
+* **metrics:** remove new relic references (#104) ([12cd5259](https://github.com/pokedextracker/api.pokedextracker.com/commit/12cd5259cecdfa3c7de6379377c56df5f332ea1b))
+
+##### Tests
+
+* **circle:** switch from travis to circle (#99) ([e962b2f2](https://github.com/pokedextracker/api.pokedextracker.com/commit/e962b2f2af6859d6f7b384bb1543c49e6f69e481))
+
 #### 1.27.4 (2018-2-26)
 
 ##### Chores
