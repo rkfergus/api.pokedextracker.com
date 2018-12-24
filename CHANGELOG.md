@@ -1,3 +1,9 @@
+### 1.29.0 (2018-12-24)
+
+##### New Features
+
+* **game-family:** add regional and national support columns (#106) ([2c2d0190](https://github.com/pokedextracker/api.pokedextracker.com/commit/2c2d01903fbca7ad821c6722883823bd5fd976ee))
+
 ### 1.28.0 (2018-12-22)
 
 ##### New Features
