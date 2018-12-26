@@ -1,3 +1,9 @@
+### 1.30.0 (2018-12-26)
+
+##### New Features
+
+* **users:** add 3ds_friend_code and switch_friend_code (#107) ([dfa2589f](https://github.com/pokedextracker/api.pokedextracker.com/commit/dfa2589fe1e83951a7e4489bfdef89484cd2a883))
+
 ### 1.29.0 (2018-12-24)
 
 ##### New Features
