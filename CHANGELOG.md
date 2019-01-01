@@ -1,3 +1,9 @@
+#### 1.31.1 (2019-1-1)
+
+##### Bug Fixes
+
+* **captures:** sort by form if game ids are equal (#109) ([acc8ae5c](https://github.com/pokedextracker/api.pokedextracker.com/commit/acc8ae5c902f02b850d74e09d67c635e325ea97a))
+
 ### 1.31.0 (2019-1-1)
 
 ##### New Features
