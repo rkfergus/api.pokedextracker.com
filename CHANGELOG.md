@@ -1,3 +1,9 @@
+### 1.31.0 (2019-1-1)
+
+##### New Features
+
+* **evolutions:** add candy as a trigger (#108) ([ae4bfc00](https://github.com/pokedextracker/api.pokedextracker.com/commit/ae4bfc00e819199bef9ba84401ce62730ce4c26d))
+
 ### 1.30.0 (2018-12-26)
 
 ##### New Features
