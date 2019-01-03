@@ -1,3 +1,9 @@
+#### 1.31.2 (2019-1-3)
+
+##### Bug Fixes
+
+* **friend-code:** rename {3ds,switch}_friend_code to friend_code_{3ds,switch} (#110) ([093789a8](https://github.com/pokedextracker/api.pokedextracker.com/commit/093789a8f2668f3dad7c7aecf5b32663547e2544))
+
 #### 1.31.1 (2019-1-1)
 
 ##### Bug Fixes
