@@ -1,3 +1,9 @@
+#### 1.31.3 (2019-1-3)
+
+##### Bug Fixes
+
+* **evolutions:** remove nulls from pokemon/evolutions array (#111) ([d976291c](https://github.com/pokedextracker/api.pokedextracker.com/commit/d976291c75cde022b0e36bff86b33d49f553474d))
+
 #### 1.31.2 (2019-1-3)
 
 ##### Bug Fixes
