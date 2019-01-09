@@ -1,6 +1,6 @@
 {
   "name": "api.pokedextracker.com",
-  "version": "1.31.3",
+  "version": "1.31.4",
   "description": "API for pokedextracker.com",
   "main": "src/index.js",
   "scripts": {
