@@ -1,3 +1,9 @@
+#### 1.31.4 (2019-1-9)
+
+##### Bug Fixes
+
+* **locations:** don't split on Let's Go, Pikachu (#112) ([8f1ee3b5](https://github.com/pokedextracker/api.pokedextracker.com/commit/8f1ee3b509e11bd0aaff1a54f0f8ea4249124b2c))
+
 #### 1.31.3 (2019-1-3)
 
 ##### Bug Fixes
